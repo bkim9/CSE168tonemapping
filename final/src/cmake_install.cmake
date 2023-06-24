@@ -1,4 +1,4 @@
-# Install script for directory: /Users/naryungkim/Documents/GitHub/CSE168/torrey-hw2_sol
+# Install script for directory: /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/naryungkim/Documents/GitHub/CSE168/torrey-hw2_sol/src/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

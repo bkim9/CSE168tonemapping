@@ -35,7 +35,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/Applications/CMake.app/Contents/share/cmake-3.25/Modules/Platform/Darwin-Initialize.cmake"
   "/Applications/CMake.app/Contents/share/cmake-3.25/Modules/Platform/Darwin.cmake"
   "/Applications/CMake.app/Contents/share/cmake-3.25/Modules/Platform/UnixPaths.cmake"
-  "/Users/naryungkim/Documents/GitHub/CSE168/torrey-hw2_sol/CMakeLists.txt"
+  "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/CMakeLists.txt"
   "CMakeFiles/3.25.2/CMakeCCompiler.cmake"
   "CMakeFiles/3.25.2/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.25.2/CMakeSystem.cmake"
