@@ -1,0 +1,6 @@
+[  8%] Building CXX object CMakeFiles/torrey_lib.dir/hw3.cpp.o
+[  8%] Building CXX object CMakeFiles/torrey_lib.dir/hw2.cpp.o
+[ 16%] Building CXX object CMakeFiles/torrey_lib.dir/main.cpp.o
+[ 16%] Building CXX object CMakeFiles/torrey_lib.dir/hw4.cpp.o
+[ 20%] Building CXX object CMakeFiles/torrey_lib.dir/material.cpp.o
+[ 25%] Building CXX object CMakeFiles/torrey_lib.dir/scene.cpp.o

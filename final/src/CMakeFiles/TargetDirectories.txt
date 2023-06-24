@@ -1,0 +1,4 @@
+/Users/naryungkim/Documents/GitHub/CSE168/torrey-hw2_sol/src/CMakeFiles/torrey_lib.dir
+/Users/naryungkim/Documents/GitHub/CSE168/torrey-hw2_sol/src/CMakeFiles/torrey.dir
+/Users/naryungkim/Documents/GitHub/CSE168/torrey-hw2_sol/src/CMakeFiles/edit_cache.dir
+/Users/naryungkim/Documents/GitHub/CSE168/torrey-hw2_sol/src/CMakeFiles/rebuild_cache.dir
