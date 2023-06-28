@@ -1,7 +1,7 @@
 /*! \file
   \verbatim
 
-     Copyright (c) 2006, Sylvain Paris and Frédo Durand
+     Copyright (c) 2006, Sylvain Paris and FrÃ©do Durand
 
      Permission is hereby granted, free of charge, to any person
      obtaining a copy of this software and associated documentation
@@ -72,8 +72,8 @@ namespace FFT{
     //! Needs the \e width, \e height and \e depth in the space domain of the real
     //! function with which it will deal.
     inline Support_3D(const size_type w,
-		      const size_type h,
-		      const size_type d);
+            		      const size_type h,
+            		      const size_type d);
 
     inline ~Support_3D();
 
