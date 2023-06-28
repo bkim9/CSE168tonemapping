@@ -147,38 +147,28 @@ namespace FFT{
     support.save_space_data(h);
   }
 
-
   /*!
     A Function must have members \e x_size(), \e y_size() and \e y_size() to get
     the dimensions of the data. It must have an access operator \e (x,y,z) too.
   */
   template<typename Function>
-  void convolve_3D(const Function& f,
-		   const Function& g,
-		   Function* const h,
-		   Support_3D&     support){
-
+  void convolve_3D( const Function& f,
+                    const Function& g,
+                    Function* const h,
+                    Support_3D&     support) {
     // ################
     // ### FFT of f ###
     // ################
-
     // We need a temporary buffer.
     Support_3D::buffer_type buffer = support.create_buffer();
-
     // Store f data in the fftw structures.
     support.load_space_data(f);
-    
     // Compute the FFT.
     support.space_to_frequency();
-    
     // Copy the result in a safe place.
     support.save_frequency_data_into_buffer(buffer);
-
-
     convolve_3D(buffer,g,h,support);
-    
     support.destroy_buffer(buffer);
-    
   }
 
   
@@ -195,39 +185,31 @@ namespace FFT{
 
   
   template<typename Function>
-  void convolve_3D(const Support_3D::buffer_type& F,
-		   const Support_3D::buffer_type& G,
-		   Function* const h,
-		   Support_3D&     support){
-
+  void convolve_3D( const Support_3D::buffer_type& F,
+                    const Support_3D::buffer_type& G,
+                    Function* const h,
+                    Support_3D&     support){
     // Store G data in the fftw structures.    
     support.load_frequency_data_from_buffer(G);
-    
     // Multiplication "in place" in the frequency space.    
     support.multiply_frequency_data_by_buffer(F,true);
-    
-
     // ###################
     // ### Inverse FFT ###
     // ###################
-    
     // Compute inverse FFT transform.
     support.frequency_to_space();
-
     // Return data into the original structures    
     support.save_space_data(h);
-
-
   }
 
 
   
   template<typename Function>
   void move_center_3D(const Function&    f,
-		      const unsigned int x_center,
-		      const unsigned int y_center,
-		      const unsigned int z_center,
-		      Function* const    result){
+                      const unsigned int x_center,
+                      const unsigned int y_center,
+                      const unsigned int z_center,
+                      Function* const    result){
 
     typedef unsigned int size_type;
 

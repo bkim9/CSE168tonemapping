@@ -94,6 +94,10 @@ namespace Image_filter{
   }
 
 
+  // Image_filter::linear_BF(image,
+  //                         sigma_s,sigma_r,
+  //                         sampling_s,sampling_r,
+  //                         &filtered_image);
 
   template <typename Array>
   void linear_BF( const Array&    input,
@@ -106,6 +110,7 @@ namespace Image_filter{
     using namespace std;
 
     typedef Array               real_array_2D_type;
+    // typedef Array_2D<real_type> real_array_2D_type;
     typedef Array_3D<real_type> real_array_3D_type;
     
     const size_type width  = input.x_size();
@@ -138,16 +143,16 @@ namespace Image_filter{
     real_array_3D_type w (small_width,small_height,small_depth,0.0);
     real_array_3D_type iw(small_width,small_height,small_depth,0.0);
 
-    for(size_type x=0,x_end=width;x<x_end;x++){
-      for(size_type y=0,y_end=height;y<y_end;y++){
-      
-	const size_type small_x = static_cast<size_type>(1.0*x / space_sampling + 0.5) + padding_xy;
-	const size_type small_y = static_cast<size_type>(1.0*y / space_sampling + 0.5) + padding_xy;
-	const size_type small_z = static_cast<size_type>((input(x,y)-input_min) / range_sampling + 0.5) + padding_z;
+    for(size_type x=0,x_end=width ;x<x_end;x++) {
+    for(size_type y=0,y_end=height;y<y_end;y++) {
+    
+      const size_type small_x = static_cast<size_type>(1.0*x / space_sampling + 0.5) + padding_xy;
+      const size_type small_y = static_cast<size_type>(1.0*y / space_sampling + 0.5) + padding_xy;
+      const size_type small_z = static_cast<size_type>((input(x,y)-input_min) / range_sampling + 0.5) + padding_z;
 
-	w(small_x,small_y,small_z)  += 1.0;
-	iw(small_x,small_y,small_z) += input(x,y);
-      } // END OF for y
+      w (small_x,small_y,small_z) += 1.0;
+      iw(small_x,small_y,small_z) += input(x,y);
+    } // END OF for y
     } // END OF for x
   
     real_array_3D_type kernel(small_width,small_height,small_depth);
@@ -157,23 +162,15 @@ namespace Image_filter{
     const size_type half_depth  = small_depth/2;
   
     for(size_type x=0,x_end=small_width;x<x_end;x++){
-
-      const real_type X = static_cast<real_type>(x) - ((x>half_width) ? small_width : 0.0);
-    
-      for(size_type y=0,y_end=small_height;y<y_end;y++){
-
-	const real_type Y = static_cast<real_type>(y) - ((y>half_height) ? small_height : 0.0);
-      
-	for(size_type z=0,z_end=small_depth;z<z_end;z++){
-
-	  const real_type Z = static_cast<real_type>(z) - ((z>half_depth) ? small_depth : 0.0);
-
-	  const real_type rr = (X*X + Y*Y) / (sigma_s*sigma_s) + Z*Z / (sigma_r*sigma_r);	
-	
-	  kernel(x,y,z) = exp(-rr*0.5);
-	
-	} // END OF for z
-      } // END OF for y
+    const real_type X = static_cast<real_type>(x) - ((x>half_width) ? small_width : 0.0);
+    for(size_type y=0,y_end=small_height;y<y_end;y++){
+    const real_type Y = static_cast<real_type>(y) - ((y>half_height) ? small_height : 0.0);
+    for(size_type z=0,z_end=small_depth;z<z_end;z++){
+        const real_type Z = static_cast<real_type>(z) - ((z>half_depth) ? small_depth : 0.0);
+        const real_type rr = (X*X + Y*Y) / (sigma_s*sigma_s) + Z*Z / (sigma_r*sigma_r);	
+        kernel(x,y,z) = exp(-rr*0.5);
+    } // END OF for z
+    } // END OF for y
     } // END OF for x
 
 #ifdef CHRONO
@@ -182,10 +179,8 @@ namespace Image_filter{
     Chrono chrono_convolution("convolution");
     chrono_convolution.start();
 #endif  
-  
     FFT::convolve_3D(iw,kernel,&iw,fft_support);
-    FFT::convolve_3D(w,kernel,&w,fft_support);
-
+    FFT::convolve_3D(w ,kernel,&w ,fft_support);
 #ifdef CHRONO
     chrono_convolution.stop();
 
@@ -196,23 +191,18 @@ namespace Image_filter{
     result->resize(width,height);
     
     for(size_type x=0,x_end=width;x<x_end;x++){
-      for(size_type y=0,y_end=height;y<y_end;y++){
-      
-	const real_type z = input(x,y) - input_min;
-
-	const real_type IW = Math_tools::trilinear_interpolation(iw,
-								 static_cast<real_type>(x)/space_sampling + padding_xy,
-								 static_cast<real_type>(y)/space_sampling + padding_xy,
-								 z/range_sampling + padding_z);
-      
-	const real_type W = Math_tools::trilinear_interpolation(w,
-								static_cast<real_type>(x)/space_sampling + padding_xy,
-								static_cast<real_type>(y)/space_sampling + padding_xy,
-								z/range_sampling + padding_z);
-
-	(*result)(x,y) = IW / W;
-      
-      } // END OF for y
+    for(size_type y=0,y_end=height;y<y_end;y++){
+        const real_type z = input(x,y) - input_min;
+        const real_type IW = Math_tools::trilinear_interpolation(iw,
+                      static_cast<real_type>(x)/space_sampling + padding_xy,
+                      static_cast<real_type>(y)/space_sampling + padding_xy,
+                      z/range_sampling + padding_z);
+        const real_type W = Math_tools::trilinear_interpolation(w,
+                      static_cast<real_type>(x)/space_sampling + padding_xy,
+                      static_cast<real_type>(y)/space_sampling + padding_xy,
+                      z/range_sampling + padding_z);
+        (*result)(x,y) = IW / W;
+    } // END OF for y
     } // END OF for x
     
 #ifdef CHRONO

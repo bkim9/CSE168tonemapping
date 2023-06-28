@@ -58,12 +58,12 @@ namespace Image_filter{
 
   template <typename Base_array,typename Data_array,typename Real>
   void fast_LBF(const Data_array&  input,
-		const Base_array&  base,
-		const Real         space_sigma,
-		const Real         range_sigma,
-		const bool         early_division,
-		Base_array* const  weight,
-		Data_array* const  result){
+                const Base_array&  base,
+                const Real         space_sigma,
+                const Real         range_sigma,
+                const bool         early_division,
+                Base_array* const  weight,
+                Data_array* const  result){
 
     using namespace std;
 
@@ -101,26 +101,20 @@ namespace Image_filter{
     chrono_down.start();
 #endif
     
-    mixed_array_3D_type data(small_width,
-			     small_height,
-			     small_depth,mixed_type());
+    mixed_array_3D_type data( small_width,
+                              small_height,
+                              small_depth,mixed_type());
 
     for(size_type x = 0,x_end = width;x < x_end;++x){
-
-      const size_type small_x = static_cast<size_type>(x / space_sigma + 0.5) + padding_xy;
-
-      for(size_type y = 0,y_end = height;y < y_end;++y){
-
-	const base_type z = base(x,y) - base_min;
-	
-	const size_type small_y = static_cast<size_type>(y / space_sigma + 0.5) + padding_xy;
-	const size_type small_z = static_cast<size_type>(z / range_sigma + 0.5) + padding_z;
-
-	mixed_type& d = data(small_x,small_y,small_z);
-// 	cout<<d.first<<" "<<input(x,y)<<endl;
-	d.first  += input(x,y);
-	d.second += 1.0;
-      } // END OF for y
+    const size_type small_x = static_cast<size_type>(x / space_sigma + 0.5) + padding_xy;
+    for(size_type y = 0,y_end = height;y < y_end;++y){
+        const base_type z = base(x,y) - base_min;
+        const size_type small_y = static_cast<size_type>(y / space_sigma + 0.5) + padding_xy;
+        const size_type small_z = static_cast<size_type>(z / range_sigma + 0.5) + padding_z;
+        mixed_type& d = data(small_x,small_y,small_z);
+        d.first  += input(x,y);
+        d.second += 1.0;
+    } // END OF for y
     } // END OF for x
 
 #ifdef CHRONO
@@ -130,46 +124,24 @@ namespace Image_filter{
     Chrono chrono_convolution("convolution");
     chrono_convolution.start();
 #endif  
-
     vector<int> offset(3);
     offset[0] = &(data(1,0,0)) - &(data(0,0,0));
     offset[1] = &(data(0,1,0)) - &(data(0,0,0));
     offset[2] = &(data(0,0,1)) - &(data(0,0,0));
-    
     mixed_array_3D_type buffer(small_width,small_height,small_depth);
-
     for(size_type dim = 0;dim < 3;++dim){
-
       const int off = offset[dim];
-      
       for(size_type n_iter = 0;n_iter < 2;++n_iter){
-
-	swap(buffer,data);
-      
-	for(size_type
-	      x     = 1,
-	      x_end = small_width - 1;
-	    x < x_end;++x){
-
-	  for(size_type
-		y     = 1,
-		y_end = small_height - 1;
-	      y < y_end;++y){
-
-	    mixed_type* d_ptr = &(data(x,y,1));
-	    mixed_type* b_ptr = &(buffer(x,y,1));
-	  
-	    for(size_type
-		  z     = 1,
-		  z_end = small_depth - 1;
-		z < z_end;
-		++z,++d_ptr,++b_ptr){
-	      
-	      *d_ptr = (*(b_ptr - off) + *(b_ptr + off) + 2.0 * (*b_ptr)) / 4.0;
-
-	    } // END OF for z
-	  } // END OF for y
-	} // END OF for x
+        swap(buffer,data);
+        for(size_type x = 1, x_end = small_width  - 1; x < x_end;++x) {
+        for(size_type y = 1, y_end = small_height - 1; y < y_end;++y) {
+            mixed_type* d_ptr = &(data(x,y,1));
+            mixed_type* b_ptr = &(buffer(x,y,1));
+            for(size_type z = 1, z_end = small_depth - 1; z < z_end; ++z,++d_ptr,++b_ptr){
+              *d_ptr = (*(b_ptr - off) + *(b_ptr + off) + 2.0 * (*b_ptr)) / 4.0;
+            } // END OF for z
+        } // END OF for y
+        } // END OF for x
       } // END OF for n_iter
     } // END OF for dim
 
@@ -186,52 +158,40 @@ namespace Image_filter{
     
     if (early_division){
 
-      for(typename mixed_array_3D_type::iterator
-	    d     = data.begin(),
-	    d_end = data.end();
-	  d != d_end;++d){
-	*d /= (d->second != 0) ? d->second : 1;
+      for(typename mixed_array_3D_type::iterator d = data.begin(), d_end = data.end(); d != d_end;++d) {
+	      *d /= (d->second != 0) ? d->second : 1;
       }
       
       for(size_type x=0,x_end=width;x<x_end;x++){
-	for(size_type y=0,y_end=height;y<y_end;y++){
-      
-	  const base_type z = base(x,y) - base_min;
-
-	  const mixed_type D =
-	    Math_tools::trilinear_interpolation(data,
-						static_cast<real_type>(x) / space_sigma + padding_xy,
-						static_cast<real_type>(y) / space_sigma + padding_xy,
-						z / range_sigma + padding_z);
-	  
-	  (*result)(x,y) = D.first;
-	  
-	} // END OF for y
+        for(size_type y=0,y_end=height;y<y_end;y++){
+          const base_type z = base(x,y) - base_min;
+          const mixed_type D =
+            Math_tools::trilinear_interpolation(data,
+                  static_cast<real_type>(x) / space_sigma + padding_xy,
+                  static_cast<real_type>(y) / space_sigma + padding_xy,
+                  z / range_sigma + padding_z);
+          (*result)(x,y) = D.first;
+        } // END OF for y
       } // END OF for x
       
     }
-    else{ // END OF if early_division
+    else { // END OF if early_division
 
       weight->resize(width,height);
       
       for(size_type x = 0,x_end = width;x < x_end;++x){
-	for(size_type y = 0,y_end = height;y < y_end;++y){
-      
-	  const base_type z = base(x,y) - base_min;
-
-	  const mixed_type D =
-	    Math_tools::trilinear_interpolation(data,
+	    for(size_type y = 0,y_end = height;y < y_end;++y){  
+	      const base_type z = base(x,y) - base_min;
+	      const mixed_type D = Math_tools::trilinear_interpolation(data,
 						static_cast<real_type>(x) / space_sigma + padding_xy,
 						static_cast<real_type>(y) / space_sigma + padding_xy,
 						z / range_sigma + padding_z);      
-
-	  (*weight)(x,y) = D.second;
-	  (*result)(x,y) = D.first / D.second;
-
+        (*weight)(x,y) = D.second;
+        (*result)(x,y) = D.first / D.second;
 // 	  cout <<x<<" "<<y<<" "<<z<<" "
 // 	       <<D.first<<" "<<D.second<<" "
 // 	       << (*result)(x,y) << endl;
-	} // END OF for y
+	    } // END OF for y
       } // END OF for x
     } // END OF else early_division
 
@@ -242,9 +202,7 @@ namespace Image_filter{
     chrono.stop();    
     cout<<"  "<<chrono.report()<<endl;
 #endif
-
   }
-
 } // END OF namespace Image_filter
 
 

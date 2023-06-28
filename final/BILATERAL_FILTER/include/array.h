@@ -320,19 +320,19 @@ public:
   
   explicit inline Array_3D(const A& a = A());
   
-  explicit inline Array_3D(const size_type nx,
-			   const size_type ny,
-			   const size_type nz,
-			   const T& val = T(),
-			   const A& a = A());
+  explicit inline Array_3D( const size_type nx,
+                            const size_type ny,
+                            const size_type nz,
+                            const T& val = T(),
+                            const A& a = A());
 
   template<typename Element_iterator>
   inline Array_3D(Element_iterator begin_elt,
-		  Element_iterator end_elt,
-		  const size_type nx,
-		  const sxize_type ny,
-		  const size_type nz,
-		  const A& a = A());
+                  Element_iterator end_elt,
+                  const size_type nx,
+                  const size_type ny,
+                  const size_type nz,
+                  const A& a = A());
   
   inline Array_3D(const Array_3D<T,A>& a);
   //@}

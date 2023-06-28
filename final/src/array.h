@@ -66,16 +66,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifndef NO_XML
 #include <sstream>
-   
+
 // #include <qdom.h>
 #endif
 
 /*
-
   ##################
   # class Array_2D #
   ##################
-
  */
 
 
@@ -121,26 +119,26 @@ public:
   //@{
   //! Classical constructor.
   
-  explicit inline Array_2D(const A& a = A());
+  explicit inline Array_2D( const A& a = A());
   
-  explicit inline Array_2D(const size_type nx,
-			   const size_type ny,
-			   const T& val = T(),const A& a = A());
+  explicit inline Array_2D( const size_type nx,
+                            const size_type ny,
+                            const T& val = T(),const A& a = A());
   
   template<typename Element_iterator>
   inline Array_2D(Element_iterator begin_elt,
-		  Element_iterator end_elt,
-		  const size_type nx,
-		  const size_type ny,
-		  const A& a = A());
+                  Element_iterator end_elt,
+                  const size_type nx,
+                  const size_type ny,
+                  const A& a = A());
     
   inline Array_2D(const Array_2D<T,A>& a);
   //@}
 
   //! Assignement of a default value.
   void assign(const size_type nx,
-	      const size_type ny,
-	      const T& val);
+              const size_type ny,
+              const T& val);
   
   //@{
   //! Handle the array dimension.
@@ -279,14 +277,6 @@ private:
 
  */
 
-
-
-
-
-
-
-
-
 //! Class representing a 3D array.
 /*!
   Optimised for an access in order :
@@ -330,28 +320,28 @@ public:
   
   explicit inline Array_3D(const A& a = A());
   
-  explicit inline Array_3D(const size_type nx,
-			   const size_type ny,
-			   const size_type nz,
-			   const T& val = T(),
-			   const A& a = A());
+  explicit inline Array_3D( const size_type nx,
+                            const size_type ny,
+                            const size_type nz,
+                            const T& val = T(),
+                            const A& a = A());
 
   template<typename Element_iterator>
   inline Array_3D(Element_iterator begin_elt,
-		  Element_iterator end_elt,
-		  const size_type nx,
-		  const size_type ny,
-		  const size_type nz,
-		  const A& a = A());
+                  Element_iterator end_elt,
+                  const size_type nx,
+                  const size_type ny,
+                  const size_type nz,
+                  const A& a = A());
   
   inline Array_3D(const Array_3D<T,A>& a);
   //@}
 
   //! Assignement of a default value.
   void assign(const size_type nx,
-	      const size_type ny,
-	      const size_type nz,
-	      const T& val);
+              const size_type ny,
+              const size_type nz,
+              const T& val);
   
   //@{
   //! Handle the array dimension.
@@ -472,8 +462,8 @@ private:
   inline size_type offset(const Vector_position& v) const;
   
   inline size_type offset(const size_type& x,
-			  const size_type& y,
-			  const size_type& z) const;
+                          const size_type& y,
+                          const size_type& z) const;
   //@}
 };
 
@@ -524,9 +514,9 @@ Array_2D<T,A>::Array_2D(const A& a)
 
 template<typename T,typename A>
 Array_2D<T,A>::Array_2D(const size_type nx,
-			const size_type ny,
-			const T& val,
-			const A& a)
+                        const size_type ny,
+                        const T& val,
+                        const A& a)
   :x_dim(nx),y_dim(ny),storage(nx*ny,val,a){}
 
 
