@@ -1,1 +1,1 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -O2 -g -DNDEBUG -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.1 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/torrey.dir/main.cpp.o -o torrey  libtorrey_lib.a -lm 
+/nix/store/dq0xwmsk1g0i2ayg6pb7y87na2knzylh-gcc-wrapper-11.3.0/bin/g++ -O2 -g -DNDEBUG CMakeFiles/torrey.dir/main.cpp.o -o torrey  libtorrey_lib.a -lm 

@@ -1,4 +1,4 @@
-/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles/torrey_lib.dir
-/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles/torrey.dir
-/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles/edit_cache.dir
-/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles/rebuild_cache.dir
+/home/runner/CSE168tonemapping/final/src/CMakeFiles/torrey_lib.dir
+/home/runner/CSE168tonemapping/final/src/CMakeFiles/torrey.dir
+/home/runner/CSE168tonemapping/final/src/CMakeFiles/edit_cache.dir
+/home/runner/CSE168tonemapping/final/src/CMakeFiles/rebuild_cache.dir
