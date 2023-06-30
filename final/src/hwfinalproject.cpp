@@ -166,7 +166,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         return Image3(0, 0);
     }
 
-    int max_depth = 50;
+    int max_depth = 5;
     std::string filename;
     for (int i = 0; i < (int)params.size(); i++) {
         if (params[i] == "-max_depth") {
