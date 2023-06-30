@@ -197,6 +197,16 @@ public:
   
   inline const_reference at(const size_type x,
 			    const size_type y) const;
+
+  inline void print() {
+    for ( int j = y_dim - 1; j >=0; j-- ) {
+        for ( int i = 0; i < x_dim; i++ ) {
+            std::cout << storage[offset(i,j)] << ' ';
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "done printing 2d array...\n\n";
+  }
   //@}
 
   //@{
@@ -347,6 +357,18 @@ public:
   //! Handle the array dimension.
 
   inline bool empty() const;
+  inline void print() {
+    for ( size_type k = 0; k < z_dim; k++) {
+        std::cout << 'depth: ' <<  k  << std::end;
+        for ( size_type j  = y_dim-1; j >= 0; j--) {
+            for ( size_type i = 0; i < x_dim; i++) {
+               std::cout << storage[offset(i,j,k)] << ' ';
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl << std::endl;
+    }
+  }
   
   inline size_type x_size() const;
   inline size_type width() const;
