@@ -66,7 +66,6 @@ void colorBilateralfilter(  Image3& img,
   cout<<"Filter the image... "<<endl;
 
   image_type filtered_image(width,height);
-  filtered_image.print();
  
   Image_filter::fast_color_BF(image,
 			      sigma_s,sigma_r,

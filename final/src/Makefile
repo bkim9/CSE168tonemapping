@@ -190,6 +190,30 @@ torrey/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/3rdparty/pugixml.cpp.s
 .PHONY : 3rdparty/pugixml.cpp.s
 
+bilateral_filter.o: bilateral_filter.cpp.o
+.PHONY : bilateral_filter.o
+
+# target to build an object file
+bilateral_filter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/bilateral_filter.cpp.o
+.PHONY : bilateral_filter.cpp.o
+
+bilateral_filter.i: bilateral_filter.cpp.i
+.PHONY : bilateral_filter.i
+
+# target to preprocess a source file
+bilateral_filter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/bilateral_filter.cpp.i
+.PHONY : bilateral_filter.cpp.i
+
+bilateral_filter.s: bilateral_filter.cpp.s
+.PHONY : bilateral_filter.s
+
+# target to generate assembly for a file
+bilateral_filter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/bilateral_filter.cpp.s
+.PHONY : bilateral_filter.cpp.s
+
 bvh.o: bvh.cpp.o
 .PHONY : bvh.o
 
@@ -809,6 +833,9 @@ help:
 	@echo "... 3rdparty/pugixml.o"
 	@echo "... 3rdparty/pugixml.i"
 	@echo "... 3rdparty/pugixml.s"
+	@echo "... bilateral_filter.o"
+	@echo "... bilateral_filter.i"
+	@echo "... bilateral_filter.s"
 	@echo "... bvh.o"
 	@echo "... bvh.i"
 	@echo "... bvh.s"

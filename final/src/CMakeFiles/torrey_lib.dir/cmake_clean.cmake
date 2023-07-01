@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/torrey_lib.dir/3rdparty/miniz.c.o.d"
   "CMakeFiles/torrey_lib.dir/3rdparty/pugixml.cpp.o"
   "CMakeFiles/torrey_lib.dir/3rdparty/pugixml.cpp.o.d"
+  "CMakeFiles/torrey_lib.dir/bilateral_filter.cpp.o"
+  "CMakeFiles/torrey_lib.dir/bilateral_filter.cpp.o.d"
   "CMakeFiles/torrey_lib.dir/bvh.cpp.o"
   "CMakeFiles/torrey_lib.dir/bvh.cpp.o.d"
   "CMakeFiles/torrey_lib.dir/camera.cpp.o"

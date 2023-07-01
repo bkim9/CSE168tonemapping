@@ -15,6 +15,7 @@
 #include <optional>
 #include "image.h"
 #include "color_bilateral_filter.h"
+#include "bilateral_filter.h"
 #include "log_tone.h"
 
 

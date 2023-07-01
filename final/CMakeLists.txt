@@ -17,6 +17,8 @@ else()
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(/usr/local/include)
+
 
 set(SRCS src/3rdparty/miniz.h
          src/3rdparty/miniz.c
@@ -44,6 +46,7 @@ set(SRCS src/3rdparty/miniz.h
          src/math_tools.h
          src/mixed_vector.h
          src/color_bilateral_filter.h
+         src/bilateral_filter.h
          src/log_tone.h
          src/color_convert.h
          src/logmapping.h
@@ -70,6 +73,7 @@ set(SRCS src/3rdparty/miniz.h
          src/camera.cpp
          src/compute_normals.cpp
          src/color_bilateral_filter.cpp
+         src/bilateral_filter.cpp
          src/log_tone.cpp
          src/logmapping.cpp
          src/color_convert.cpp
@@ -101,4 +105,6 @@ target_link_libraries(torrey Threads::Threads)
 
 target_link_libraries(torrey torrey_lib)
 
-target_link_libraries(torrey m)
+# target_link_libraries(torrey fftw3)
+
+target_link_libraries(torrey m)                   

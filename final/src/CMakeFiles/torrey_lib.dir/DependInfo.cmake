@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/3rdparty/miniz.c" "CMakeFiles/torrey_lib.dir/3rdparty/miniz.c.o" "gcc" "CMakeFiles/torrey_lib.dir/3rdparty/miniz.c.o.d"
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/3rdparty/pugixml.cpp" "CMakeFiles/torrey_lib.dir/3rdparty/pugixml.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/3rdparty/pugixml.cpp.o.d"
+  "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/bilateral_filter.cpp" "CMakeFiles/torrey_lib.dir/bilateral_filter.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/bilateral_filter.cpp.o.d"
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/bvh.cpp" "CMakeFiles/torrey_lib.dir/bvh.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/bvh.cpp.o.d"
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/camera.cpp" "CMakeFiles/torrey_lib.dir/camera.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/camera.cpp.o.d"
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/color_bilateral_filter.cpp" "CMakeFiles/torrey_lib.dir/color_bilateral_filter.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/color_bilateral_filter.cpp.o.d"

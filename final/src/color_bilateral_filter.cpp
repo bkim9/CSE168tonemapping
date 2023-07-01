@@ -28,9 +28,6 @@
 
 #include "color_bilateral_filter.h"
 
-#define CHRONO
-
-
 using namespace std; 
 
 typedef Array_2D<Geometry::Vec3<double> > image_type;
@@ -66,9 +63,9 @@ void colorBilateralfilter(  Image3& img,
   cout<<"Filter the image... "<<endl;
 
   image_type filtered_image(width,height);
-  filtered_image.print();
  
-  Image_filter::fast_color_BF(image,
+  Image_filter::fast_color_BF(
+            image,
 			      sigma_s,sigma_r,
 			      &filtered_image);
   

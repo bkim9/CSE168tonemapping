@@ -204,9 +204,9 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         // Use a different rng stream for each thread.
         pcg32_state rng = init_pcg32(tile[1] * num_tiles_x + tile[0]);
         int x0 = tile[0] * tile_size;
-        int x1 = min(x0 + tile_size, w);
+        int x1 = std::min(x0 + tile_size, w);
         int y0 = tile[1] * tile_size;
-        int y1 = min(y0 + tile_size, h);
+        int y1 = std::min(y0 + tile_size, h);
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
                 for (int s = 0; s < spp; s++) {
@@ -260,6 +260,7 @@ Image3 hw_fin_2(const std::vector<std::string> &params) {
     double sigma_s = 16.0;
     double sigma_r = 0.1;
     colorBilateralfilter(img, sigma_s, sigma_r);
+    // bilateralfilter(img, sigma_s, sigma_r);
     return img;
 }
 
