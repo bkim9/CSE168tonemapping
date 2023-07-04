@@ -15,6 +15,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/torrey_lib.dir/color_convert.cpp.o.d"
   "CMakeFiles/torrey_lib.dir/compute_normals.cpp.o"
   "CMakeFiles/torrey_lib.dir/compute_normals.cpp.o.d"
+  "CMakeFiles/torrey_lib.dir/fft_3D/support_3D.cpp.o"
+  "CMakeFiles/torrey_lib.dir/fft_3D/support_3D.cpp.o.d"
   "CMakeFiles/torrey_lib.dir/hw1.cpp.o"
   "CMakeFiles/torrey_lib.dir/hw1.cpp.o.d"
   "CMakeFiles/torrey_lib.dir/hw2.cpp.o"

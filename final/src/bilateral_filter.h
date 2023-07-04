@@ -9,5 +9,8 @@
 #include "linear_bf.h"
 #include "image.h"
 
-
-using namespace std; 
+void bilateralFilter( Image3& img,
+                      double sigma_s,
+                      double sigma_r,
+                      double sampling_s,
+                      double sampling_r);

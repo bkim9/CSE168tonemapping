@@ -334,6 +334,30 @@ compute_normals.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/compute_normals.cpp.s
 .PHONY : compute_normals.cpp.s
 
+fft_3D/support_3D.o: fft_3D/support_3D.cpp.o
+.PHONY : fft_3D/support_3D.o
+
+# target to build an object file
+fft_3D/support_3D.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/fft_3D/support_3D.cpp.o
+.PHONY : fft_3D/support_3D.cpp.o
+
+fft_3D/support_3D.i: fft_3D/support_3D.cpp.i
+.PHONY : fft_3D/support_3D.i
+
+# target to preprocess a source file
+fft_3D/support_3D.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/fft_3D/support_3D.cpp.i
+.PHONY : fft_3D/support_3D.cpp.i
+
+fft_3D/support_3D.s: fft_3D/support_3D.cpp.s
+.PHONY : fft_3D/support_3D.s
+
+# target to generate assembly for a file
+fft_3D/support_3D.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/fft_3D/support_3D.cpp.s
+.PHONY : fft_3D/support_3D.cpp.s
+
 hw1.o: hw1.cpp.o
 .PHONY : hw1.o
 
@@ -851,6 +875,9 @@ help:
 	@echo "... compute_normals.o"
 	@echo "... compute_normals.i"
 	@echo "... compute_normals.s"
+	@echo "... fft_3D/support_3D.o"
+	@echo "... fft_3D/support_3D.i"
+	@echo "... fft_3D/support_3D.s"
 	@echo "... hw1.o"
 	@echo "... hw1.i"
 	@echo "... hw1.s"

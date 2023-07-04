@@ -60,7 +60,7 @@ void colorBilateralfilter(  Image3& img,
   // ##############################################################
   
   
-  cout<<"Filter the image... "<<endl;
+  cout<< "Filter the image... " <<endl;
 
   image_type filtered_image(width,height);
  

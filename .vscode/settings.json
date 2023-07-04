@@ -79,5 +79,6 @@
         "variant": "cpp",
         "vector": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final"
 }

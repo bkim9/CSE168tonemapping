@@ -16,6 +16,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/color_bilateral_filter.cpp" "CMakeFiles/torrey_lib.dir/color_bilateral_filter.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/color_bilateral_filter.cpp.o.d"
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/color_convert.cpp" "CMakeFiles/torrey_lib.dir/color_convert.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/color_convert.cpp.o.d"
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/compute_normals.cpp" "CMakeFiles/torrey_lib.dir/compute_normals.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/compute_normals.cpp.o.d"
+  "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/fft_3D/support_3D.cpp" "CMakeFiles/torrey_lib.dir/fft_3D/support_3D.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/fft_3D/support_3D.cpp.o.d"
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw1.cpp" "CMakeFiles/torrey_lib.dir/hw1.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/hw1.cpp.o.d"
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw2.cpp" "CMakeFiles/torrey_lib.dir/hw2.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/hw2.cpp.o.d"
   "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw3.cpp" "CMakeFiles/torrey_lib.dir/hw3.cpp.o" "gcc" "CMakeFiles/torrey_lib.dir/hw3.cpp.o.d"

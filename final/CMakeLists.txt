@@ -47,6 +47,11 @@ set(SRCS src/3rdparty/miniz.h
          src/mixed_vector.h
          src/color_bilateral_filter.h
          src/bilateral_filter.h
+         src/fft_3D/convolution_3D.h
+         src/fft_3D/fill_3D.h
+         src/fft_3D/support_3D.h
+         src/fft_3D/support_3D.cpp
+         src/fft_3D.h
          src/log_tone.h
          src/color_convert.h
          src/logmapping.h
