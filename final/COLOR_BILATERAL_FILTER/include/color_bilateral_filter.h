@@ -7,6 +7,7 @@
 #include "geom.h"
 #include "fast_color_bf.h"
 #include "image.h"
+#define CHRONO
 
 void colorBilateralfilter(  Image3& img, 
                             double sigma_s,

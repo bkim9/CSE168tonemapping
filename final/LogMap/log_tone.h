@@ -17,6 +17,7 @@
 #include "rgbe.h"
 #include "logmapping.h"
 #include "color_convert.h"
+#include "image.h"
 
 int log_tone( Image3& img );
 void open_RGBE_scene();

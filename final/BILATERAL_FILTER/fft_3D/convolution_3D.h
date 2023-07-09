@@ -30,15 +30,12 @@
 #define __CONVOLUTION_FFT_3D__
 
 #include <algorithm>
-
 #include <fftw3.h>
-
 #include "fft_3D/support_3D.h"
 
 
 
 namespace FFT{
-
   //! Compute h=f*g for f,g and h real functions.
   template<typename Function>
   inline void convolve_3D(const Function& f,

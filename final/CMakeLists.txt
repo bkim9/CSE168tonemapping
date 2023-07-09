@@ -18,7 +18,7 @@ endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/src )
 
-
+add_subdirectory(BILATERAL_FILTER)
 
 set(SRCS src/3rdparty/miniz.h
          src/3rdparty/miniz.c
@@ -40,13 +40,6 @@ set(SRCS src/3rdparty/miniz.h
          src/geom.h
          src/math_tools.h
          src/mixed_vector.h
-         src/color_bilateral_filter.h
-         src/bilateral_filter.h
-         src/fft_3D/convolution_3D.h
-         src/fft_3D/fill_3D.h
-         src/fft_3D/support_3D.h
-         src/fft_3D/support_3D.cpp
-         src/fft_3D.h
          src/log_tone.h
          src/color_convert.h
          src/logmapping.h
