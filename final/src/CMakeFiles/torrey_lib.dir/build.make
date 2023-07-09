@@ -237,66 +237,10 @@ CMakeFiles/torrey_lib.dir/rgbe.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/torrey_lib.dir/rgbe.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/rgbe.cpp -o CMakeFiles/torrey_lib.dir/rgbe.cpp.s
 
-CMakeFiles/torrey_lib.dir/hw1.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
-CMakeFiles/torrey_lib.dir/hw1.cpp.o: hw1.cpp
-CMakeFiles/torrey_lib.dir/hw1.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/torrey_lib.dir/hw1.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/hw1.cpp.o -MF CMakeFiles/torrey_lib.dir/hw1.cpp.o.d -o CMakeFiles/torrey_lib.dir/hw1.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw1.cpp
-
-CMakeFiles/torrey_lib.dir/hw1.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/torrey_lib.dir/hw1.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw1.cpp > CMakeFiles/torrey_lib.dir/hw1.cpp.i
-
-CMakeFiles/torrey_lib.dir/hw1.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/torrey_lib.dir/hw1.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw1.cpp -o CMakeFiles/torrey_lib.dir/hw1.cpp.s
-
-CMakeFiles/torrey_lib.dir/hw2.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
-CMakeFiles/torrey_lib.dir/hw2.cpp.o: hw2.cpp
-CMakeFiles/torrey_lib.dir/hw2.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/torrey_lib.dir/hw2.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/hw2.cpp.o -MF CMakeFiles/torrey_lib.dir/hw2.cpp.o.d -o CMakeFiles/torrey_lib.dir/hw2.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw2.cpp
-
-CMakeFiles/torrey_lib.dir/hw2.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/torrey_lib.dir/hw2.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw2.cpp > CMakeFiles/torrey_lib.dir/hw2.cpp.i
-
-CMakeFiles/torrey_lib.dir/hw2.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/torrey_lib.dir/hw2.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw2.cpp -o CMakeFiles/torrey_lib.dir/hw2.cpp.s
-
-CMakeFiles/torrey_lib.dir/hw3.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
-CMakeFiles/torrey_lib.dir/hw3.cpp.o: hw3.cpp
-CMakeFiles/torrey_lib.dir/hw3.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/torrey_lib.dir/hw3.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/hw3.cpp.o -MF CMakeFiles/torrey_lib.dir/hw3.cpp.o.d -o CMakeFiles/torrey_lib.dir/hw3.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw3.cpp
-
-CMakeFiles/torrey_lib.dir/hw3.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/torrey_lib.dir/hw3.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw3.cpp > CMakeFiles/torrey_lib.dir/hw3.cpp.i
-
-CMakeFiles/torrey_lib.dir/hw3.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/torrey_lib.dir/hw3.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw3.cpp -o CMakeFiles/torrey_lib.dir/hw3.cpp.s
-
-CMakeFiles/torrey_lib.dir/hw4.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
-CMakeFiles/torrey_lib.dir/hw4.cpp.o: hw4.cpp
-CMakeFiles/torrey_lib.dir/hw4.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/torrey_lib.dir/hw4.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/hw4.cpp.o -MF CMakeFiles/torrey_lib.dir/hw4.cpp.o.d -o CMakeFiles/torrey_lib.dir/hw4.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw4.cpp
-
-CMakeFiles/torrey_lib.dir/hw4.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/torrey_lib.dir/hw4.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw4.cpp > CMakeFiles/torrey_lib.dir/hw4.cpp.i
-
-CMakeFiles/torrey_lib.dir/hw4.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/torrey_lib.dir/hw4.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hw4.cpp -o CMakeFiles/torrey_lib.dir/hw4.cpp.s
-
 CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.o: hwfinalproject.cpp
 CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.o -MF CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.o.d -o CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/hwfinalproject.cpp
 
 CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.i: cmake_force
@@ -310,7 +254,7 @@ CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/image.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/image.cpp.o: image.cpp
 CMakeFiles/torrey_lib.dir/image.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/torrey_lib.dir/image.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/torrey_lib.dir/image.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/image.cpp.o -MF CMakeFiles/torrey_lib.dir/image.cpp.o.d -o CMakeFiles/torrey_lib.dir/image.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/image.cpp
 
 CMakeFiles/torrey_lib.dir/image.cpp.i: cmake_force
@@ -324,7 +268,7 @@ CMakeFiles/torrey_lib.dir/image.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/main.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/main.cpp.o: main.cpp
 CMakeFiles/torrey_lib.dir/main.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/torrey_lib.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/torrey_lib.dir/main.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/main.cpp.o -MF CMakeFiles/torrey_lib.dir/main.cpp.o.d -o CMakeFiles/torrey_lib.dir/main.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/main.cpp
 
 CMakeFiles/torrey_lib.dir/main.cpp.i: cmake_force
@@ -338,7 +282,7 @@ CMakeFiles/torrey_lib.dir/main.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/material.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/material.cpp.o: material.cpp
 CMakeFiles/torrey_lib.dir/material.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/torrey_lib.dir/material.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/torrey_lib.dir/material.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/material.cpp.o -MF CMakeFiles/torrey_lib.dir/material.cpp.o.d -o CMakeFiles/torrey_lib.dir/material.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/material.cpp
 
 CMakeFiles/torrey_lib.dir/material.cpp.i: cmake_force
@@ -352,7 +296,7 @@ CMakeFiles/torrey_lib.dir/material.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/parallel.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/parallel.cpp.o: parallel.cpp
 CMakeFiles/torrey_lib.dir/parallel.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/torrey_lib.dir/parallel.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/torrey_lib.dir/parallel.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/parallel.cpp.o -MF CMakeFiles/torrey_lib.dir/parallel.cpp.o.d -o CMakeFiles/torrey_lib.dir/parallel.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/parallel.cpp
 
 CMakeFiles/torrey_lib.dir/parallel.cpp.i: cmake_force
@@ -366,7 +310,7 @@ CMakeFiles/torrey_lib.dir/parallel.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/parse_obj.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/parse_obj.cpp.o: parse_obj.cpp
 CMakeFiles/torrey_lib.dir/parse_obj.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/torrey_lib.dir/parse_obj.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/torrey_lib.dir/parse_obj.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/parse_obj.cpp.o -MF CMakeFiles/torrey_lib.dir/parse_obj.cpp.o.d -o CMakeFiles/torrey_lib.dir/parse_obj.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/parse_obj.cpp
 
 CMakeFiles/torrey_lib.dir/parse_obj.cpp.i: cmake_force
@@ -380,7 +324,7 @@ CMakeFiles/torrey_lib.dir/parse_obj.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/parse_ply.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/parse_ply.cpp.o: parse_ply.cpp
 CMakeFiles/torrey_lib.dir/parse_ply.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/torrey_lib.dir/parse_ply.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/torrey_lib.dir/parse_ply.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/parse_ply.cpp.o -MF CMakeFiles/torrey_lib.dir/parse_ply.cpp.o.d -o CMakeFiles/torrey_lib.dir/parse_ply.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/parse_ply.cpp
 
 CMakeFiles/torrey_lib.dir/parse_ply.cpp.i: cmake_force
@@ -394,7 +338,7 @@ CMakeFiles/torrey_lib.dir/parse_ply.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/parse_scene.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/parse_scene.cpp.o: parse_scene.cpp
 CMakeFiles/torrey_lib.dir/parse_scene.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/torrey_lib.dir/parse_scene.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/torrey_lib.dir/parse_scene.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/parse_scene.cpp.o -MF CMakeFiles/torrey_lib.dir/parse_scene.cpp.o.d -o CMakeFiles/torrey_lib.dir/parse_scene.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/parse_scene.cpp
 
 CMakeFiles/torrey_lib.dir/parse_scene.cpp.i: cmake_force
@@ -408,7 +352,7 @@ CMakeFiles/torrey_lib.dir/parse_scene.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/parse_serialized.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/parse_serialized.cpp.o: parse_serialized.cpp
 CMakeFiles/torrey_lib.dir/parse_serialized.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/torrey_lib.dir/parse_serialized.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/torrey_lib.dir/parse_serialized.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/parse_serialized.cpp.o -MF CMakeFiles/torrey_lib.dir/parse_serialized.cpp.o.d -o CMakeFiles/torrey_lib.dir/parse_serialized.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/parse_serialized.cpp
 
 CMakeFiles/torrey_lib.dir/parse_serialized.cpp.i: cmake_force
@@ -422,7 +366,7 @@ CMakeFiles/torrey_lib.dir/parse_serialized.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/print_scene.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/print_scene.cpp.o: print_scene.cpp
 CMakeFiles/torrey_lib.dir/print_scene.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/torrey_lib.dir/print_scene.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/torrey_lib.dir/print_scene.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/print_scene.cpp.o -MF CMakeFiles/torrey_lib.dir/print_scene.cpp.o.d -o CMakeFiles/torrey_lib.dir/print_scene.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/print_scene.cpp
 
 CMakeFiles/torrey_lib.dir/print_scene.cpp.i: cmake_force
@@ -436,7 +380,7 @@ CMakeFiles/torrey_lib.dir/print_scene.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/scene.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/scene.cpp.o: scene.cpp
 CMakeFiles/torrey_lib.dir/scene.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/torrey_lib.dir/scene.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/torrey_lib.dir/scene.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/scene.cpp.o -MF CMakeFiles/torrey_lib.dir/scene.cpp.o.d -o CMakeFiles/torrey_lib.dir/scene.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/scene.cpp
 
 CMakeFiles/torrey_lib.dir/scene.cpp.i: cmake_force
@@ -450,7 +394,7 @@ CMakeFiles/torrey_lib.dir/scene.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/shape.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/shape.cpp.o: shape.cpp
 CMakeFiles/torrey_lib.dir/shape.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/torrey_lib.dir/shape.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/torrey_lib.dir/shape.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/shape.cpp.o -MF CMakeFiles/torrey_lib.dir/shape.cpp.o.d -o CMakeFiles/torrey_lib.dir/shape.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/shape.cpp
 
 CMakeFiles/torrey_lib.dir/shape.cpp.i: cmake_force
@@ -464,7 +408,7 @@ CMakeFiles/torrey_lib.dir/shape.cpp.s: cmake_force
 CMakeFiles/torrey_lib.dir/transform.cpp.o: CMakeFiles/torrey_lib.dir/flags.make
 CMakeFiles/torrey_lib.dir/transform.cpp.o: transform.cpp
 CMakeFiles/torrey_lib.dir/transform.cpp.o: CMakeFiles/torrey_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/torrey_lib.dir/transform.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/torrey_lib.dir/transform.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/torrey_lib.dir/transform.cpp.o -MF CMakeFiles/torrey_lib.dir/transform.cpp.o.d -o CMakeFiles/torrey_lib.dir/transform.cpp.o -c /Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/transform.cpp
 
 CMakeFiles/torrey_lib.dir/transform.cpp.i: cmake_force
@@ -489,10 +433,6 @@ torrey_lib_OBJECTS = \
 "CMakeFiles/torrey_lib.dir/logmapping.cpp.o" \
 "CMakeFiles/torrey_lib.dir/color_convert.cpp.o" \
 "CMakeFiles/torrey_lib.dir/rgbe.cpp.o" \
-"CMakeFiles/torrey_lib.dir/hw1.cpp.o" \
-"CMakeFiles/torrey_lib.dir/hw2.cpp.o" \
-"CMakeFiles/torrey_lib.dir/hw3.cpp.o" \
-"CMakeFiles/torrey_lib.dir/hw4.cpp.o" \
 "CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.o" \
 "CMakeFiles/torrey_lib.dir/image.cpp.o" \
 "CMakeFiles/torrey_lib.dir/main.cpp.o" \
@@ -522,10 +462,6 @@ libtorrey_lib.a: CMakeFiles/torrey_lib.dir/log_tone.cpp.o
 libtorrey_lib.a: CMakeFiles/torrey_lib.dir/logmapping.cpp.o
 libtorrey_lib.a: CMakeFiles/torrey_lib.dir/color_convert.cpp.o
 libtorrey_lib.a: CMakeFiles/torrey_lib.dir/rgbe.cpp.o
-libtorrey_lib.a: CMakeFiles/torrey_lib.dir/hw1.cpp.o
-libtorrey_lib.a: CMakeFiles/torrey_lib.dir/hw2.cpp.o
-libtorrey_lib.a: CMakeFiles/torrey_lib.dir/hw3.cpp.o
-libtorrey_lib.a: CMakeFiles/torrey_lib.dir/hw4.cpp.o
 libtorrey_lib.a: CMakeFiles/torrey_lib.dir/hwfinalproject.cpp.o
 libtorrey_lib.a: CMakeFiles/torrey_lib.dir/image.cpp.o
 libtorrey_lib.a: CMakeFiles/torrey_lib.dir/main.cpp.o
@@ -541,7 +477,7 @@ libtorrey_lib.a: CMakeFiles/torrey_lib.dir/shape.cpp.o
 libtorrey_lib.a: CMakeFiles/torrey_lib.dir/transform.cpp.o
 libtorrey_lib.a: CMakeFiles/torrey_lib.dir/build.make
 libtorrey_lib.a: CMakeFiles/torrey_lib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Linking CXX static library libtorrey_lib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Linking CXX static library libtorrey_lib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/torrey_lib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/torrey_lib.dir/link.txt --verbose=$(VERBOSE)
 

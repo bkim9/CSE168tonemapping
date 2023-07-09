@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.11)
 
 project(lajolla)
 
@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-
+# SET(CMAKE_CXX_FLAGS "-lm -lfftw3")
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 # set(CMAKE_BUILD_TYPE Debug)   
 
@@ -16,8 +16,8 @@ else()
   add_compile_options(-Wall)
 endif()
 
-include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(/usr/local/include)
+include_directories(${CMAKE_SOURCE_DIR}/src )
+
 
 
 set(SRCS src/3rdparty/miniz.h
@@ -33,11 +33,6 @@ set(SRCS src/3rdparty/miniz.h
          src/camera.h
          src/compute_normals.h
          src/flexception.h
-         src/hw1.h
-         src/hw1_scenes.h
-         src/hw2.h
-         src/hw3.h
-         src/hw4.h
          src/hwfinalproject.h
          src/array_n.h
          src/array.h
@@ -83,10 +78,6 @@ set(SRCS src/3rdparty/miniz.h
          src/logmapping.cpp
          src/color_convert.cpp
          src/rgbe.cpp
-         src/hw1.cpp
-         src/hw2.cpp
-         src/hw3.cpp
-         src/hw4.cpp
          src/hwfinalproject.cpp
          src/image.cpp
          src/main.cpp
@@ -102,14 +93,29 @@ set(SRCS src/3rdparty/miniz.h
          src/transform.cpp)
 
 add_library(torrey_lib STATIC ${SRCS})
-add_executable(torrey src/main.cpp)
+
+# Fourier transform --------------------------------------------------
+find_package(PkgConfig REQUIRED)
+pkg_search_module(FFTW REQUIRED fftw3 IMPORTED_TARGET)
+# ----------------------- Fourier Transform -------------------
+
+
+
+
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
+find_package(PkgConfig REQUIRED)
+
+add_executable(torrey src/main.cpp)
+
 target_link_libraries(torrey Threads::Threads)
+
+target_link_libraries(torrey_lib PkgConfig::FFTW)
 
 target_link_libraries(torrey torrey_lib)
 
-# target_link_libraries(torrey fftw3)
 
-target_link_libraries(torrey m)                   
+
+# target_link_libraries(torrey m)                   
+

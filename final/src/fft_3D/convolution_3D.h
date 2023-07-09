@@ -30,7 +30,7 @@
 #define __CONVOLUTION_FFT_3D__
 
 #include <algorithm>
-#include "fftw3.h"
+#include <fftw3.h>
 #include "fft_3D/support_3D.h"
 
 

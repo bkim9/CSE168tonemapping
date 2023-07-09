@@ -39,7 +39,7 @@
 #include <sstream>
 #include <string>
 
-#include "fftw3.h"
+#include <fftw3.h>
 
 #include "msg_stream.h"
 

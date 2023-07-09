@@ -130,6 +130,19 @@ torrey_lib/fast:
 .PHONY : torrey_lib/fast
 
 #=============================================================================
+# Target rules for targets named fftw3
+
+# Build rule for target.
+fftw3: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fftw3
+.PHONY : fftw3
+
+# fast build rule for target.
+fftw3/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fftw3.dir/build.make CMakeFiles/fftw3.dir/build
+.PHONY : fftw3/fast
+
+#=============================================================================
 # Target rules for targets named torrey
 
 # Build rule for target.
@@ -357,102 +370,6 @@ fft_3D/support_3D.s: fft_3D/support_3D.cpp.s
 fft_3D/support_3D.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/fft_3D/support_3D.cpp.s
 .PHONY : fft_3D/support_3D.cpp.s
-
-hw1.o: hw1.cpp.o
-.PHONY : hw1.o
-
-# target to build an object file
-hw1.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw1.cpp.o
-.PHONY : hw1.cpp.o
-
-hw1.i: hw1.cpp.i
-.PHONY : hw1.i
-
-# target to preprocess a source file
-hw1.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw1.cpp.i
-.PHONY : hw1.cpp.i
-
-hw1.s: hw1.cpp.s
-.PHONY : hw1.s
-
-# target to generate assembly for a file
-hw1.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw1.cpp.s
-.PHONY : hw1.cpp.s
-
-hw2.o: hw2.cpp.o
-.PHONY : hw2.o
-
-# target to build an object file
-hw2.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw2.cpp.o
-.PHONY : hw2.cpp.o
-
-hw2.i: hw2.cpp.i
-.PHONY : hw2.i
-
-# target to preprocess a source file
-hw2.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw2.cpp.i
-.PHONY : hw2.cpp.i
-
-hw2.s: hw2.cpp.s
-.PHONY : hw2.s
-
-# target to generate assembly for a file
-hw2.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw2.cpp.s
-.PHONY : hw2.cpp.s
-
-hw3.o: hw3.cpp.o
-.PHONY : hw3.o
-
-# target to build an object file
-hw3.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw3.cpp.o
-.PHONY : hw3.cpp.o
-
-hw3.i: hw3.cpp.i
-.PHONY : hw3.i
-
-# target to preprocess a source file
-hw3.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw3.cpp.i
-.PHONY : hw3.cpp.i
-
-hw3.s: hw3.cpp.s
-.PHONY : hw3.s
-
-# target to generate assembly for a file
-hw3.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw3.cpp.s
-.PHONY : hw3.cpp.s
-
-hw4.o: hw4.cpp.o
-.PHONY : hw4.o
-
-# target to build an object file
-hw4.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw4.cpp.o
-.PHONY : hw4.cpp.o
-
-hw4.i: hw4.cpp.i
-.PHONY : hw4.i
-
-# target to preprocess a source file
-hw4.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw4.cpp.i
-.PHONY : hw4.cpp.i
-
-hw4.s: hw4.cpp.s
-.PHONY : hw4.s
-
-# target to generate assembly for a file
-hw4.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torrey_lib.dir/build.make CMakeFiles/torrey_lib.dir/hw4.cpp.s
-.PHONY : hw4.cpp.s
 
 hwfinalproject.o: hwfinalproject.cpp.o
 .PHONY : hwfinalproject.o
@@ -849,6 +766,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... fftw3"
 	@echo "... torrey"
 	@echo "... torrey_lib"
 	@echo "... 3rdparty/miniz.o"
@@ -878,18 +796,6 @@ help:
 	@echo "... fft_3D/support_3D.o"
 	@echo "... fft_3D/support_3D.i"
 	@echo "... fft_3D/support_3D.s"
-	@echo "... hw1.o"
-	@echo "... hw1.i"
-	@echo "... hw1.s"
-	@echo "... hw2.o"
-	@echo "... hw2.i"
-	@echo "... hw2.s"
-	@echo "... hw3.o"
-	@echo "... hw3.i"
-	@echo "... hw3.s"
-	@echo "... hw4.o"
-	@echo "... hw4.i"
-	@echo "... hw4.s"
 	@echo "... hwfinalproject.o"
 	@echo "... hwfinalproject.i"
 	@echo "... hwfinalproject.s"

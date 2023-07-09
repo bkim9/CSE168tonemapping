@@ -93,6 +93,7 @@ torrey_EXTERNAL_OBJECTS =
 torrey: CMakeFiles/torrey.dir/main.cpp.o
 torrey: CMakeFiles/torrey.dir/build.make
 torrey: libtorrey_lib.a
+torrey: libfftw3.a
 torrey: CMakeFiles/torrey.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable torrey"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/torrey.dir/link.txt --verbose=$(VERBOSE)

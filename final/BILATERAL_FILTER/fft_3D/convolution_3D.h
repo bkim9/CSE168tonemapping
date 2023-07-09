@@ -39,9 +39,6 @@
 
 namespace FFT{
 
-  
-  
-
   //! Compute h=f*g for f,g and h real functions.
   template<typename Function>
   inline void convolve_3D(const Function& f,
