@@ -131,13 +131,13 @@ namespace Image_filter{
       real_type M = m;
       
       for(typename base_array_2D_type::const_iterator
-	    b     = base.std::begin(),
-	    b_end = base.std::end();
+	    b     = base.begin(),
+	    b_end = base.end();
 	    b != b_end;++b){
 	
         const real_type r = (*b)[c];
-        m = min(m,r);
-        M = max(M,r);
+        m = fmin(m,r);
+        M = fmax(M,r);
       }
       
       base_min[c] = m;

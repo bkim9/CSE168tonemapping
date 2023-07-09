@@ -1,5 +1,6 @@
 #pragma once
-
+#ifndef __VECTOR__
+#define __VECTOR__
 #include "torrey.h"
 #include <math.h>
 #include <cmath>
@@ -305,3 +306,4 @@ template <typename T>
 inline std::ostream& operator<<(std::ostream &os, const TVector3<T> &v) {
     return os << "(" << v[0] << ", " << v[1] << ", " << v[2] << ")";
 }
+#endif

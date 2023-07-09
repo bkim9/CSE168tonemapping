@@ -1,4 +1,6 @@
 #pragma once
+#ifndef __IMAGE__
+#define __IMAGE__
 
 #include "vector.h"
 
@@ -69,3 +71,5 @@ inline Image1 to_image1(const Image3 &img) {
         [] (const Vector3 &v) {return average(v);});
     return out;
 }
+
+#endif

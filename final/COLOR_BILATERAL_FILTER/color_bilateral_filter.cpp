@@ -28,7 +28,7 @@
 
 #include "color_bilateral_filter.h"
 
-// #define CHRONO
+#define CHRONO
 
 
 using namespace std; 

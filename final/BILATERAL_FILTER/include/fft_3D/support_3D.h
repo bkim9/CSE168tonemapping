@@ -43,7 +43,6 @@
 
 #include "msg_stream.h"
 
-
 namespace FFT{
 
   /*

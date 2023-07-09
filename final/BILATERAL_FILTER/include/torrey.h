@@ -1,5 +1,6 @@
 #pragma once
-
+#ifndef __TORREY__
+#define __TORREY__
 // CMake insert NDEBUG when building with RelWithDebInfo
 // This is an ugly hack to undo that...
 #undef NDEBUG
@@ -80,3 +81,4 @@ inline Real radians(const Real deg) {
 inline Real degrees(const Real rad) {
     return (Real(180) / c_PI) * rad;
 }
+#endif
