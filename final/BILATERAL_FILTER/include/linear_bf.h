@@ -110,7 +110,6 @@ namespace Image_filter{
     using namespace std;
 
     typedef Array               real_array_2D_type;
-    // typedef Array_2D<real_type> real_array_2D_type;
     typedef Array_3D<real_type> real_array_3D_type;
     
     const size_type width  = input.x_size();
@@ -208,7 +207,7 @@ namespace Image_filter{
 #ifdef CHRONO
     chrono_nonlinearities.stop();
     chrono.stop();
-    
+
     cout<<chrono.report()<<endl;
     cout<<chrono_down.report()<<endl;
     cout<<chrono_convolution.report()<<endl;
