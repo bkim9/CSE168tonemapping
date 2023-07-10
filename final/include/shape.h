@@ -42,10 +42,10 @@ struct Sphere : public ShapeBase {
         auto r = radius;
         auto r1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         auto r2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        auto sin_theta_max_squared = r * r / distance_squared; 
-        auto cos_theta_max = sqrt(1 - sin_theta_max_squared);
-        auto z = 1 - r2 * (1 - sqrt(sin_theta_max_squared));
-        area = 2 * c_PI * (1 - sqrt(sin_theta_max_squared));
+        auto sin_theta_max = sqrt( r * r / distance_squared );  
+        auto cone_depth = 1-sin_theta_max; // depth of icecream on a cone
+        auto z = 1 - r2 * cone_depth;
+        area = 2 * c_PI * cone_depth;
         return r * hemiloc(r1,z);
     }
     // center -direction>  o

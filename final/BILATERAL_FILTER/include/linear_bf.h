@@ -200,7 +200,7 @@ namespace Image_filter{
                       static_cast<real_type>(x)/space_sampling + padding_xy,
                       static_cast<real_type>(y)/space_sampling + padding_xy,
                       z/range_sampling + padding_z);
-        (*result)(x,y) = IW / W;
+        (*result)(x,y) = IW / W  ;
     } // END OF for y
     } // END OF for x
     

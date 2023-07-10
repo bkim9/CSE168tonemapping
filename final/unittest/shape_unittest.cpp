@@ -49,3 +49,27 @@ TEST(RandomToSphereTests, AreaTest) {
   auto v = sph.random_to_sphere(distance_squared, area, rng);
   EXPECT_NEAR(0, area, .0001f);
 }
+
+TEST(TriangleTests, AreaTest) {
+  auto p0 = Vector3(0,0,0);
+  auto p1 = Vector3(1,0,0);
+  auto p2 = Vector3(0,2,0);
+  auto n0 = Vector3(0,0,1);
+  auto n1 = Vector3(0,0,1);
+  auto n2 = Vector3(0,0,1);
+  TriangleMesh mesh;
+  mesh.positions.push_back(p0);
+  mesh.positions.push_back(p1);
+  mesh.positions.push_back(p2);
+  mesh.normals.push_back(n0);
+  mesh.normals.push_back(n1);
+  mesh.normals.push_back(n2);
+  Vector3i vi(0,1,2);
+
+  mesh.indices.push_back(vi);
+  Triangle tri{0,&mesh};
+  tri.setup();
+  EXPECT_NEAR(0, tri.crossproduct.x, .0001f);
+  EXPECT_NEAR(0, tri.crossproduct.y, .0001f);
+  EXPECT_NEAR(2, tri.crossproduct.z, .0001f);
+}

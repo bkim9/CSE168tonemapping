@@ -167,7 +167,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         return Image3(0, 0);
     }
 
-    int max_depth = 5;
+    int max_depth = 20;
     std::string filename;
     for (int i = 0; i < (int)params.size(); i++) {
         if (params[i] == "-max_depth") {
@@ -263,7 +263,7 @@ Image3 hw_fin_2(const std::vector<std::string> &params) {
     double sampling_s = 16;
     double sampling_r = .1;
     // colorBilateralfilter(img, sigma_s, sigma_r);
-    // bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r);
+    bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r);
     return img;
 }
 
