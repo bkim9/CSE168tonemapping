@@ -454,13 +454,14 @@ public:
   inline const_reverse_iterator rend() const;
   //@}
 
-
-private:
-  //@{
+public:
+    //@{
   //! Dimension of the array.
 
   int x_dim,y_dim,z_dim;
   //@}
+private:
+
 
   //! Storage structure.
   Storage storage;

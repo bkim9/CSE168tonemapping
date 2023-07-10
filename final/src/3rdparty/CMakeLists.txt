@@ -1,0 +1,1 @@
+add_library(third_party_lib miniz.c miniz.h pugiconfig.hpp pugixml.cpp stb_image.h tinyexr.h tinyply.h)

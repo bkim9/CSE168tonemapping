@@ -10,8 +10,6 @@
  */
 
 #include "log_tone.h"
-#include "../src/image.h"
-
 
 static float  expo = 0.0;       // Scene exposure
 static double world_lum = 0.0;  // Scene exposure
@@ -86,8 +84,7 @@ int log_tone( Image3& img ) {
   return 1;
 }
 
-void
-img2log_scene(Image3& img, SCENE* log_scene) {
+void img2log_scene(Image3& img, SCENE* log_scene) {
   int x,y;
   double exp_mult;
   for (x=0; x<width*height; x+=1) {
@@ -125,8 +122,7 @@ img2log_scene(Image3& img, SCENE* log_scene) {
   }
 }
 
-void
-log_scene2img(Image3& img, SCENE* log_scene) {
+void log_scene2img(Image3& img, SCENE* log_scene) {
   int x;
   for (x=0; x<width*height; x+=1) {
     int i = x / width;
@@ -138,8 +134,7 @@ log_scene2img(Image3& img, SCENE* log_scene) {
 }
 
 // Gamma calculation
-void
-gamma_calc () {
+void gamma_calc () {
   int x;
   float fgamma;
   
@@ -153,8 +148,7 @@ gamma_calc () {
 }
 
 // Rec. 709 Gamma calculation
-void
-rec_gamma_calc () {
+void rec_gamma_calc () {
   int x;
   float fgamma;
   float slope = 4.5;
@@ -182,8 +176,7 @@ rec_gamma_calc () {
 }
 
 //  Read command line arguments
-void
-read_commandline (int argc, char **argv) {
+void read_commandline (int argc, char **argv) {
   int i;
 
   if (argc < 5) 
@@ -246,8 +239,7 @@ read_commandline (int argc, char **argv) {
 }
 
 // Print the help screen
-void
-printhelp () {   // print help commands to the console 
+void printhelp () {   // print help commands to the console 
   fprintf (stderr, "\nUSAGE: \n");
   fprintf (stderr, "logmap -i input.pic -o output.pic/.ppm \n");
   fprintf (stderr, "OPTIONS: \n");
@@ -268,10 +260,18 @@ printhelp () {   // print help commands to the console
   //fprintf (stderr, "-white \tMinimum value mapped to white (def: 1.0)\n");
   exit (0);
 }
-
+// Clamp image highest value to display white
+void
+clamp_image () {
+  int x;
+  for (x=0; x<width*height; x++) {
+    log_scene[x].r = (log_scene[x].r > 1) ? 1 : log_scene[x].r;
+    log_scene[x].g = (log_scene[x].g > 1) ? 1 : log_scene[x].g;
+    log_scene[x].b = (log_scene[x].b > 1) ? 1 : log_scene[x].b;
+  }
+}
 // Operation timing routine
-double
-current_time () {
+double current_time () {
   double current;
 
   #ifdef WIN32 

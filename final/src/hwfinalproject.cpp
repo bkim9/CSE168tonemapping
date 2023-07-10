@@ -259,8 +259,10 @@ Image3 hw_fin_2(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
     double sigma_s = 16.0;
     double sigma_r = 0.1;
-    colorBilateralfilter(img, sigma_s, sigma_r);
-    // bilateralfilter(img, sigma_s, sigma_r);
+    double sampling_s = 16;
+    double sampling_r = .1;
+    // colorBilateralfilter(img, sigma_s, sigma_r);
+    // bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r);
     return img;
 }
 
