@@ -93,12 +93,6 @@ namespace Image_filter{
               result);
   }
 
-
-  // Image_filter::linear_BF(image,
-  //                         sigma_s,sigma_r,
-  //                         sampling_s,sampling_r,
-  //                         &filtered_image);
-
   template <typename Array>
   void linear_BF( const Array&    input,
                   const real_type space_sigma,
