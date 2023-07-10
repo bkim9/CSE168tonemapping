@@ -47,3 +47,28 @@ target_link_libraries(torrey_lib BilateralFilter ColorBilateralFilter LogMap par
 target_link_libraries(torrey Threads::Threads 
   torrey_lib)         
 
+
+# gtest
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+FetchContent_MakeAvailable(googletest)
+
+
+
+enable_testing()
+add_executable( testshape
+                unittest/shape_unittest.cpp
+)
+target_include_directories(testshape PUBLIC include)
+target_link_libraries(testshape PRIVATE torrey_lib GTest::gtest_main)
+target_compile_options(testshape PRIVATE ${GTEST_CFLAGS})
+
+
+include(GoogleTest)
+gtest_discover_tests(testshape)
+
+
+add_test(shape_test testshape)

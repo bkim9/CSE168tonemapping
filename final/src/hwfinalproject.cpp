@@ -125,6 +125,7 @@ static Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth)
 Real Luminance(Vector3 v) {
     return dot(Vector3(.27,.67,.06), v);
 }
+
 Real R_i(int x, int y, Real s, int i) {
     auto alpha = i = 1? ALPHA_1: ALPHA_2;
     return pow(2.7182818284, -(x*x + y*y)/pow(alpha,2)); 

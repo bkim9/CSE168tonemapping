@@ -32,7 +32,6 @@ struct Sphere : public ShapeBase {
     // cone sampling pdf
     Real pdf_value( const Vector3& o, const Vector3& v) const {
         auto r = radius;
-        // if (!intersect(*this, Ray{o, v, 0.00001, infinity<Real>()})) return 0;
         auto sine_theta_max_squaured = r * r / length_squared(center - o); 
         auto cos_theta_max = sqrt(1 - sine_theta_max_squaured);
         auto solid_angle = 2 * c_PI * (1-cos_theta_max);
@@ -43,10 +42,10 @@ struct Sphere : public ShapeBase {
         auto r = radius;
         auto r1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         auto r2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        auto sine_theta_max_squaured = r * r / distance_squared; 
-        auto cos_thata_max = sqrt(1 - sine_theta_max_squaured);
-        auto z = 1 - r2 * (1 - cos_thata_max);
-        area = 2 * c_PI * (1 - cos_thata_max);
+        auto sin_theta_max_squared = r * r / distance_squared; 
+        auto cos_theta_max = sqrt(1 - sin_theta_max_squared);
+        auto z = 1 - r2 * (1 - sqrt(sin_theta_max_squared));
+        area = 2 * c_PI * (1 - sqrt(sin_theta_max_squared));
         return r * hemiloc(r1,z);
     }
     // center -direction>  o
