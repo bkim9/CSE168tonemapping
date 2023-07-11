@@ -18,27 +18,46 @@ Real L_white_(Image3& img) {
     return max_sofar;
 }
 
-Real R_i(int x, int y, Real s, Real alpha_i) {
+// i = 0 or 1
+Real R_i(int i, int x_offset, int y_offset, Real s) {
+    auto alpha_i = Real(.35) * pow(1.6, i); 
     auto as = alpha_i * s;
+    auto x = x_offset;
+    auto y = y_offset;
     return 1/(c_PI*as*as) * pow(2.7182818284, -(x*x + y*y)/(as*as)); 
 }
 
 
-Real conv(Image3& img, Real R, int x, int y) {
-    return Luminance(img(x,y)) * R;
+// local average at (x,y)
+Real V_i(Image3& img, int i, int x, int y, Real s) {
+    auto wing = ceil(s);
+    Real subTotal = Real(0);
+    // element wise multiplication
+    for (int x_o = -wing; x_o < wing; x_o++) {
+    for (int y_o = -wing; y_o < wing; y_o++) {
+        if(0 <= x+x_o && x+x_o < img.width && 0 <= y+y_o && y+y_o < img.height) {
+            subTotal += Luminance(img(x+x_o,y+y_o)) * R_i(i, x_o, y_o, s);
+        } 
+    }
+    }
+    return subTotal;
 }
 
-Real V(Image3& img, Real s_temp, int i, int j) { 
-    V_i(img,)
+Real V(Image3& img, Real s, int i, int j) { 
+    Real a = .18;   // key_value
+    Real phi = 8.0; // free parameter
+    return (V_i(img,1,i,j,s) - V_i(img,0,i,j,s)) /
+            (a *pow(2,phi)/(s*s) + V_i(img,1,i,j,s));
 }
 
 Real right_s(Image3& img, int i, int j) {
     Real s_temp = Real(1);
     Real s_ratio = Real(1.6);
-    while (V(img,s_temp,i,j) >= EPSILON) s_temp *= ratio; 
+    while (abs(V(img,s_temp,i,j)) >= EPSILON) s_temp *= s_ratio; 
     return s_temp;
 }
 
+// local tonemapping
 void tonemap1(Image3& img, Real ave_L, int x, int y) {
     auto a = Real(.18); // select a to be  .09 .18 .36 .45 .72
     auto L_white = L_white_(img);  
@@ -46,25 +65,8 @@ void tonemap1(Image3& img, Real ave_L, int x, int y) {
     auto L_w = Luminance(img(x,y));
     auto L = a / ave_L * L_w; // scaled luminance
     auto s = Real(1.); // scale
-
-    // find the right scale s for a pixel (i,j)
-    s = right_s(img,i,j);
-
-
-
-    auto R_1 = R_i(x,y,s,1);
-    auto R_2 = R_i(x,y,s,2);
-
-    auto V_1 = conv(img,R_1, x, y);
-    auto V_2 = conv(img,R_2, x, y);
-    
-    Real V = Real(0.0);
-    do{
-        V = (V_1 - V_2) / 
-             (a * pow(2,sharp)/(s*s)+V_1);
-        s *= Real(1.6);
-        if( s > Real(43)) std::cout << "s too big: " << s << std::endl;
-    } while (fabs(V) >= EPSILON);
-    auto L_d = L *(1 + L/(L_white * L_white)) /(1+V);
-    img(x,y) *= L_d;
+    // find the right scale s for a pixel (x,y)
+    s = right_s(img,x,y);
+    std::cout << "s: " << s << std::endl;
+    img(x,y) /= (1 + V_i(img,1,x,y,s));
 }

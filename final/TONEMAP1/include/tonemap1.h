@@ -6,9 +6,11 @@ Real Luminance(Vector3 v);
 
 Real L_white_(Image3& img);
 
-Real R_i(int x, int y, Real s, Real alpha_i);
+Real R_i(int i, int x_offset, int y_offset, Real s);
 
-Real conv(Image3& img, Real R, int x, int y);
+Real V_i(Image3& img, int i, int x, int y, Real s);
+
+Real V(Image3& img, Real s, int i, int j);
 
 Real right_s(Image3& img, int i, int j);
 
