@@ -1,8 +1,4 @@
 #include "hwfinalproject.h"
-Real ALPHA_1 = Real(.35);
-Real ALPHA_2 = ALPHA_1 * Real(1.6);
-// Real EPSILON = Real(.05);
-Real MAX_L_D = Real(1.);
 
 void materialsetup(Material* material, MaterialBase& mb) {    
     if (auto d = std::get_if<Diffuse>(material)) {
@@ -122,42 +118,6 @@ static Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth)
     return scene.background_color;
 }
 
-Real Luminance(Vector3 v) {
-    return dot(Vector3(.27,.67,.06), v);
-}
-Real R_i(int x, int y, Real s, int i) {
-    auto alpha = i = 1? ALPHA_1: ALPHA_2;
-    return pow(2.7182818284, -(x*x + y*y)/pow(alpha,2)); 
-}
-
-Real conv(Image3& img, Real R, int x, int y) {
-    return Luminance(img(x,y)) * R;
-}
-
-void tonemap1(Image3& img, Real ave_L, int x, int y) {
-    auto a = Real(.18); // select a to be  .09 .18 .36 .45 .72
-    auto L_white = Real(10.); 
-    auto sharp = Real(1.);
-    auto L_w = Luminance(img(x,y));
-    auto L = a / ave_L * L_w; // scaled luminance
-    auto s = Real(1.); // scale
-    auto R_1 = R_i(x,y,s,1);
-    auto R_2 = R_i(x,y,s,2);
-
-    auto V_1 = conv(img,R_1, x, y);
-    auto V_2 = conv(img,R_2, x, y);
-    
-    Real V = Real(0.0);
-    do{
-        V = (V_1 - V_2) / 
-             (a * pow(2,sharp)/(s*s)+V_1);
-        s *= Real(1.6);
-        if( s > Real(43)) std::cout << "s too big: " << s << std::endl;
-    } while (fabs(V) >= EPSILON);
-    auto L_d = L *(1 + L/(L_white * L_white)) /(1+V);
-    img(x,y) *= L_d;
-}
-
 // 
 // Implementation of finding Luminanance
 // 
@@ -166,7 +126,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         return Image3(0, 0);
     }
 
-    int max_depth = 5;
+    int max_depth = 20;
     std::string filename;
     for (int i = 0; i < (int)params.size(); i++) {
         if (params[i] == "-max_depth") {
@@ -231,6 +191,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
     return img;
 }
 
+
 Image3 hw_fin_1(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
 
@@ -262,7 +223,7 @@ Image3 hw_fin_2(const std::vector<std::string> &params) {
     double sampling_s = 16;
     double sampling_r = .1;
     // colorBilateralfilter(img, sigma_s, sigma_r);
-    // bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r);
+    bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r);
     return img;
 }
 

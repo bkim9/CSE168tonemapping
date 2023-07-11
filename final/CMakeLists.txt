@@ -18,6 +18,7 @@ endif()
 
 
 add_subdirectory(src/parse)
+add_subdirectory(TONEMAP1)
 add_subdirectory(BILATERAL_FILTER)
 add_subdirectory(COLOR_BILATERAL_FILTER)
 add_subdirectory(LogMap)
@@ -36,14 +37,63 @@ set(SRCS src/bvh.cpp
 
 add_library(torrey_lib STATIC ${SRCS})
 
-
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 add_executable(torrey src/main.cpp)
 
 target_include_directories(torrey_lib PUBLIC include)
-target_link_libraries(torrey_lib BilateralFilter ColorBilateralFilter LogMap parse_lib) 
-target_link_libraries(torrey Threads::Threads 
+
+target_link_libraries(torrey_lib 
+  ToneMap1
+  BilateralFilter 
+  ColorBilateralFilter 
+  LogMap 
+  parse_lib) 
+
+target_link_libraries(torrey 
+  Threads::Threads 
   torrey_lib)         
 
+
+# gtest
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+FetchContent_MakeAvailable(googletest)
+
+
+# shape test
+enable_testing()
+add_executable( testshape
+                unittest/shape_unittest.cpp
+)
+target_include_directories(testshape PUBLIC include)
+target_link_libraries(testshape PRIVATE torrey_lib GTest::gtest_main)
+target_compile_options(testshape PRIVATE ${GTEST_CFLAGS})
+
+
+include(GoogleTest)
+gtest_discover_tests(testshape)
+
+
+add_test(shape_test testshape)
+
+
+# tonemap1 test
+add_executable( testtone1
+                unittest/tonemap1_unittest.cpp
+)
+
+target_include_directories(testtone1 PUBLIC TONEMAP1/include)
+target_link_libraries(testtone1 PRIVATE torrey_lib GTest::gtest_main)
+target_compile_options(testtone1 PRIVATE ${GTEST_CFLAGS})
+
+
+include(GoogleTest)
+gtest_discover_tests(testtone1)
+
+
+add_test(shape_test testtone1)

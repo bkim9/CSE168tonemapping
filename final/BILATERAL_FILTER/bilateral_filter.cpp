@@ -86,12 +86,11 @@ void bilateralFilter( Image3& img,
   cout<<"Filtering done"<<endl;
 
   // ##############################################################
-  // filtered_image.print();
   // image_type -> Image3
   for(int y=0;y<height;y++){    
     for(int x=0;x<width;x++){
-      double lum = filtered_image(x,y);
-      img(x,y) *= std::clamp(lum,0.0,1.0);
+      double lum = filtered_image(x,y)/ image(x,y);
+      img(x,y) *= std::clamp(lum,0.0,1.0) ;
     }
   }
 }

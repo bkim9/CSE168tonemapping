@@ -14,10 +14,10 @@
 #include "pdf.h"
 #include <optional>
 #include "image.h"
+#include "tonemap1.h"
 #include "color_bilateral_filter.h"
 #include "bilateral_filter.h"
 #include "log_tone.h"
-
 
 Image3 hw_fin_1(const std::vector<std::string> &params);
 Image3 hw_fin_2(const std::vector<std::string> &params);

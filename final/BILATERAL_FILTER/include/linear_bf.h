@@ -93,12 +93,6 @@ namespace Image_filter{
               result);
   }
 
-
-  // Image_filter::linear_BF(image,
-  //                         sigma_s,sigma_r,
-  //                         sampling_s,sampling_r,
-  //                         &filtered_image);
-
   template <typename Array>
   void linear_BF( const Array&    input,
                   const real_type space_sigma,
@@ -200,7 +194,7 @@ namespace Image_filter{
                       static_cast<real_type>(x)/space_sampling + padding_xy,
                       static_cast<real_type>(y)/space_sampling + padding_xy,
                       z/range_sampling + padding_z);
-        (*result)(x,y) = IW / W;
+        (*result)(x,y) = IW / W  ;
     } // END OF for y
     } // END OF for x
     
