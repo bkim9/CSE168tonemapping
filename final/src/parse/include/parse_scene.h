@@ -7,6 +7,7 @@
 #include <variant>
 #include <vector>
 
+
 struct ParsedCamera {
     Vector3 lookfrom;
     Vector3 lookat;
@@ -109,6 +110,11 @@ inline int get_area_light_id(const ParsedShape &shape) {
 inline bool is_light(const ParsedShape &shape) {
     return get_area_light_id(shape) >= 0;
 }
+
+// struct ParsedShapeGroup {
+//     std::string id;
+//     pugi::xml_node groupnode;
+// };
 
 struct ParsedScene {
     ParsedCamera camera;

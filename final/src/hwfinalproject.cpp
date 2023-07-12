@@ -85,32 +85,51 @@ static Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth)
         if (hit_isect->area_light_id != -1)  { 
             L += std::get<AreaLight>(scene.lights[hit_isect->area_light_id]).radiance;
         }
-        mix_pdf.pdfs.push_back(sample_brdf(&mate, mat, wi, wo, srec, rng));
-        Ray next_ray{p,wo,Real(.001),infinity<Real>()};
-        auto sample_intersect = intersect(scene, next_ray);
+        int dice = floor(scene.lights.size() * static_cast <float> (rand()) / static_cast <float> (RAND_MAX));
+        if (std::get_if<AreaLight>(&scene.lights[dice])) {
+            mix_pdf.pdfs.push_back(sample_brdf(&mate, mat, wi, wo, srec, rng));
+            Ray next_ray{p,wo,Real(.001),infinity<Real>()};
+            auto sample_intersect = intersect(scene, next_ray);
 
-        std::vector<pdf*> light_ps;
-        for( auto l : scene.lights ) {
-            auto p1 = new light_pdf;
-            p1->setup(scene.shapes[std::get_if<AreaLight>(&l)->shape_id], ray, rng);
-            light_ps.push_back(p1);
-        }
-        
-        mix_pdf.setup(light_ps);
-        
-        if (mat.ismirror) {
-            if (srec.sampling_weight > 0) {
+            std::vector<pdf*> light_ps;
+            for( auto l : scene.lights ) {
+                if(auto al = std::get_if<AreaLight>(&l)) {
+                    auto p1 = new light_pdf;
+                    p1->setup(scene.shapes[al->shape_id], ray, rng);
+                    light_ps.push_back(p1);
+                } 
+            }
+            mix_pdf.setup(light_ps);
+            
+            if (mat.ismirror) {
+                if (srec.sampling_weight > 0) {
+                    auto m = std::get_if<Mirror>(&mate);
+                    L += m->mirror_frasnel(wo, n)* 
+                    srec.sampling_weight * 
+                    radiance(scene, next_ray, rng, depth - 1);
+                }
+            } else {
+                bool nexthitlight = sample_intersect && sample_intersect->area_light_id != -1;
+                Real pdf_value = mix_pdf.value(wo,sample_intersect->position, nexthitlight); // 8.6580953675294765 -> 0.014474071966940219
+                Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, nexthitlight); 
+                if ( brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
+                    L += (brdf_value / pdf_value) * radiance(scene, next_ray, rng, depth - 1); 
+                }
+            }
+        } else if (auto pl = std::get_if<PointLight>(&scene.lights[dice])) {
+            wo = normalize(pl->position - p);
+            Ray next_ray{p,wo,Real(.001),infinity<Real>()};
+            Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, true); 
+            if (mat.ismirror) {
                 auto m = std::get_if<Mirror>(&mate);
                 L += m->mirror_frasnel(wo, n)* 
-                srec.sampling_weight * 
-                radiance(scene, next_ray, rng, depth - 1);
-            }
-        } else {
-            bool nexthitlight = sample_intersect && sample_intersect->area_light_id != -1;
-            Real pdf_value = mix_pdf.value(wo,sample_intersect->position, nexthitlight); // 8.6580953675294765 -> 0.014474071966940219
-            Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, nexthitlight); 
-            if ( brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
-                L += (brdf_value / pdf_value) * radiance(scene, next_ray, rng, depth - 1); 
+                pl->intensity;
+            } else {
+                Real pdf_value = mix_pdf.value(wo,pl->position, true); // 8.6580953675294765 -> 0.014474071966940219
+                Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, true); 
+                if ( brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
+                    L += (brdf_value / pdf_value) * pl->intensity; 
+                }
             }
         }
         return L;
@@ -230,6 +249,6 @@ Image3 hw_fin_2(const std::vector<std::string> &params) {
 // logmap
 Image3 hw_fin_3(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
-    log_tone( img );
+    // log_tone( img );
     return img;
 }

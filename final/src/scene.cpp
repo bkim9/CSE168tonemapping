@@ -34,13 +34,19 @@ Scene::Scene(const ParsedScene &scene) :
                 auto triangle = Triangle{face_index, &meshes[tri_mesh_count]};
                 triangle.setup();
                 shapes.push_back(triangle);
+
+                if( face_index % 10000 == 0 )
+                    std::cout<< "   working on face_index: " << face_index  << "/" << (int)parsed_mesh->indices.size()<< std::endl;
             }
+            std::cout<< "working on tri [ " << tri_mesh_count << " ]" << std::endl;
             tri_mesh_count++;
         } else {
             assert(false);
         }
+        std::cout<< "working on shape [ " << i << " ]" << std::endl;
     }
 
+    std::cout << "extracting shapes done "<< std::endl;
     // Copy the materials
     for (const ParsedMaterial &parsed_mat : scene.materials) {
         if (auto *diffuse = std::get_if<ParsedDiffuse>(&parsed_mat)) {

@@ -229,6 +229,20 @@ inline TMatrix4x4<T> operator*(const TMatrix4x4<T> &m0, const TMatrix4x4<T> &m1)
 }
 
 template <typename T>
+inline bool operator==(const TMatrix4x4<T> &m0, const TMatrix4x4<T> &m1) {
+    bool res = true;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            res = res && (m0(i, j) == m1(i,j));
+        }
+    }
+    // if(res) std::cout<< "they are equal" << std::endl;
+    return res;
+}
+
+
+
+template <typename T>
 inline std::ostream& operator<<(std::ostream &os, const TMatrix4x4<T> &m) {
     return os << "[[" << m(0, 0) << ", " << m(0, 1) << ", " << m(0, 2) << ", " << m(0, 3) << "]," << std::endl <<
                   "[" << m(1, 0) << ", " << m(1, 1) << ", " << m(1, 2) << ", " << m(1, 3) << "]," << std::endl <<

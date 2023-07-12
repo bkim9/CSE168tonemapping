@@ -628,7 +628,7 @@ ParsedShape parse_shape(pugi::xml_node node,
             }
             material_id = materials.size();
             materials.push_back(m);
-        }
+        } 
     }
 
     ParsedShape shape;
@@ -661,7 +661,6 @@ ParsedShape parse_shape(pugi::xml_node node,
         }
     } else if (type == "ply") {
         std::string filename;
-        int shape_index = 0;
         Matrix4x4 to_world = Matrix4x4::identity();
         bool face_normals = false;
         for (auto child : node.children()) {
@@ -669,25 +668,25 @@ ParsedShape parse_shape(pugi::xml_node node,
             if (name == "filename") {
                 filename = parse_string(child.attribute("value").value(), default_map);
             } else if (name == "toWorld" || name == "to_world") {
-                if (std::string(child.name()) == "transform") {
+                if (std::string(child.name()) == "transform" && to_world == Matrix4x4::identity()) {
                     to_world = parse_transform(child, default_map);
+                    std::cout << to_world << "->" << std::endl;
                 }
-            } else if (name == "shapeIndex" || name == "shape_index") {
-                shape_index = parse_integer(child.attribute("value").value(), default_map);
             } else if (name == "faceNormals" || name == "face_normals") {
                 face_normals = parse_boolean(
                     child.attribute("value").value(), default_map);
             }
         }
+        std::cout << to_world << std::endl << std::endl;
         shape = parse_ply(filename, to_world);
         ParsedTriangleMesh &mesh = std::get<ParsedTriangleMesh>(shape);
-        if (face_normals) {
-            mesh.normals = std::vector<Vector3>{};
-        } else {
+        // if (face_normals) {
+        //     mesh.normals = std::vector<Vector3>{};
+        // } else {
             if (mesh.normals.size() == 0) {
                 mesh.normals = compute_normals(mesh.positions, mesh.indices);
             }
-        }
+        // }
     } else if (type == "serialized") {
         std::string filename;
         int shape_index = 0;
@@ -771,6 +770,12 @@ ParsedShape parse_shape(pugi::xml_node node,
             n = xform_normal(inverse(to_world), n);
         }
         shape = mesh;
+    } else if (type == "shapegroup") {
+        // for children of the xml
+        // 
+    } else if (type == "instance") {
+        // <ref id="mesh-Ember" name="shape"/>
+        // take the id from node
     } else {
         Error(std::string("Unknown shape:") + type);
     }
@@ -807,12 +812,14 @@ ParsedScene parse_scene(pugi::xml_node node) {
     std::vector<ParsedMaterial> materials;
     std::vector<ParsedLight> lights;
     std::vector<ParsedShape> shapes;
+
     std::string filename = "image.exr";
     // For <default> tags
     // e.g., <default name="spp" value="4096"/> will map "spp" to "4096"
     std::map<std::string, std::string> default_map;
     std::map<std::string /* name id */, ParsedColor> texture_map;
     std::map<std::string /* name id */, int /* index id */> material_map;
+    std::map<std::string /* name id */, pugi::xml_node> shapegroup_map;
     Vector3 background_color = Vector3{0.5, 0.5, 0.5};
     int sample_count = 16;
 
@@ -835,14 +842,43 @@ ParsedScene parse_scene(pugi::xml_node node) {
         } else if (name == "emitter") {
             lights.push_back(parse_emitter(child, default_map));
         } else if (name == "shape") {
-            shapes.push_back(
-                parse_shape(child,
+            std::string type = child.attribute("type").value();
+            std::string id = child.attribute("id").value();
+            if( type == "shapegroup" ){
+                // for all children of the child only child here
+                for ( auto shapegroupxml : child.children() ) {
+                    // map the id with the xml
+                    shapegroup_map[id] = shapegroupxml;
+                }
+            } else if (type=="instance"){
+                pugi::xml_node sgxml;
+                for ( auto instancechildxml : child.children() ) {
+                    std::string childname = instancechildxml.name();
+                    if      (childname == "ref") {
+                        id = instancechildxml.attribute("id").value();
+                    }
+                    else if (childname == "transform") {
+                        sgxml = shapegroup_map[id]; 
+                        sgxml.prepend_copy(instancechildxml);
+                        shapes.push_back(parse_shape(sgxml,
                             materials,
                             material_map,
                             texture_map,
                             lights,
                             shapes,
                             default_map));
+                        sgxml.remove_child(instancechildxml);
+                    }
+                }
+            } else {
+                shapes.push_back(parse_shape(child,
+                            materials,
+                            material_map,
+                            texture_map,
+                            lights,
+                            shapes,
+                            default_map));
+            }
         } else if (name == "texture") {
             std::string id = child.attribute("id").value();
             if (texture_map.find(id) != texture_map.end()) {
@@ -874,7 +910,8 @@ ParsedScene parse_scene(const fs::path &filename) {
         std::cerr << "Error offset: " << result.offset << std::endl;
         Error("Parse error");
     }
-    // back up the current working directory and switch to the parent folder of the file
+    // back up the current working directory in old_path 
+    // + switch to the parent folder of the file
     fs::path old_path = fs::current_path();
     fs::current_path(filename.parent_path());
     ParsedScene scene = parse_scene(doc.child("scene"));
