@@ -1,4 +1,4 @@
-#include "tonemap1.h"
+#include "../TONEMAP1/include/tonemap1.h"
 #include <gtest/gtest.h>
 
 TEST(ToneMap1Tests, LuminanceTestBlack) {

@@ -193,7 +193,8 @@ bool occluded(const Scene &scene, const BVHNode &node, Ray ray) {
 }
 
 std::optional<Intersection> intersect(const Scene &scene, Ray ray) {
-    return intersect(scene, scene.bvh_nodes[scene.bvh_root_id], ray);
+    std::optional<Intersection> isect_left;
+    return scene.bvh_nodes.size()? intersect(scene, scene.bvh_nodes[scene.bvh_root_id], ray) : isect_left;
 }
 
 bool occluded(const Scene &scene, const Ray &ray) {

@@ -14,11 +14,11 @@
 #include "pdf.h"
 #include <optional>
 #include "image.h"
-#include "tonemap1.h"
+#include "../TONEMAP1/include/tonemap1.h"
 #include "color_bilateral_filter.h"
 #include "bilateral_filter.h"
 #include "log_tone.h"
-
+Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth);
 Image3 hw_fin_1(const std::vector<std::string> &params);
 Image3 hw_fin_2(const std::vector<std::string> &params);
 Image3 hw_fin_3(const std::vector<std::string> &params);

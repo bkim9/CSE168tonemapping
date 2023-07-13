@@ -9,7 +9,7 @@
 
 #define LOG05 -0.693147		// log(0.5) 
 #define LOG2 0.693147
-#define E 2.718281828
+#define NATRUAL_E 2.718281828
 
 void logmapping (SCENE *scene, int width, int height, double Lum_max,
 		double Lum_min, float  expo, 

@@ -92,8 +92,23 @@ target_link_libraries(testtone1 PRIVATE torrey_lib GTest::gtest_main)
 target_compile_options(testtone1 PRIVATE ${GTEST_CFLAGS})
 
 
-include(GoogleTest)
+# include(GoogleTest)
 gtest_discover_tests(testtone1)
 
 
 add_test(shape_test testtone1)
+
+# # radiance test
+add_executable( testradiance
+                unittest/radiance_unittest.cpp
+)
+
+target_include_directories(testradiance PUBLIC include)
+target_link_libraries(testradiance PRIVATE torrey_lib GTest::gtest_main)
+target_compile_options(testradiance PRIVATE ${GTEST_CFLAGS})
+
+
+include(GoogleTest)
+gtest_discover_tests(testradiance)
+
+add_test(radiance_test testradiance)

@@ -151,8 +151,10 @@ class mixed_pdf : public pdf {
         }
 
         virtual double value(const Vector3& direction, const Vector3& x, const bool islighthit) const override {
+            if (pdfs.size()==0) return 1.0;
             Real sum = 0;
             bool first = true;
+
             auto matpdf_value = pdfs[0]->value(direction,x,islighthit);
             for( auto p : pdfs) {
                 if(!first) sum += p->value(direction,x, islighthit); 

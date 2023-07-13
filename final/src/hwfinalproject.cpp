@@ -68,7 +68,7 @@ Vector3 eval_brdf(Material* mate, MaterialBase& mat, Vector3 wi, Vector3 wo, pdf
     return brdf_value;
 }
 
-static Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
+Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
     Vector3 L = Vector3{0, 0, 0};
     MaterialBase mat;
     Vector3 p, n, wi, wo; // the most important one is the wo
@@ -128,7 +128,7 @@ static Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth)
                 Real pdf_value = mix_pdf.value(wo,pl->position, true); // 8.6580953675294765 -> 0.014474071966940219
                 Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, true); 
                 if ( brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
-                    L += (brdf_value / pdf_value) * pl->intensity; 
+                    L += (brdf_value / pdf_value) * pl->intensity/distance_squared(pl->position, p); 
                 }
             }
         }
