@@ -653,7 +653,7 @@ ParsedShape parse_shape(pugi::xml_node node,
         shape = parse_obj(filename, to_world);
         ParsedTriangleMesh &mesh = std::get<ParsedTriangleMesh>(shape);
         if (face_normals) {
-            mesh.normals = std::vector<Vector3>{};
+            // mesh.normals = std::vector<Vector3>{};
         } else {
             if (mesh.normals.size() == 0) {
                 mesh.normals = compute_normals(mesh.positions, mesh.indices);
