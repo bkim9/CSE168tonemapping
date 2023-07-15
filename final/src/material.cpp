@@ -33,7 +33,8 @@ pdf* Mirror::sample_brdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_s
 
 pdf* Plastic::sample_brdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng)  {
     srec.is_specular = false;
-    auto r0 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    // pcg32_state rng_ = init_pcg32(time(NULL));
+    auto r0 = next_pcg32_real<Real>(rng);//static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     auto n = rec->normal;
     auto r = normalize(2. * dot(wi,n) * n - wi);
     auto cosinep = new cosine_pdf(n,rng);

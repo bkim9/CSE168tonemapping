@@ -1,4 +1,18 @@
 #include "hwfinalproject.h"
+void exportimg(Image3 img, std::string filename) {
+    std::ofstream myfile;
+    myfile.open(filename);
+    std::cout << "Writing this to a file:\n" << filename << std::endl;
+    
+    myfile << img.width << ' ' << img.height << ' ';
+    for( int i = 0; i < img.width; i++ ) {
+    for (int j = 0; j < img.height;j++ ) {
+        myfile << img(i,j).x << ' '<< img(i,j).y << ' ' << img (i,j).z << ' ';
+    }    
+    }
+    myfile.close();
+    return;
+}
 
 void materialsetup(Material* material, MaterialBase& mb) {    
     if (auto d = std::get_if<Diffuse>(material)) {
@@ -68,7 +82,7 @@ Vector3 eval_brdf(Material* mate, MaterialBase& mat, Vector3 wi, Vector3 wo, pdf
     return brdf_value;
 }
 
-static Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
+Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
     Vector3 L = Vector3{0, 0, 0};
     MaterialBase mat;
     Vector3 p, n, wi, wo; // the most important one is the wo
@@ -77,40 +91,61 @@ static Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth)
     if ( depth <= 0 ) return L;
     if (auto hit_isect = intersect(scene, ray)) {   
         auto mate = scene.materials[hit_isect->material_id];
-        materialsetup(&mate, mat);
         mat.rec = hit_isect;
+        materialsetup(&mate, mat);  
         p = hit_isect->position;
         n = hit_isect->normal;
         wi = -normalize(ray.dir);
         if (hit_isect->area_light_id != -1)  { 
             L += std::get<AreaLight>(scene.lights[hit_isect->area_light_id]).radiance;
         }
-        mix_pdf.pdfs.push_back(sample_brdf(&mate, mat, wi, wo, srec, rng));
-        Ray next_ray{p,wo,Real(.001),infinity<Real>()};
-        auto sample_intersect = intersect(scene, next_ray);
+        int dice = floor(scene.lights.size() * next_pcg32_real<Real>(rng));
+        if (std::get_if<AreaLight>(&scene.lights[dice])) {
+            mix_pdf.pdfs.push_back(sample_brdf(&mate, mat, wi, wo, srec, rng));
+            Ray next_ray{p,wo,Real(.001),infinity<Real>()};
+            auto sample_intersect = intersect(scene, next_ray);
 
-        std::vector<pdf*> light_ps;
-        for( auto l : scene.lights ) {
-            auto p1 = new light_pdf;
-            p1->setup(scene.shapes[std::get_if<AreaLight>(&l)->shape_id], ray, rng);
-            light_ps.push_back(p1);
-        }
-        
-        mix_pdf.setup(light_ps);
-        
-        if (mat.ismirror) {
-            if (srec.sampling_weight > 0) {
+            std::vector<pdf*> light_ps;
+            for( auto l : scene.lights ) {
+                if(auto al = std::get_if<AreaLight>(&l)) {
+                    auto p1 = new light_pdf;
+                    p1->setup(scene.shapes[al->shape_id], ray, rng);
+                    light_ps.push_back(p1);
+                } 
+            }
+            mix_pdf.setup(light_ps);
+            
+            if (mat.ismirror) {
+                if (srec.sampling_weight > 0) {
+                    auto m = std::get_if<Mirror>(&mate);
+                    L += m->mirror_frasnel(wo, n)* 
+                    srec.sampling_weight * 
+                    radiance(scene, next_ray, rng, depth - 1);
+                }
+            } else {
+                bool nexthitlight = sample_intersect && sample_intersect->area_light_id != -1;
+                Real pdf_value = mix_pdf.value(wo,sample_intersect->position, nexthitlight); // 8.6580953675294765 -> 0.014474071966940219
+                Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, nexthitlight); 
+                if ( brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
+                    L += (brdf_value / pdf_value) * radiance(scene, next_ray, rng, depth - 1); 
+                }
+            }
+        } else if (auto pl = std::get_if<PointLight>(&scene.lights[dice])) {
+            wo = normalize(pl->position - p);
+            Ray next_ray{p,wo,Real(.001),infinity<Real>()};
+            Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, true); 
+            if (mat.ismirror) {
                 auto m = std::get_if<Mirror>(&mate);
                 L += m->mirror_frasnel(wo, n)* 
-                srec.sampling_weight * 
-                radiance(scene, next_ray, rng, depth - 1);
-            }
-        } else {
-            bool nexthitlight = sample_intersect && sample_intersect->area_light_id != -1;
-            Real pdf_value = mix_pdf.value(wo,sample_intersect->position, nexthitlight); // 8.6580953675294765 -> 0.014474071966940219
-            Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, nexthitlight); 
-            if ( brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
-                L += (brdf_value / pdf_value) * radiance(scene, next_ray, rng, depth - 1); 
+                pl->intensity;
+            } else {                    
+                Vector3 l = pl->position - p;
+                Ray shadow_ray{p, normalize(l), Real(1e-4), (1 - Real(1e-4)) * length(l)};
+                Real pdf_value = mix_pdf.value(wo,pl->position, true); // 8.6580953675294765 -> 0.014474071966940219
+                Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, true); 
+                if ( !occluded(scene, shadow_ray) && brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
+                    L += (brdf_value / pdf_value) * pl->intensity/distance_squared(pl->position, p) * fmax(0,dot(n,wo)); 
+                }
             }
         }
         return L;
@@ -126,7 +161,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         return Image3(0, 0);
     }
 
-    int max_depth = 20;
+    int max_depth = 6;
     std::string filename;
     for (int i = 0; i < (int)params.size(); i++) {
         if (params[i] == "-max_depth") {
@@ -171,6 +206,12 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
             for (int x = x0; x < x1; x++) {
                 for (int s = 0; s < spp; s++) {
                     Real u, v;
+                    auto seed = tile[0] + 
+                                num_tiles_x * tile[1] + 
+                                num_tiles_x * num_tiles_y * s + 
+                                num_tiles_x * num_tiles_y * spp * x + 
+                                num_tiles_x * num_tiles_y * spp * x1 * y; 
+                    rng = init_pcg32(seed);
                     u = (x + next_pcg32_real<Real>(rng)) / w;
                     v = (y + next_pcg32_real<Real>(rng)) / h;
                     Ray ray = generate_primary_ray(cam_ray_data, u, v);
@@ -194,24 +235,8 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
 
 Image3 hw_fin_1(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
-
-    // log_sum_L
-    Real log_sum_L, delta;
-    delta= 0.00001;
-    log_sum_L = Real(0);
-    for( int i=0; i < img.width; i++) {
-        for (int j=0; j< img.height; j++) {
-            auto imgL = Luminance(img(i,j));
-            log_sum_L += log(delta + imgL);
-        }
-    }
-
-    auto log_ave_L = pow(10,log_sum_L) / (img.width * img.height);
-    for( int i=0; i < img.width; i++) {
-        for (int j=0; j< img.height; j++) {
-            tonemap1(img,log_ave_L, i, j);
-        }
-    }
+    log_tone( img );
+    localtonemap1(img);
     return img;
 }
 
@@ -230,6 +255,8 @@ Image3 hw_fin_2(const std::vector<std::string> &params) {
 // logmap
 Image3 hw_fin_3(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
-    log_tone( img );
+    // log_tone( img );
+    std::string filename = "ori/dining.txt";
+    exportimg(img, filename);
     return img;
 }

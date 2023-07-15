@@ -1,7 +1,7 @@
 #include "tonemap1.h"
 
 Real ALPHA_1 = Real(.35);
-Real EPSILON = Real(.05);
+Real EPSILON = Real(.1);
 Real MAX_L_D = Real(1.);
 
 Real Luminance(Vector3 v) {
@@ -27,17 +27,18 @@ Real R_i(int i, int x_offset, int y_offset, Real s) {
     return 1/(c_PI*as*as) * pow(2.7182818284, -(x*x + y*y)/(as*as)); 
 }
 
-
+// i = 0 or 1
 // local average at (x,y)
 Real V_i(Image3& img, int i, int x, int y, Real s) {
-    auto wing = ceil(s);
+    auto wing = ceil(s * pow(1.6,i));
     Real subTotal = Real(0);
     // element wise multiplication
     for (int x_o = -wing; x_o < wing; x_o++) {
     for (int y_o = -wing; y_o < wing; y_o++) {
-        if(0 <= x+x_o && x+x_o < img.width && 0 <= y+y_o && y+y_o < img.height) {
+        if(0 <= x+x_o && x+x_o < img.width && 0 <= y+y_o && y+y_o < img.height && 2 * wing < img.width && 2 * wing < img.height) {
             subTotal += Luminance(img(x+x_o,y+y_o)) * R_i(i, x_o, y_o, s);
-        } 
+            subTotal /= s==1? 2.6:1; 
+        }
     }
     }
     return subTotal;
@@ -58,15 +59,42 @@ Real right_s(Image3& img, int i, int j) {
 }
 
 // local tonemapping
-void tonemap1(Image3& img, Real ave_L, int x, int y) {
+void localtonemap1(Image3& img) {
+    for( int i=0; i < img.width; i++) {
+    for (int j=0; j< img.height; j++) {    
+        auto s = Real(1.); // scale
+        // find the right scale s for a pixel (x,y)
+        s = right_s(img,i,j);
+        // std::cout << "s: " << s << std::endl;
+        img(i,j) /= (1 + V_i(img,1,i,j,s)); 
+    }
+    }
+}
+
+// global tonemapping
+void globaltonemap1(Image3& img) {
+    // log_sum_L
+    Real log_sum_L, delta;
+    delta= 0.00001;
+    log_sum_L = Real(0);
+    for( int i=0; i < img.width; i++) {
+    for (int j=0; j< img.height; j++) {
+        auto imgL = Luminance(img(i,j));
+        log_sum_L += log(delta + imgL);
+    }
+    }
+
+    auto log_ave_L = pow(2.7182818284,log_sum_L) / (img.width * img.height);
     auto a = Real(.18); // select a to be  .09 .18 .36 .45 .72
     auto L_white = L_white_(img);  
-    auto sharp = Real(1.);
-    auto L_w = Luminance(img(x,y));
-    auto L = a / ave_L * L_w; // scaled luminance
-    auto s = Real(1.); // scale
-    // find the right scale s for a pixel (x,y)
-    s = right_s(img,x,y);
-    std::cout << "s: " << s << std::endl;
-    img(x,y) /= (1 + V_i(img,1,x,y,s));
+    // auto sharp = Real(1.);
+
+
+    for( int i=0; i < img.width; i++) {
+    for (int j=0; j< img.height; j++) {    
+        auto L_w = Luminance(img(i,j));
+        auto L = a / log_ave_L * L_w; // scaled luminance
+        img(i,j) *= (1 + L/L_white/L_white) / (1 + L);
+    }
+    }
 }

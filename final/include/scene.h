@@ -15,7 +15,26 @@
 #include <algorithm>
 
 struct Scene {
-    Scene() {}
+    Scene() {
+        // default cam
+        Vector3 lookfrom(0,0,-1);
+        Vector3 lookat(0,0,0);
+        Vector3 up(0,1,0);
+        Real vfov = Real(120);
+        Camera cam{lookfrom,lookat,up,vfov};
+        Camera camera = cam;
+        // default width and height 
+        width = 1920;
+        height = 1080;
+        shapes.clear();
+        materials.clear();
+        lights.clear();
+        background_color = Vector3(.1,.2,.3);
+        samples_per_pixel = 3;
+        meshes.clear();
+        bvh_nodes.clear();
+        bvh_root_id= -1;
+    }
     Scene(const ParsedScene &scene);
 
     Camera camera;

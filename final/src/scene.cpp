@@ -34,13 +34,19 @@ Scene::Scene(const ParsedScene &scene) :
                 auto triangle = Triangle{face_index, &meshes[tri_mesh_count]};
                 triangle.setup();
                 shapes.push_back(triangle);
+
+                if( face_index % 10000 == 0 )
+                    std::cout<< "   working on face_index: " << face_index  << "/" << (int)parsed_mesh->indices.size()<< std::endl;
             }
+            std::cout<< "working on tri [ " << tri_mesh_count << " ]" << std::endl;
             tri_mesh_count++;
         } else {
             assert(false);
         }
+        std::cout<< "working on shape [ " << i << " ]" << std::endl;
     }
 
+    std::cout << "extracting shapes done "<< std::endl;
     // Copy the materials
     for (const ParsedMaterial &parsed_mat : scene.materials) {
         if (auto *diffuse = std::get_if<ParsedDiffuse>(&parsed_mat)) {
@@ -187,7 +193,8 @@ bool occluded(const Scene &scene, const BVHNode &node, Ray ray) {
 }
 
 std::optional<Intersection> intersect(const Scene &scene, Ray ray) {
-    return intersect(scene, scene.bvh_nodes[scene.bvh_root_id], ray);
+    std::optional<Intersection> isect_left;
+    return scene.bvh_nodes.size()? intersect(scene, scene.bvh_nodes[scene.bvh_root_id], ray) : isect_left;
 }
 
 bool occluded(const Scene &scene, const Ray &ray) {
@@ -200,8 +207,9 @@ Vector3 evalDiffuse(const Scene &scene, MaterialBase mat, pcg32_state rng) {
     bool ispointl = false;
     Real area = Real(0.);
     Real lightNum = scene.lights.size();
-    Vector3 intensity, x, n_x = Vector3(0.,0.,0.);
-    auto r0 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    Vector3 intensity, x, n_x = Vector3(0.,0.,0.);       
+    // pcg32_state rng_ = init_pcg32(time(NULL)+1);
+    auto r0 = next_pcg32_real<Real>(rng); //static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     auto l = scene.lights[floor(r0*lightNum)];
     if (auto *point_light = std::get_if<PointLight>(&l)) {
         x = point_light->position;

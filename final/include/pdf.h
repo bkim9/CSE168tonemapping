@@ -12,15 +12,17 @@ class pdf {
 
 // cosine hemisphere sampling using cosine_pdf = cos(theta) / c_PI
 inline Vector3 random_cosine_direction(pcg32_state rng) {
-    auto r1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    auto r2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    auto r1 = next_pcg32_real<Real>(rng);// static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    auto r2 = next_pcg32_real<Real>(rng);// static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     return hemiloc(r1, sqrt(1-r2));
 }
 
 // phong sampling using phong_pdf = cos(theta)^alpha (alpha + 1) / (2 * c_PI)
 inline Vector3 random_phong_direction(Real exponent, pcg32_state rng) {
-    auto r1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    auto r2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    // auto seed = floor(next_pcg32_real<Real>(rng) * RAND_MAX);
+    // pcg32_state rng_ = init_pcg32(seed);
+    auto r1 = next_pcg32_real<Real>(rng);// static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    auto r2 = next_pcg32_real<Real>(rng);// static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     return hemiloc(r1, pow(1-r2,1/(exponent+1)));
 }
 
@@ -151,8 +153,10 @@ class mixed_pdf : public pdf {
         }
 
         virtual double value(const Vector3& direction, const Vector3& x, const bool islighthit) const override {
+            if (pdfs.size()==0) return 1.0;
             Real sum = 0;
             bool first = true;
+
             auto matpdf_value = pdfs[0]->value(direction,x,islighthit);
             for( auto p : pdfs) {
                 if(!first) sum += p->value(direction,x, islighthit); 
