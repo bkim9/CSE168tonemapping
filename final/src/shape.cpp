@@ -150,8 +150,15 @@ bool occluded(const Shape &shape, const Ray &ray) {
 Real Triangle::pdf_value( const Vector3& o, const Vector3& v) const {
     auto hit = intersect(*this, Ray{o, v, 0.00001, infinity<Real>()});
     if (!hit) return 0;
-    Real distance_squared = hit->distance * hit->distance;
-    Real cosine = fabs(dot(v, hit->normal)) / length(v);
-    Real area = length(crossproduct)/2.;
-    return distance_squared / ( cosine * area );
+    // ----------------------------old version----------------------------
+    // Real distance_squared = hit->distance * hit->distance;
+    // Real cosine = fabs(dot(v, hit->normal)) / length(v);
+    // Real area = length(crossproduct)/2.;
+    // return distance_squared / ( cosine * area );
+    // ----------------------------old version----------------------------
+    auto A = p0 - o;
+    auto B = p1 - o;
+    auto C = p2 - o;
+    auto st = spherical_triangle(A,B,C);
+    return 1/st.area;
 }

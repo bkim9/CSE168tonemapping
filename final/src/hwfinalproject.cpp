@@ -1,4 +1,18 @@
 #include "hwfinalproject.h"
+void exportimg(Image3 img, std::string filename) {
+    std::ofstream myfile;
+    myfile.open(filename);
+    std::cout << "Writing this to a file:\n" << filename << std::endl;
+    
+    myfile << img.width << ' ' << img.height << ' ';
+    for( int i = 0; i < img.width; i++ ) {
+    for (int j = 0; j < img.height;j++ ) {
+        myfile << img(i,j).x << ' '<< img(i,j).y << ' ' << img (i,j).z << ' ';
+    }    
+    }
+    myfile.close();
+    return;
+}
 
 void materialsetup(Material* material, MaterialBase& mb) {    
     if (auto d = std::get_if<Diffuse>(material)) {
@@ -77,15 +91,15 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
     if ( depth <= 0 ) return L;
     if (auto hit_isect = intersect(scene, ray)) {   
         auto mate = scene.materials[hit_isect->material_id];
-        materialsetup(&mate, mat);
         mat.rec = hit_isect;
+        materialsetup(&mate, mat);  
         p = hit_isect->position;
         n = hit_isect->normal;
         wi = -normalize(ray.dir);
         if (hit_isect->area_light_id != -1)  { 
             L += std::get<AreaLight>(scene.lights[hit_isect->area_light_id]).radiance;
         }
-        int dice = floor(scene.lights.size() * static_cast <float> (rand()) / static_cast <float> (RAND_MAX));
+        int dice = floor(scene.lights.size() * next_pcg32_real<Real>(rng));
         if (std::get_if<AreaLight>(&scene.lights[dice])) {
             mix_pdf.pdfs.push_back(sample_brdf(&mate, mat, wi, wo, srec, rng));
             Ray next_ray{p,wo,Real(.001),infinity<Real>()};
@@ -147,7 +161,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         return Image3(0, 0);
     }
 
-    int max_depth = 10;
+    int max_depth = 6;
     std::string filename;
     for (int i = 0; i < (int)params.size(); i++) {
         if (params[i] == "-max_depth") {
@@ -192,6 +206,12 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
             for (int x = x0; x < x1; x++) {
                 for (int s = 0; s < spp; s++) {
                     Real u, v;
+                    auto seed = tile[0] + 
+                                num_tiles_x * tile[1] + 
+                                num_tiles_x * num_tiles_y * s + 
+                                num_tiles_x * num_tiles_y * spp * x + 
+                                num_tiles_x * num_tiles_y * spp * x1 * y; 
+                    rng = init_pcg32(seed);
                     u = (x + next_pcg32_real<Real>(rng)) / w;
                     v = (y + next_pcg32_real<Real>(rng)) / h;
                     Ray ray = generate_primary_ray(cam_ray_data, u, v);
@@ -215,24 +235,8 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
 
 Image3 hw_fin_1(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
-
-    // log_sum_L
-    Real log_sum_L, delta;
-    delta= 0.00001;
-    log_sum_L = Real(0);
-    for( int i=0; i < img.width; i++) {
-        for (int j=0; j< img.height; j++) {
-            auto imgL = Luminance(img(i,j));
-            log_sum_L += log(delta + imgL);
-        }
-    }
-
-    auto log_ave_L = pow(10,log_sum_L) / (img.width * img.height);
-    for( int i=0; i < img.width; i++) {
-        for (int j=0; j< img.height; j++) {
-            tonemap1(img,log_ave_L, i, j);
-        }
-    }
+    log_tone( img );
+    localtonemap1(img);
     return img;
 }
 
@@ -252,5 +256,7 @@ Image3 hw_fin_2(const std::vector<std::string> &params) {
 Image3 hw_fin_3(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
     // log_tone( img );
+    std::string filename = "ori/dining.txt";
+    exportimg(img, filename);
     return img;
 }

@@ -207,8 +207,9 @@ Vector3 evalDiffuse(const Scene &scene, MaterialBase mat, pcg32_state rng) {
     bool ispointl = false;
     Real area = Real(0.);
     Real lightNum = scene.lights.size();
-    Vector3 intensity, x, n_x = Vector3(0.,0.,0.);
-    auto r0 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    Vector3 intensity, x, n_x = Vector3(0.,0.,0.);       
+    // pcg32_state rng_ = init_pcg32(time(NULL)+1);
+    auto r0 = next_pcg32_real<Real>(rng); //static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     auto l = scene.lights[floor(r0*lightNum)];
     if (auto *point_light = std::get_if<PointLight>(&l)) {
         x = point_light->position;
