@@ -1,5 +1,5 @@
 #include "hwfinalproject.h"
-void exportimg(Image3 img, std::string filename) {
+void exportimg(Image3& img, std::string filename) {
     std::ofstream myfile;
     myfile.open(filename);
     std::cout << "Writing this to a file:\n" << filename << std::endl;
@@ -12,6 +12,45 @@ void exportimg(Image3 img, std::string filename) {
     }
     myfile.close();
     return;
+}
+
+Vector3 averageV(Image3& img, int i, int j) {
+    int start_x = i-1;
+    int end_x   = i+1;
+    int start_y = j-1;
+    int end_y   = j+1;
+    int count = 0;
+    Vector3 subtotal(0,0,0);
+    if( i == 0 ) start_x = i;
+    if( j == 0 ) start_y = j;
+    if( i == img.width -1 ) end_x = i;
+    if( j == img.height-1 ) end_y = j;
+    std::cout<< std::endl<< std::endl;
+    for( int x = start_x; x <= end_x; x++ ) {
+    for( int y = start_y; y <= end_y; y++ ) {
+        if( x != i || y != j ){
+            std::cout << img(x,y) << '\t';
+            subtotal += img(x,y);
+            count++;
+        } else {
+            std::cout <<"  ___center___  " ;
+        }
+    }
+    std::cout << std::endl;
+    }
+    auto averageV_ = subtotal / Real(count);
+    return averageV_;
+}
+
+void smooth(Image3& img) {
+    for( int i = 0; i< img.width; i++ ){
+    for( int j = 0; j< img.height; j++) {
+        auto ave = averageV(img, i, j);
+        auto diff = length(img(i,j) - ave);
+        if( diff * 2.0 > length(ave)) 
+            img(i,j) = ave;
+    }
+    }
 }
 
 void materialsetup(Material* material, MaterialBase& mb) {    
@@ -161,7 +200,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         return Image3(0, 0);
     }
 
-    int max_depth = 6;
+    int max_depth = 7;
     std::string filename;
     for (int i = 0; i < (int)params.size(); i++) {
         if (params[i] == "-max_depth") {
@@ -235,7 +274,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
 
 Image3 hw_fin_1(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
-    log_tone( img );
+    smooth( img );
     localtonemap1(img);
     return img;
 }
@@ -256,7 +295,7 @@ Image3 hw_fin_2(const std::vector<std::string> &params) {
 Image3 hw_fin_3(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
     // log_tone( img );
-    std::string filename = "ori/dining.txt";
+    std::string filename = "ori/sponza.txt";
     exportimg(img, filename);
     return img;
 }

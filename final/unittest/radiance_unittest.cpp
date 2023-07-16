@@ -1,6 +1,7 @@
 #include "hwfinalproject.h"
 #include <gtest/gtest.h>
 
+const char* filename = "ori/bath1000.txt";
 TEST(BlackSceneTests, zerodepthtest) {
   Scene scene;
   Vector3 p(0,0,0);
@@ -39,18 +40,128 @@ TEST(BlackSceneTests, SimpleScenetest) {
   int depth = 1;
   // auto rad = radiance(scene, ray, rng, depth);
   auto rad = radiance(scene, ray, rng, depth);
-  EXPECT_EQ(0,rad.x);
-  EXPECT_EQ(0,rad.y);
-  EXPECT_EQ(0,rad.z);
+  EXPECT_NEAR(0.00238306,rad.x, .0001);
+  EXPECT_NEAR(0.00099705,rad.y, .0001);
+  EXPECT_NEAR(0.00024037,rad.z, .0001);
 }
 
-// TEST(hemilocTests, hemilocTestXY) {
-//   Real r1 = 0;
-//   Real z = .1;
-//   Real sine_theta_squared = 1- z*z;
-//   Vector3 v = hemiloc(r1,z);
-//   EXPECT_NEAR(sine_theta_squared, v.x*v.x+v.y*v.y, .001);
-// }
+TEST(SmoothTests, AverageTest) {
+  FILE *infp;
+  infp = fopen(filename, "r");
+
+  int width = 0;
+  int height= 0;
+
+  fscanf(infp,"%d",&width);
+  fscanf(infp,"%d",&height);
+
+  Image3 img(width,height);
+
+  Vector3 v(.244,.322,.328);
+  for( int i = 0; i < img.width; i++ ) {
+  for (int j = 0; j < img.height;j++ ) {
+    fscanf(infp,"%lf",&img(i,j).x);
+    fscanf(infp,"%lf",&img(i,j).y);
+    fscanf(infp,"%lf",&img(i,j).z);
+  }    
+  }
+  int x = 1;
+  int y = 1;
+  auto ave = averageV(img,x,y);
+  std::cout << "center: " << img(x,y) << std::endl;
+  std::cout << "average: " << ave << std::endl;
+  bool pass = true;
+  if( fabs(length(ave) - length(img(x,y)-ave)) / length(ave)< .5) pass = true;
+  EXPECT_TRUE(pass);
+}
+
+// tone1 test
+TEST(TonempaTests, Tonemap1Test) {
+  FILE *infp;
+  infp = fopen(filename, "r");
+
+  int width = 0;
+  int height= 0;
+
+  fscanf(infp,"%d",&width);
+  fscanf(infp,"%d",&height);
+
+  Image3 img(width,height);
+
+  Vector3 v(.244,.322,.328);
+  for( int i = 0; i < img.width; i++ ) {
+  for (int j = 0; j < img.height;j++ ) {
+    fscanf(infp,"%lf",&img(i,j).x);
+    fscanf(infp,"%lf",&img(i,j).y);
+    fscanf(infp,"%lf",&img(i,j).z);
+  }    
+  }
+
+  localtonemap1(img);
+  imwrite("bath_tone1.exr", img);
+  // EXPECT_TRUE(pass);
+}
+
+
+// tone2 test
+TEST(TonemapTests, bilateralFilterTest) {
+  FILE *infp;
+  infp = fopen(filename, "r");
+
+  int width = 0;
+  int height= 0;
+
+  fscanf(infp,"%d",&width);
+  fscanf(infp,"%d",&height);
+
+  Image3 img(width,height);
+
+  Vector3 v(.244,.322,.328);
+  for( int i = 0; i < img.width; i++ ) {
+  for (int j = 0; j < img.height;j++ ) {
+    fscanf(infp,"%lf",&img(i,j).x);
+    fscanf(infp,"%lf",&img(i,j).y);
+    fscanf(infp,"%lf",&img(i,j).z);
+  }    
+  }
+  // localtonemap1(img);
+  double sigma_s = 16.0;
+  double sigma_r = 0.1;
+  double sampling_s = 16;
+  double sampling_r = .1;
+  // colorBilateralfilter(img, sigma_s, sigma_r);
+  bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r); 
+  // smooth(img);
+  imwrite("bath_tone2.exr", img);
+  // EXPECT_TRUE(pass);
+}
+
+// tone3 test
+TEST(TonemapTests, LogToneTest) {
+  FILE *infp;
+  infp = fopen(filename, "r");
+
+  int width = 0;
+  int height= 0;
+
+  fscanf(infp,"%d",&width);
+  fscanf(infp,"%d",&height);
+
+  Image3 img(width,height);
+
+  Vector3 v(.244,.322,.328);
+  for( int i = 0; i < img.width; i++ ) {
+  for (int j = 0; j < img.height;j++ ) {
+    fscanf(infp,"%lf",&img(i,j).x);
+    fscanf(infp,"%lf",&img(i,j).y);
+    fscanf(infp,"%lf",&img(i,j).z);
+  }    
+  }
+
+  log_tone(img);
+  imwrite("bath_tone3.exr", img);
+  // EXPECT_TRUE(pass);
+}
 
 // TEST(hemilocTests, hemilocTestZ) {
 //   Real r1 = 0.1;
