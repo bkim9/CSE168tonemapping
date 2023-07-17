@@ -53,7 +53,7 @@ void smooth(Image3& img) {
     }
 }
 
-void materialsetup(Material* material, MaterialBase& mb) {    
+void materialsetup(Material* material, MaterialBase& mb) {   
     if (auto d = std::get_if<Diffuse>(material)) {
         mb.isdiffuse = true;
         mb.reflectance = d->getAlbedo();
@@ -139,8 +139,8 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
             L += std::get<AreaLight>(scene.lights[hit_isect->area_light_id]).radiance;
         }
         int dice = floor(scene.lights.size() * next_pcg32_real<Real>(rng));
+        mix_pdf.pdfs.push_back(sample_pdf(&mate, mat, wi, wo, srec, rng));
         if (std::get_if<AreaLight>(&scene.lights[dice])) {
-            mix_pdf.pdfs.push_back(sample_pdf(&mate, mat, wi, wo, srec, rng));
             std::vector<pdf*> light_ps;
             for( auto l : scene.lights ) {
                 if(auto al = std::get_if<AreaLight>(&l)) {
