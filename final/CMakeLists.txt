@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
-# set(CMAKE_BUILD_TYPE Debug)   
+set(CMAKE_BUILD_TYPE Debug)   
 
 if(MSVC)
   add_compile_options(/Wall)
@@ -112,3 +112,18 @@ include(GoogleTest)
 gtest_discover_tests(testradiance)
 
 add_test(radiance_test testradiance)
+
+# # radiance test
+add_executable( testpdf
+                unittest/pdf_unittest.cpp
+)
+
+target_include_directories(testpdf PUBLIC include)
+target_link_libraries(testpdf PRIVATE torrey_lib GTest::gtest_main)
+target_compile_options(testpdf PRIVATE ${GTEST_CFLAGS})
+
+
+include(GoogleTest)
+gtest_discover_tests(testpdf)
+
+add_test(pdf_test testpdf)

@@ -84,8 +84,7 @@ struct MaterialBase {
         return albedo;
     }
 
-    virtual pdf* sample_brdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng);
-
+    virtual pdf* sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng);
     virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight);
 
     virtual Vector3 eval_frasnel(Vector3 w, Vector3 n) {
@@ -103,19 +102,20 @@ struct MaterialBase {
 struct Diffuse : public MaterialBase {
     Diffuse() {}
     ~Diffuse() {}
-    virtual pdf* sample_brdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
+    virtual pdf* sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
+
     virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) override;
 };
 
 struct Mirror : public MaterialBase { 
-    virtual pdf* sample_brdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
+    virtual pdf* sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
+
 };
 
 struct Plastic : public MaterialBase {
     Real eta;
 
-    virtual pdf* sample_brdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
-
+    virtual pdf* sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
     virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) override;
 
     Real plastic_frasnel(Vector3 wi) {
@@ -126,24 +126,20 @@ struct Plastic : public MaterialBase {
 };
 
 struct Phong : public MaterialBase {
-    Real exponent;    
-
-    virtual pdf* sample_brdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override ;
-
+    Real exponent;
+    virtual pdf* sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override ;
     virtual Vector3 eval_brdf(Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) override;
 };
 
 struct BlinnPhong : public MaterialBase {
     Real exponent;
-    virtual pdf* sample_brdf(Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
-
+    virtual pdf* sample_pdf(Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
     virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) override;
 };
 
 struct BlinnPhongMicrofacet : public MaterialBase {
     Real exponent;
-    virtual pdf* sample_brdf(Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
-
+    virtual pdf* sample_pdf(Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
     virtual Vector3 eval_brdf(Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) override;
     Real D(Vector3 n, Vector3 h) {
         return (exponent + 1) / (2. * c_PI) * pow(dot(n,h),exponent);
