@@ -12,17 +12,15 @@ class pdf {
 
 // cosine hemisphere sampling using cosine_pdf = cos(theta) / c_PI
 inline Vector3 random_cosine_direction(pcg32_state rng) {
-    auto r1 = next_pcg32_real<Real>(rng);// static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    auto r2 = next_pcg32_real<Real>(rng);// static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    auto r1 = next_pcg32_real<Real>(rng);
+    auto r2 = next_pcg32_real<Real>(rng);
     return hemiloc(r1, sqrt(1-r2));
 }
 
 // phong sampling using phong_pdf = cos(theta)^alpha (alpha + 1) / (2 * c_PI)
 inline Vector3 random_phong_direction(Real exponent, pcg32_state rng) {
-    // auto seed = floor(next_pcg32_real<Real>(rng) * RAND_MAX);
-    // pcg32_state rng_ = init_pcg32(seed);
-    auto r1 = next_pcg32_real<Real>(rng);// static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    auto r2 = next_pcg32_real<Real>(rng);// static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    auto r1 = next_pcg32_real<Real>(rng);
+    auto r2 = next_pcg32_real<Real>(rng);
     return hemiloc(r1, pow(1-r2,1/(exponent+1)));
 }
 
@@ -41,14 +39,16 @@ class cosine_pdf : public pdf {
 
         virtual double value(const Vector3& direction, const Vector3& x, const bool islighthit) const override {
             auto cosine = dot(normalize(direction), uvw.w); // cosine: 0.65158585123057444
-            return (cosine <= 0)? 0 : cosine / c_PI;
+            return cosine <= 0? 0 : cosine / c_PI;
         }
 
         virtual Vector3 generate() const override {
-            auto randomcosinedir = random_cosine_direction(rng);
-            randomcosinedir = normalize(randomcosinedir);
-            return uvw.local(randomcosinedir.x, randomcosinedir.y, randomcosinedir.z);
+            Vector3 cosine_sampled_wo = uvw.local(normalize(random_cosine_direction(rng)));
+            return r0 < F? r : cosine_sampled_wo;
         }
+        Real r0=0;
+        Vector3 r;
+        Real F=0;
 };
 
 class phong_pdf : public pdf {
@@ -82,12 +82,17 @@ class blinn_pdf : public pdf {
         }
         // ** set h after generate()
         // generate h not wo 
-        virtual Vector3 generate() const override {
+        virtual Vector3 generate_h() const {
             return uvw.local(random_phong_direction(alpha, rng));
+        }
+
+        virtual Vector3 generate() const override {
+            return  2. * dot(h,wi) * h  - wi;
         }
 
     public:
         Vector3 h;
+        Vector3 wi;
         Real alpha;
 };
 
@@ -102,12 +107,16 @@ class micro_pdf : public pdf {
         }
         // ** set h after generate()
         // generate h not wo 
-        virtual Vector3 generate() const override {
+        virtual Vector3 generate_h() const {
             return uvw.local(random_phong_direction(alpha, rng));
         }
 
+        virtual Vector3 generate() const override{
+            return 2. * dot(h, wi)* h  - wi;
+        }
 
     public:
+        Vector3 wi;
         Vector3 h;
         Real alpha;
 };
@@ -115,28 +124,27 @@ class micro_pdf : public pdf {
 class light_pdf : public pdf {
     public:
         light_pdf (){}
-        bool setup (const Shape s, Ray ray, pcg32_state rang) { 
+        bool setup (const Shape s, Vector3 shadingpoint, pcg32_state rang) { 
             sph = std::get_if<Sphere>(&s);
             tri = std::get_if<Triangle>(&s);
-            pdf_ray = ray;
+            p = shadingpoint;
             rng = rang;
             return true;
         }
         virtual double value(const Vector3& direction, const Vector3& x, const bool islighthit) const override {
             if (!islighthit) return 0.;
-            auto origin = pdf_ray.org;
-            return sph? sph->pdf_value(origin,normalize(x - origin)):  // May 25th solved by putting islighthit x = 2.1222944121466691E-314, y = 5.215016859923639E-310, z = 5.215016859923639E-310
-                        tri->pdf_value(origin,normalize(x - origin));
+            return sph? sph->pdf_value(p,normalize(x - p)):  // May 25th solved by putting islighthit x = 2.1222944121466691E-314, y = 5.215016859923639E-310, z = 5.215016859923639E-310
+                        tri->pdf_value(p,normalize(x - p));
         }
         virtual Vector3 generate() const override {
             Real dummyReal = Real(0);
             Vector3 dummyN{0,0,0};
-            return sph? sph->random(pdf_ray.org, dummyN, dummyReal, rng): 
-                        tri->random(pdf_ray.org, dummyN, dummyReal, rng);
+            return sph? normalize(sph->random(p, dummyN, dummyReal, rng) - p): 
+                        normalize(tri->random(p, dummyN, dummyReal, rng) - p);
         };
         const Sphere* sph;
         const Triangle* tri;
-        Ray pdf_ray;
+        Vector3 p;
 };
 
 class mixed_pdf : public pdf {
@@ -153,24 +161,24 @@ class mixed_pdf : public pdf {
         }
 
         virtual double value(const Vector3& direction, const Vector3& x, const bool islighthit) const override {
-            if (pdfs.size()==0) return 1.0;
+            auto N = pdfs.size();
+            if (N==0) return 1.0;
             Real sum = 0;
             bool first = true;
 
             auto matpdf_value = pdfs[0]->value(direction,x,islighthit);
-            for( auto p : pdfs) {
-                if(!first) sum += p->value(direction,x, islighthit); 
-                first= false;
+            for( int i = 1; i < N; i++) {
+                sum += pdfs[i]->value(direction,x, islighthit); 
             }
-            return (pdfs.size()==1) ? 
-                matpdf_value :
-                (matpdf_value + sum / (pdfs.size()-1.))/ 2.;
+            return (N==1) ? matpdf_value : (matpdf_value + sum / (N-1))
+                                                        / 2.;
         }
 
         virtual Vector3 generate() const override {
             auto r0 = random_real(rng);
-            int r1 = floor(r0 * 2. * (pdfs.size() - 1))+ 1;
-            int targetI = r0 < .5 ? 0 : r1;
+            auto N = pdfs.size();
+            int r1 = floor(2. * (N - 1) * r0 - (N - 2));
+            int targetI = r0 < .5 || r0 == 1? 0 : r1;
             return pdfs[targetI]->generate();
         }
 };

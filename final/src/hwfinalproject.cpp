@@ -81,26 +81,26 @@ void materialsetup(Material* material, MaterialBase& mb) {
     } 
 }
 
-pdf* sample_brdf(Material* mate, MaterialBase& mat, Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) {
+pdf* sample_pdf(Material* mate, MaterialBase& mat, Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) {
     pdf* sampled_pdf = nullptr;
     if(auto diffuse = std::get_if<Diffuse>(mate)) {
         diffuse->rec = mat.rec;
-        sampled_pdf = diffuse->sample_brdf(wi, wo, srec, rng); 
+        sampled_pdf = diffuse->sample_pdf(wi, wo, srec, rng); 
     } else if (auto mirror = std::get_if<Mirror>(mate)) {
         mirror->rec = mat.rec;
-        sampled_pdf = mirror->sample_brdf(wi, wo, srec, rng);
+        sampled_pdf = mirror->sample_pdf(wi, wo, srec, rng);
     } if(auto plastic = std::get_if<Plastic>(mate)) {
         plastic->rec = mat.rec;
-        sampled_pdf = plastic->sample_brdf(wi, wo, srec, rng);
+        sampled_pdf = plastic->sample_pdf(wi, wo, srec, rng);
     } else if (auto phong = std::get_if<Phong>(mate)) {
         phong->rec = mat.rec;
-        sampled_pdf = phong->sample_brdf(wi, wo, srec, rng);
+        sampled_pdf = phong->sample_pdf(wi, wo, srec, rng);
     } else if (auto blinn = std::get_if<BlinnPhong>(mate)) {
         blinn->rec = mat.rec;
-        sampled_pdf = blinn->sample_brdf(wi, wo, srec, rng); 
+        sampled_pdf = blinn->sample_pdf(wi, wo, srec, rng); 
     } else if (auto micro = std::get_if<BlinnPhongMicrofacet>(mate)) {
         micro->rec = mat.rec;
-        sampled_pdf = micro->sample_brdf(wi, wo, srec, rng); 
+        sampled_pdf = micro->sample_pdf(wi, wo, srec, rng); 
     }
     return sampled_pdf;
 }
@@ -140,22 +140,23 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
         }
         int dice = floor(scene.lights.size() * next_pcg32_real<Real>(rng));
         if (std::get_if<AreaLight>(&scene.lights[dice])) {
-            mix_pdf.pdfs.push_back(sample_brdf(&mate, mat, wi, wo, srec, rng));
-            Ray next_ray{p,wo,Real(.001),infinity<Real>()};
-            auto sample_intersect = intersect(scene, next_ray);
-
+            mix_pdf.pdfs.push_back(sample_pdf(&mate, mat, wi, wo, srec, rng));
             std::vector<pdf*> light_ps;
             for( auto l : scene.lights ) {
                 if(auto al = std::get_if<AreaLight>(&l)) {
                     auto p1 = new light_pdf;
-                    p1->setup(scene.shapes[al->shape_id], ray, rng);
+                    p1->setup(scene.shapes[al->shape_id], p, rng);
                     light_ps.push_back(p1);
                 } 
             }
             mix_pdf.setup(light_ps);
-            
+            wo = mix_pdf.generate();
+            Ray next_ray{p,wo,Real(.001),infinity<Real>()};
+            auto sample_intersect = intersect(scene, next_ray);
+
             if (mat.ismirror) {
                 if (srec.sampling_weight > 0) {
+                    wo = mix_pdf.pdfs[0]->generate();
                     auto m = std::get_if<Mirror>(&mate);
                     L += m->mirror_frasnel(wo, n)* 
                     srec.sampling_weight * 
@@ -200,7 +201,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         return Image3(0, 0);
     }
 
-    int max_depth = 7;
+    int max_depth = 4;
     std::string filename;
     for (int i = 0; i < (int)params.size(); i++) {
         if (params[i] == "-max_depth") {

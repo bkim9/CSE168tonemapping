@@ -27,6 +27,7 @@ inline Vector3 hemiloc(Real r1, Real z) {
     return Vector3(x,y,z);
 }
 
+// y is assumed to be a unitvector
 inline Vector3 orthonize ( Vector3 x, Vector3 y) {
     return normalize(x - dot(x,y) * y);
 }
@@ -61,17 +62,16 @@ struct Sphere : public ShapeBase {
     // cone sampling assuming center is the origin
     Vector3 random_to_sphere( Real distance_squared, Real& area, pcg32_state rng) const {
         auto r = radius;
-        // auto seed = next_pcg32_real<Real>(rng) * RAND_MAX;
-        // pcg32_state rng_ = init_pcg32(seed);
-        auto r1 = next_pcg32_real<Real>(rng);//static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        auto r2 = next_pcg32_real<Real>(rng);//static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        auto r1 = next_pcg32_real<Real>(rng);
+        auto r2 = next_pcg32_real<Real>(rng);
         auto sin_theta_max = sqrt( r * r / distance_squared );  
-        auto cone_depth = 1-sin_theta_max; // depth of icecream on a cone
+        auto cone_depth = 1-sin_theta_max; // depth of unit icecream on a cone
         auto z = 1 - r2 * cone_depth;
-        area = 2 * c_PI * cone_depth;
+        area = 2 * c_PI * cone_depth *r*r;
         return r * hemiloc(r1,z);
     }
-    // center -direction>  o
+    // x: on the sphere
+    // center -direction>  o 
     Vector3 random(const Vector3& o, Vector3& n_x, Real& area, pcg32_state rng) const {
         Vector3 direction = o - center;
         onb uvw;
@@ -111,8 +111,8 @@ struct Triangle {
     }
     Real pdf_value( const Vector3& o, const Vector3& v) const;
     
-    // input:  center of sphere
-    // output: sample point in spherical triangle in radius 1 and center being the input
+    // input:  center of sphere(c)
+    // output: sample point on spherical triangle in radius 1 and center being the input
     Vector3 random_from_sphere(const Vector3& c, pcg32_state rng ) const {
         Vector3 A = normalize(p0 - c);
         Vector3 B = normalize(p1 - c);
@@ -125,9 +125,8 @@ struct Triangle {
         Real cos_beta =  st.cosines.y;
         Real cos_gamma = st.cosines.z;
         Real cos_c = st.cos_c;
-        // pcg32_state rng_ = init_pcg32(time(NULL));
-        auto r1 = next_pcg32_real<Real>(rng);// static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        auto r2 = next_pcg32_real<Real>(rng);// static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        auto r1 = next_pcg32_real<Real>(rng);
+        auto r2 = next_pcg32_real<Real>(rng);
         
         Real area_hat = r1*st.area;
         Real cosAhat = cos(r1*area_hat);
@@ -143,6 +142,7 @@ struct Triangle {
         return z*B + sqrt(1-z*z) * orthonize(C_hat,B) + c;
     }
 
+    // x should be on the triangle
     Vector3 random(const Vector3& o, Vector3& n_x, Real& Area, pcg32_state rng) const {
         n_x = normalize(crossproduct);
         auto x = random_from_sphere(o, rng);
@@ -156,6 +156,7 @@ struct Triangle {
         // ----------------------------old version----------------------------
         auto shading_n = x - o;
         if ( dot(n_x, shading_n) < 0) n_x = -n_x;
+        
         return x;
     }
 
