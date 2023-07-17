@@ -51,9 +51,9 @@ TEST(LightPDFTests, SpherelightPdfSetupTest0) {
   EXPECT_NEAR(0, lp->p.z, 0.0001);
 }
 
-TEST(LightPDFTests, SpherelightPdfSetupTest1) {
+TEST(LightPDFTests, SpherelightPdfSetupTestP9) {
   Sphere sph;
-  sph.center = Vector3(0,0,0);
+  sph.center = Vector3(2,0,0);
   sph.radius = Real(2);
   Shape s = sph;
   pcg32_state rng = init_pcg32(time(NULL));
@@ -62,7 +62,9 @@ TEST(LightPDFTests, SpherelightPdfSetupTest1) {
   Vector3 p(1,0,0);
   lp->setup(s, p, rng);
   auto x = lp->generate();
-  EXPECT_NEAR(1, length(x), 0.0001);
+  EXPECT_NEAR(1, x.x, 0.0001);
+  EXPECT_NEAR(1, x.y, 0.0001);
+  EXPECT_NEAR(1, x.z, 0.0001);
 }
 
 

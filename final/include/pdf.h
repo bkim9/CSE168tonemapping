@@ -136,12 +136,20 @@ class light_pdf : public pdf {
             return sph? sph->pdf_value(p,normalize(x - p)):  // May 25th solved by putting islighthit x = 2.1222944121466691E-314, y = 5.215016859923639E-310, z = 5.215016859923639E-310
                         tri->pdf_value(p,normalize(x - p));
         }
+
+        // 
+        //  shape |
+        //   - x -
+        //     \.
+        //      (wo)   /
+        //          p
         virtual Vector3 generate() const override {
             Real dummyReal = Real(0);
             Vector3 dummyN{0,0,0};
             return sph? normalize(sph->random(p, dummyN, dummyReal, rng) - p): 
                         normalize(tri->random(p, dummyN, dummyReal, rng) - p);
         };
+
         const Sphere* sph;
         const Triangle* tri;
         Vector3 p;
