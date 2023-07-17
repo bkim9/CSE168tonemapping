@@ -85,7 +85,7 @@ struct MaterialBase {
     }
 
     virtual pdf* sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng);
-    virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight);
+    virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf);
 
     virtual Vector3 eval_frasnel(Vector3 w, Vector3 n) {
         auto F0 = getAlbedo();
@@ -104,7 +104,7 @@ struct Diffuse : public MaterialBase {
     ~Diffuse() {}
     virtual pdf* sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
 
-    virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) override;
+    virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf) override;
 };
 
 struct Mirror : public MaterialBase { 
@@ -116,7 +116,7 @@ struct Plastic : public MaterialBase {
     Real eta;
 
     virtual pdf* sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
-    virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) override;
+    virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf) override;
 
     Real plastic_frasnel(Vector3 wi) {
         auto n = normalize(rec->normal);
@@ -128,19 +128,19 @@ struct Plastic : public MaterialBase {
 struct Phong : public MaterialBase {
     Real exponent;
     virtual pdf* sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override ;
-    virtual Vector3 eval_brdf(Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) override;
+    virtual Vector3 eval_brdf(Vector3 wi, Vector3 wo, pdf& pdf) override;
 };
 
 struct BlinnPhong : public MaterialBase {
     Real exponent;
     virtual pdf* sample_pdf(Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
-    virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) override;
+    virtual Vector3 eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf) override;
 };
 
 struct BlinnPhongMicrofacet : public MaterialBase {
     Real exponent;
     virtual pdf* sample_pdf(Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) override;
-    virtual Vector3 eval_brdf(Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) override;
+    virtual Vector3 eval_brdf(Vector3 wi, Vector3 wo, pdf& pdf) override;
     Real D(Vector3 n, Vector3 h) {
         return (exponent + 1) / (2. * c_PI) * pow(dot(n,h),exponent);
     }

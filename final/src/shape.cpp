@@ -162,3 +162,22 @@ Real Triangle::pdf_value( const Vector3& o, const Vector3& v) const {
     auto st = spherical_triangle(A,B,C);
     return 1/st.area;
 }
+
+    // 
+    //  shape |
+    //   -(x)-
+    //     \.
+    //      wo   /
+    //        o==p
+    // x should be on the triangle
+Vector3 Triangle::random(const Vector3& o, Vector3& n_x, Real& Area, pcg32_state rng) const {
+    n_x = normalize(crossproduct);
+    auto x = random_from_sphere(o, rng);
+    if( auto intsec = intersect(*this, Ray{o, x-o, Real(.001),infinity<Real>()})) {
+        x = intsec->position;
+    } else {
+        x= Vector3(0,0,0);
+    }
+    if ( dot(n_x, o - x) < 0) n_x = -n_x;
+    return x;
+}

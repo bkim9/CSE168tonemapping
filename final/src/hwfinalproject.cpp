@@ -105,18 +105,18 @@ pdf* sample_pdf(Material* mate, MaterialBase& mat, Vector3 wi, Vector3& wo, scat
     return sampled_pdf;
 }
 
-Vector3 eval_brdf(Material* mate, MaterialBase& mat, Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) {
+Vector3 eval_brdf(Material* mate, MaterialBase& mat, Vector3 wi, Vector3 wo, pdf& pdf) {
     Vector3 brdf_value{0.,0.,0.};
     if(auto diffuse = std::get_if<Diffuse>(mate)) {
-        brdf_value = diffuse->eval_brdf(wi, wo, pdf, nexthitlight);
+        brdf_value = diffuse->eval_brdf(wi, wo, pdf);
     } else if(auto plastic = std::get_if<Plastic>(mate)) {
-        brdf_value = plastic->eval_brdf(wi, wo, pdf, nexthitlight);
+        brdf_value = plastic->eval_brdf(wi, wo, pdf);
     } else if (auto phong = std::get_if<Phong>(mate)) {
-        brdf_value = phong->eval_brdf(wi, wo, pdf, nexthitlight);
+        brdf_value = phong->eval_brdf(wi, wo, pdf);
     } else if (auto blinn = std::get_if<BlinnPhong>(mate)) { 
-        brdf_value = blinn->eval_brdf(wi, wo, pdf, nexthitlight);
+        brdf_value = blinn->eval_brdf(wi, wo, pdf);
     } else if (auto micro = std::get_if<BlinnPhongMicrofacet>(mate)) {
-        brdf_value = micro->eval_brdf(wi, wo, pdf, nexthitlight);
+        brdf_value = micro->eval_brdf(wi, wo, pdf);
     }
     return brdf_value;
 }
@@ -163,9 +163,9 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
                     radiance(scene, next_ray, rng, depth - 1);
                 }
             } else {
-                bool nexthitlight = sample_intersect && sample_intersect->area_light_id != -1;
-                Real pdf_value = mix_pdf.value(wo,sample_intersect->position, nexthitlight); // 8.6580953675294765 -> 0.014474071966940219
-                Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, nexthitlight); 
+                // bool nexthitlight = sample_intersect && sample_intersect->area_light_id != -1;
+                Real pdf_value = mix_pdf.value(wo); // 8.6580953675294765 -> 0.014474071966940219
+                Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf); 
                 if ( brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
                     L += (brdf_value / pdf_value) * radiance(scene, next_ray, rng, depth - 1); 
                 }
@@ -173,7 +173,8 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
         } else if (auto pl = std::get_if<PointLight>(&scene.lights[dice])) {
             wo = normalize(pl->position - p);
             Ray next_ray{p,wo,Real(.001),infinity<Real>()};
-            Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, true); 
+            Real pdf_value = mix_pdf.value(wo);
+            Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf); 
             if (mat.ismirror) {
                 auto m = std::get_if<Mirror>(&mate);
                 L += m->mirror_frasnel(wo, n)* 
@@ -181,8 +182,6 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
             } else {                    
                 Vector3 l = pl->position - p;
                 Ray shadow_ray{p, normalize(l), Real(1e-4), (1 - Real(1e-4)) * length(l)};
-                Real pdf_value = mix_pdf.value(wo,pl->position, true); // 8.6580953675294765 -> 0.014474071966940219
-                Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, true); 
                 if ( !occluded(scene, shadow_ray) && brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
                     L += (brdf_value / pdf_value) * pl->intensity/distance_squared(pl->position, p) * fmax(0,dot(n,wo)); 
                 }
@@ -201,7 +200,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         return Image3(0, 0);
     }
 
-    int max_depth = 4;
+    int max_depth = 20;
     std::string filename;
     for (int i = 0; i < (int)params.size(); i++) {
         if (params[i] == "-max_depth") {

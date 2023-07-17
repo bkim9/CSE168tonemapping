@@ -583,7 +583,7 @@ namespace Math_tools{
     typedef float        real_type;
     typedef unsigned int size_type;
     
-    typedef Index real_index_type;
+    // typedef Index real_index_type;
     typedef Array array_type;
 
     const size_type N = array_type::dimension;
@@ -667,7 +667,7 @@ namespace Math_tools{
     typedef float        real_type;
     typedef unsigned int size_type;
     
-    typedef Index real_index_type;
+    // typedef Index real_index_type;
     typedef Array array_type;
 
     const size_type N = array_type::dimension;
@@ -786,7 +786,7 @@ namespace Math_tools{
     typedef float        real_type;
     typedef unsigned int size_type;
     
-    typedef Index real_index_type;
+    // typedef Index real_index_type;
     typedef Array array_type;
 
     const size_type N = array_type::dimension;

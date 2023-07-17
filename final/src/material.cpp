@@ -5,7 +5,7 @@ pdf* MaterialBase::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pc
     return sampled_pdf; // for mirror
 }
 
-Vector3 MaterialBase::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) {
+Vector3 MaterialBase::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf) {
     Vector3 brdf_value{0.,0.,0.};
     return brdf_value;
 }
@@ -17,9 +17,9 @@ pdf* Diffuse::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_s
     return cosinep;
 }
 
-Vector3 Diffuse::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) {
+Vector3 Diffuse::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf) {
     auto p = rec->position;
-    return getAlbedo() * pdf.value(wo,p,nexthitlight);
+    return getAlbedo() * pdf.value(wo);
 }
 
 pdf* Mirror::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng)  {
@@ -42,9 +42,9 @@ pdf* Plastic::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_s
     return cosinep;
 }
 
-Vector3 Plastic::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight)  {
+Vector3 Plastic::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf)  {
     auto p = rec->position;
-    return getAlbedo() * pdf.value(wo,p, nexthitlight);
+    return getAlbedo() * pdf.value(wo);
 }
 
 pdf* Phong::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) {
@@ -54,7 +54,7 @@ pdf* Phong::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_sta
     return new phong_pdf(r, exponent, rng);
 }
 
-Vector3 Phong::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight)  {
+Vector3 Phong::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf)  {
     auto n = rec->normal;
     auto r = -wi + 2 * dot(wi, n) * n;
     return dot(n,wo) <= 0 ? Vector3(0,0,0) : getAlbedo() * (exponent + 1) / (2.0 * c_PI) * pow(max(dot(r, wo),Real(0)), exponent) ;
@@ -68,7 +68,7 @@ pdf* BlinnPhong::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg3
     return blinnp;
 }
 
-Vector3 BlinnPhong::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight)  {
+Vector3 BlinnPhong::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf)  {
     auto n = rec->normal;
     auto h = normalize((wi + wo) / 2.);
     auto F_h = eval_frasnel(wo,h);
@@ -86,7 +86,7 @@ pdf* BlinnPhongMicrofacet::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& 
     return blinnp;
 }
 
-Vector3 BlinnPhongMicrofacet::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight)  {
+Vector3 BlinnPhongMicrofacet::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf)  {
     auto n = rec->normal;
     auto h = normalize((wi + wo) / 2.);
     auto F_h = eval_frasnel(wo,h);

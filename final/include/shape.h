@@ -51,8 +51,14 @@ struct Sphere : public ShapeBase {
     Vector3 center;
     Real radius;
 
+    // 
+    //  shape )
+    //   - x -
+    //      \.
+    //     (-v==wo-) <-- solid angle  
+    //          o==p
     // cone sampling pdf
-    Real pdf_value( const Vector3& o, const Vector3& v) const {
+    Real pdf_value( const Vector3& o, const Vector3& wo) const {
         auto r = radius;
         auto sine_theta_max_squaured = r * r / length_squared(center - o); 
         auto cos_theta_max = sqrt(1 - sine_theta_max_squaured);
@@ -66,8 +72,13 @@ struct Sphere : public ShapeBase {
         auto r2 = next_pcg32_real<Real>(rng);
         auto sin_theta_max = sqrt( r * r / distance_squared );  
         auto cone_depth = 1-sin_theta_max; // depth of unit icecream on a cone
-        auto z = 1 - r2 * cone_depth;
-        area = 2 * c_PI * cone_depth *r*r;
+        auto z = 1 - 2*r2;
+        if ( cone_depth > 0) {
+            auto z = 1 - r2 * cone_depth;
+            area = 2 * c_PI * cone_depth *r*r;
+        } else {
+            area = 4 * c_PI * r * r;
+        }
         return r * hemiloc(r1,z);
     }
     // x: on the sphere
@@ -142,23 +153,14 @@ struct Triangle {
         return z*B + sqrt(1-z*z) * orthonize(C_hat,B) + c;
     }
 
+    // 
+    //  shape |
+    //   -(x)-
+    //     \.
+    //      wo   /
+    //        o==p
     // x should be on the triangle
-    Vector3 random(const Vector3& o, Vector3& n_x, Real& Area, pcg32_state rng) const {
-        n_x = normalize(crossproduct);
-        auto x = random_from_sphere(o, rng);
-        // ----------------------------old version----------------------------
-        // auto u1 = next_pcg32_real<Real>(rng);
-        // auto u2 = next_pcg32_real<Real>(rng);
-        // auto b1 = 1 - sqrt(u1);
-        // auto b2 = u2 * sqrt(u1);
-        // Area = length(crossproduct) / 2.0;
-        // auto x = (1 - b1 - b2) * p0 + b1 * p1 + b2 * p2;
-        // ----------------------------old version----------------------------
-        auto shading_n = x - o;
-        if ( dot(n_x, shading_n) < 0) n_x = -n_x;
-        
-        return x;
-    }
+    Vector3 random(const Vector3& o, Vector3& n_x, Real& Area, pcg32_state rng) const ;
 
 
 };

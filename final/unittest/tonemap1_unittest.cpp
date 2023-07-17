@@ -83,7 +83,7 @@ TEST(ToneMap1Tests, V_iTest0) {
   }    
   }
   log_tone( img );
-  int i = 1;
+  // int i = 1;
   int x = width/2;
   int y = height/2;
   Real s = 2;
