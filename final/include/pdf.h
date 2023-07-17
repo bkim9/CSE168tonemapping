@@ -135,7 +135,6 @@ class light_pdf : public pdf {
         
         // direction: wo
         virtual double value(const Vector3& direction) const override {
-            // if (!islighthit) return 1.; // 0 is too hard for it?
             return sph? sph->pdf_value(p,direction):  // May 25th solved by putting islighthit x = 2.1222944121466691E-314, y = 5.215016859923639E-310, z = 5.215016859923639E-310
                         tri->pdf_value(p,direction);
         }
