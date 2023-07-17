@@ -51,8 +51,14 @@ struct Sphere : public ShapeBase {
     Vector3 center;
     Real radius;
 
+    // 
+    //  shape )
+    //   - x -
+    //      \.
+    //     (-v==wo-) <-- solid angle  
+    //          o==p
     // cone sampling pdf
-    Real pdf_value( const Vector3& o, const Vector3& v) const {
+    Real pdf_value( const Vector3& o, const Vector3& wo) const {
         auto r = radius;
         auto sine_theta_max_squaured = r * r / length_squared(center - o); 
         auto cos_theta_max = sqrt(1 - sine_theta_max_squaured);

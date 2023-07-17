@@ -19,7 +19,7 @@ pdf* Diffuse::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_s
 
 Vector3 Diffuse::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) {
     auto p = rec->position;
-    return getAlbedo() * pdf.value(wo,p,nexthitlight);
+    return getAlbedo() * pdf.value(wo);
 }
 
 pdf* Mirror::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng)  {
@@ -44,7 +44,7 @@ pdf* Plastic::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_s
 
 Vector3 Plastic::eval_brdf( Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight)  {
     auto p = rec->position;
-    return getAlbedo() * pdf.value(wo,p, nexthitlight);
+    return getAlbedo() * pdf.value(wo);
 }
 
 pdf* Phong::sample_pdf( Vector3 wi, Vector3& wo, scatter_record& srec, pcg32_state rng) {

@@ -17,7 +17,7 @@ TEST(PDFTests, CosPdfValueTest0) {
   cosine_pdf* cosPdf = new cosine_pdf(n,rng);  
 
   Vector3 wo(1,0,0);
-  auto val = cosPdf->value(wo, wo, true);
+  auto val = cosPdf->value(wo);
   
   EXPECT_NEAR(0, val, 0.0001);
 }
@@ -28,7 +28,7 @@ TEST(PDFTests, CosPdfValueTest1) {
   cosine_pdf* cosPdf = new cosine_pdf(n,rng);  
 
   Vector3 wo(.0,sqrt(3)/2.,.5);
-  auto val = cosPdf->value(wo, wo, true);
+  auto val = cosPdf->value(wo);
   
   EXPECT_NEAR(.5/c_PI, val, 0.0001);
 }
@@ -51,7 +51,7 @@ TEST(LightPDFTests, SpherelightPdfSetupTest0) {
   EXPECT_NEAR(0, lp->p.z, 0.0001);
 }
 
-TEST(LightPDFTests, SpherelightPdfSetupTestP9) {
+TEST(LightPDFTests, SpherelightPdfGenerateTestP9) {
   Sphere sph;
   sph.center = Vector3(2,0,0);
   sph.radius = Real(2);
@@ -61,12 +61,40 @@ TEST(LightPDFTests, SpherelightPdfSetupTestP9) {
   light_pdf* lp = new light_pdf;
   Vector3 p(1,0,0);
   lp->setup(s, p, rng);
-  auto x = lp->generate();
-  EXPECT_NEAR(1, x.x, 0.0001);
-  EXPECT_NEAR(1, x.y, 0.0001);
-  EXPECT_NEAR(1, x.z, 0.0001);
+  auto wo = lp->generate();
+  EXPECT_NEAR(1, length(wo), 0.0001);
 }
 
+TEST(LightPDFTests, SpherelightPdfGenerateTestP10) {
+  Sphere sph;
+  sph.center = Vector3(2,0,0);
+  sph.radius = Real(2);
+  Shape s = sph;
+  pcg32_state rng = init_pcg32(time(NULL));
+
+  light_pdf* lp = new light_pdf;
+  Vector3 p(-1,0,0);
+  lp->setup(s, p, rng);
+  auto wo = lp->generate();
+  EXPECT_NEAR(1, length(wo), 0.0001);
+  EXPECT_TRUE(sqrt(5)/3. < wo.x);
+}
+
+TEST(LightPDFTests, SpherelightPdfVauleTestP9) {
+  Sphere sph;
+  sph.center = Vector3(2,0,0);
+  sph.radius = Real(2);
+  Shape s = sph;
+  pcg32_state rng = init_pcg32(time(NULL));
+
+  light_pdf* lp = new light_pdf;
+  Vector3 p(1,0,0);
+  lp->setup(s, p, rng);
+  auto wo = lp->generate();
+
+  lp->value(wo);
+  EXPECT_NEAR(1, length(wo), 0.0001);
+}
 
 // TEST(hemilocTests, hemilocTest0) {
 //   Real r1 = 0;
