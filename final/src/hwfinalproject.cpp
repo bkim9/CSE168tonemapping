@@ -173,6 +173,7 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
         } else if (auto pl = std::get_if<PointLight>(&scene.lights[dice])) {
             wo = normalize(pl->position - p);
             Ray next_ray{p,wo,Real(.001),infinity<Real>()};
+            Real pdf_value = mix_pdf.value(wo);
             Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf); 
             if (mat.ismirror) {
                 auto m = std::get_if<Mirror>(&mate);
@@ -181,8 +182,6 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
             } else {                    
                 Vector3 l = pl->position - p;
                 Ray shadow_ray{p, normalize(l), Real(1e-4), (1 - Real(1e-4)) * length(l)};
-                Real pdf_value = mix_pdf.value(wo); // 8.6580953675294765 -> 0.014474071966940219
-                Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf); 
                 if ( !occluded(scene, shadow_ray) && brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
                     L += (brdf_value / pdf_value) * pl->intensity/distance_squared(pl->position, p) * fmax(0,dot(n,wo)); 
                 }
@@ -201,7 +200,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         return Image3(0, 0);
     }
 
-    int max_depth = 50;
+    int max_depth = 20;
     std::string filename;
     for (int i = 0; i < (int)params.size(); i++) {
         if (params[i] == "-max_depth") {
