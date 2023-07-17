@@ -105,18 +105,18 @@ pdf* sample_pdf(Material* mate, MaterialBase& mat, Vector3 wi, Vector3& wo, scat
     return sampled_pdf;
 }
 
-Vector3 eval_brdf(Material* mate, MaterialBase& mat, Vector3 wi, Vector3 wo, pdf& pdf, bool nexthitlight) {
+Vector3 eval_brdf(Material* mate, MaterialBase& mat, Vector3 wi, Vector3 wo, pdf& pdf) {
     Vector3 brdf_value{0.,0.,0.};
     if(auto diffuse = std::get_if<Diffuse>(mate)) {
-        brdf_value = diffuse->eval_brdf(wi, wo, pdf, nexthitlight);
+        brdf_value = diffuse->eval_brdf(wi, wo, pdf);
     } else if(auto plastic = std::get_if<Plastic>(mate)) {
-        brdf_value = plastic->eval_brdf(wi, wo, pdf, nexthitlight);
+        brdf_value = plastic->eval_brdf(wi, wo, pdf);
     } else if (auto phong = std::get_if<Phong>(mate)) {
-        brdf_value = phong->eval_brdf(wi, wo, pdf, nexthitlight);
+        brdf_value = phong->eval_brdf(wi, wo, pdf);
     } else if (auto blinn = std::get_if<BlinnPhong>(mate)) { 
-        brdf_value = blinn->eval_brdf(wi, wo, pdf, nexthitlight);
+        brdf_value = blinn->eval_brdf(wi, wo, pdf);
     } else if (auto micro = std::get_if<BlinnPhongMicrofacet>(mate)) {
-        brdf_value = micro->eval_brdf(wi, wo, pdf, nexthitlight);
+        brdf_value = micro->eval_brdf(wi, wo, pdf);
     }
     return brdf_value;
 }
@@ -163,9 +163,9 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
                     radiance(scene, next_ray, rng, depth - 1);
                 }
             } else {
-                bool nexthitlight = sample_intersect && sample_intersect->area_light_id != -1;
+                // bool nexthitlight = sample_intersect && sample_intersect->area_light_id != -1;
                 Real pdf_value = mix_pdf.value(wo); // 8.6580953675294765 -> 0.014474071966940219
-                Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf, nexthitlight); 
+                Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf); 
                 if ( brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
                     L += (brdf_value / pdf_value) * radiance(scene, next_ray, rng, depth - 1); 
                 }
