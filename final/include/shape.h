@@ -68,6 +68,7 @@ struct Sphere : public ShapeBase {
     // cone sampling assuming center is the origin
     Vector3 random_to_sphere( Real distance_squared, Real& area, pcg32_state rng) const {
         auto r = radius;
+        rng = init_pcg32(time(NULL));
         auto r1 = next_pcg32_real<Real>(rng);
         auto r2 = next_pcg32_real<Real>(rng);
         auto sin_theta_max = sqrt( r * r / distance_squared );  

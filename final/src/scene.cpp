@@ -35,15 +35,15 @@ Scene::Scene(const ParsedScene &scene) :
                 triangle.setup();
                 shapes.push_back(triangle);
 
-                if( face_index % 10000 == 0 )
-                    std::cout<< "   working on face_index: " << face_index  << "/" << (int)parsed_mesh->indices.size()<< std::endl;
+                // if( face_index % 10000 == 0 )
+                    // std::cout<< "   working on face_index: " << face_index  << "/" << (int)parsed_mesh->indices.size()<< std::endl;
             }
-            std::cout<< "working on tri [ " << tri_mesh_count << " ]" << std::endl;
+            // std::cout<< "working on tri [ " << tri_mesh_count << " ]" << std::endl;
             tri_mesh_count++;
         } else {
             assert(false);
         }
-        std::cout<< "working on shape [ " << i << " ]" << std::endl;
+        // std::cout<< "working on shape [ " << i << " ]" << std::endl;
     }
 
     std::cout << "extracting shapes done "<< std::endl;

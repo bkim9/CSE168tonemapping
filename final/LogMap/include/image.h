@@ -47,6 +47,7 @@ using Image3 = Image<Vector3>;
 /// single channel, the first channel is used.
 /// Supported formats: JPG, PNG, TGA, BMP, PSD, GIF, HDR, PIC
 Image1 imread1(const fs::path &filename);
+
 /// Read from a 3 channels image. 
 /// If the image only has 1 channel, we set all 3 channels to the same color.
 /// If the image has more than 3 channels, we truncate it to 3.

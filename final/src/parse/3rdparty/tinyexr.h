@@ -8382,6 +8382,14 @@ int LoadEXRMultipartImageFromFile(EXRImage *exr_images,
                                          &buf.at(0), filesize, err);
 }
 
+
+//  int ret = SaveEXR(
+//             (float*)data.data(),
+//             image.width, image.height, 
+//              3 /* components*/, 
+//              1 /* write as fp16 */, 
+//              filename.c_str(), 
+//              &err);
 int SaveEXR(const float *data, int width, int height, int components,
             const int save_as_fp16, const char *outfilename, const char **err) {
   if ((components == 1) || components == 3 || components == 4) {
@@ -8407,7 +8415,7 @@ int SaveEXR(const float *data, int width, int height, int components,
   EXRImage image;
   InitEXRImage(&image);
 
-  image.num_channels = components;
+  image.num_channels = components; // 3 rgb
 
   std::vector<float> images[4];
 
