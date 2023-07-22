@@ -1,7 +1,5 @@
 #include "hwfinalproject.h"
-#include "image.h"
-#include "parallel.h"
-#include <vector>
+
 #include <string>
 #include <thread>
 

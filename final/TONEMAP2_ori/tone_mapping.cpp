@@ -1,7 +1,7 @@
 /*! \file
   \verbatim
   
-    Copyright (c) 2006, Sylvain Paris and Frédo Durand
+    Copyright (c) 2006, Sylvain Paris and Frï¿½do Durand
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation
@@ -54,7 +54,6 @@ inline double log_function(const double x){
 
 
 inline double exp_function(const double x){
-
   return pow(10.0,x);
 }
 
@@ -119,7 +118,7 @@ int main(int argc,char** argv){
   // ##############################################################
   
   
-  cout<<"Filter the log-intensity channel... "<<flush;
+  cout<<"(d) Filter the log-intensity channel... "<<flush;
 
   channel_type filtered_log_intensity_channel(width,height);
 
@@ -139,7 +138,7 @@ int main(int argc,char** argv){
   // ##############################################################
   
   
-  cout<<"Compute the detail channel... "<<flush;
+  cout<<"(e) Compute the detail channel... "<<flush;
 
   channel_type detail_channel(width,height);
 

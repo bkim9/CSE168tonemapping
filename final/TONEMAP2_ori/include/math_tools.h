@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
  *  This file contains code made by Sylvain Paris under supervision of
- * Franï¿½ois Sillion for his PhD work with <a
+ * François Sillion for his PhD work with <a
  * href="http://www-artis.imag.fr">ARTIS project</a>. ARTIS is a
  * research project in the GRAVIR/IMAG laboratory, a joint unit of
  * CNRS, INPG, INRIA and UJF.
@@ -71,9 +71,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "msg_stream.h"
 
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+
 
 namespace Math_tools{
 
@@ -422,9 +420,9 @@ namespace Math_tools{
   inline
   typename Array::value_type
   trilinear_interpolation(const Array& array,
-                          const Real x,
-                          const Real y,
-                          const Real z){
+			  const Real x,
+			  const Real y,
+			  const Real z){
 
     typedef unsigned int size_type;
     typedef float        real_type;

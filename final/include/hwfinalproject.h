@@ -15,8 +15,8 @@
 #include <optional>
 #include "image.h"
 #include "../TONEMAP1/include/tonemap1.h"
-#include "color_bilateral_filter.h"
-#include "bilateral_filter.h"
+// #include "color_bilateral_filter.h"
+#include "../TONEMAP2/include/tonemapping2.h"
 #include "log_tone.h"
 #include <fstream>
 #include <iostream>

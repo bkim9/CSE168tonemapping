@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
-# set(CMAKE_BUILD_TYPE Debug)   
+set(CMAKE_BUILD_TYPE Debug)    
 
 if(MSVC)
   add_compile_options(/Wall)
@@ -19,8 +19,8 @@ endif()
 
 add_subdirectory(src/parse)
 add_subdirectory(TONEMAP1)
-add_subdirectory(BILATERAL_FILTER)
 add_subdirectory(COLOR_BILATERAL_FILTER)
+add_subdirectory(TONEMAP2)
 add_subdirectory(LogMap)
 
 set(SRCS src/bvh.cpp
@@ -46,8 +46,8 @@ target_include_directories(torrey_lib PUBLIC include)
 
 target_link_libraries(torrey_lib 
   ToneMap1
-  BilateralFilter 
   ColorBilateralFilter 
+  ToneMap2
   LogMap 
   parse_lib) 
 
@@ -82,21 +82,21 @@ gtest_discover_tests(testshape)
 add_test(shape_test testshape)
 
 
-# tonemap1 test
-add_executable( testtone1
-                unittest/tonemap1_unittest.cpp
+# tonemap tests
+add_executable( testtone
+                unittest/tonemap_unittest.cpp
 )
 
-target_include_directories(testtone1 PUBLIC TONEMAP1/include)
-target_link_libraries(testtone1 PRIVATE torrey_lib GTest::gtest_main)
-target_compile_options(testtone1 PRIVATE ${GTEST_CFLAGS})
+target_include_directories(testtone PUBLIC TONEMAP1/include)
+target_link_libraries(testtone PRIVATE torrey_lib GTest::gtest_main)
+target_compile_options(testtone PRIVATE ${GTEST_CFLAGS})
 
 
 # include(GoogleTest)
-gtest_discover_tests(testtone1)
+gtest_discover_tests(testtone)
 
 
-add_test(shape_test testtone1)
+add_test(shape_test testtone)
 
 # # radiance test
 add_executable( testradiance

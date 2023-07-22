@@ -5,25 +5,34 @@
  * Frederic Drago
  * Cleaned up May 16 2003
 */  
-#include "logmapping.h"
+  
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#include "tone_main.h"
+  
+#define LOG05 -0.693147		// log(0.5) 
+#define LOG2 0.693147
+#define E 2.718281828
 
 double
-bias (double b, double x) {
+bias (double b, double x) 
+{
   return pow (x, b);		// pow(x, log(bias)/log(0.5)
 }
 
-
-// out log_scene:: SCENE*
-void logmapping (SCENE * log_scene, 
-			int width, 
-			int height, 
-			double Lum_max,
-			double Lum_min, 
-			float world_lum, 
-			float biasParam,
-			float contParam,
-			float exposure,
-			float white)
+void
+logmapping (SCENE * scene, 
+		int width, 
+		int height, 
+		double Lum_max,
+	    double Lum_min, 
+		float world_lum, 
+		float biasParam,
+		float contParam,
+		float exposure,
+		float white)
 {
   double Lmax, divider, av_lum, interpol, biasP, contP;
   int x, y, i, j, index;
@@ -61,15 +70,15 @@ void logmapping (SCENE * log_scene,
 	    // inverse gamma function to enhance contrast
 		// Not in paper
 		if (contParam) 
-	      log_scene[index].r = pow(log_scene[index].r, contP); 
+	      scene[index].r = pow(scene[index].r, contP); 
 		
-	    log_scene[index].r /= av_lum;
+	    scene[index].r /= av_lum;
 		if (exposure != 1.0)
-   	      log_scene[index].r *= exposure;
+   	      scene[index].r *= exposure;
 		
-	    interpol = log (2 + bias(biasP, log_scene[index].r / Lmax) * 8);
+	    interpol = log (2 + bias(biasP, scene[index].r / Lmax) * 8);
 	    
-		log_scene[index].r = ((log (log_scene[index].r+1)/interpol)/divider);
+		scene[index].r = ((log (scene[index].r+1)/interpol)/divider);
 	  }
   }
   
@@ -85,41 +94,42 @@ void logmapping (SCENE * log_scene,
 	    Average = 0.;
 	    for (i=0; i<3; i++)
 	      for (j=0; j<3; j++) {
-		    log_scene[(x+i)*ncols+y+j].r /= av_lum;
+		    scene[(x+i)*ncols+y+j].r /= av_lum;
 			if (exposure != 1.)
-		      log_scene[(x+i)*ncols+y+j].r*= exposure; 
-		    Average += log_scene[(x+i)*ncols+y+j].r;
+		      scene[(x+i)*ncols+y+j].r*= exposure; 
+		    Average += scene[(x+i)*ncols+y+j].r;
 		  }
-	    Average = Average / 9 - log_scene[x*ncols+y].r;
+	    Average = Average / 9 - scene[x*ncols+y].r;
 	    if (Average > -1 && Average < 1) {
 		  interpol = 
-			  log(2+pow(log_scene[(x+1)*ncols+y+1].r/Lmax, biasP)*8);
+			  log(2+pow(scene[(x+1)*ncols+y+1].r/Lmax, biasP)*8);
 		  for (i=0; i<3; i++)
 		    for (j=0; j<3; j++) {
 			  index = (x+i)*ncols+y+j;
-              if (log_scene[index].r < 1) {
-                L = log_scene[index].r*(6+log_scene[index].r)/(6+4*log_scene[index].r);
-                log_scene[index].r = (L/interpol) / divider;
+              if (scene[index].r < 1) {
+                L = scene[index].r*(6+scene[index].r)/(6+4*scene[index].r);
+                scene[index].r = (L/interpol) / divider;
               }
-              else if ( log_scene[index].r >= 1 && log_scene[index].r < 2) {
-                L = log_scene[index].r*(6+0.7662*log_scene[index].r)/
-                    (5.9897+3.7658*log_scene[index].r);
-	            log_scene[index].r = (L/interpol) / divider;
+              else if ( scene[index].r >= 1 && scene[index].r < 2) {
+                L = scene[index].r*(6+0.7662*scene[index].r)/
+                    (5.9897+3.7658*scene[index].r);
+	            scene[index].r = (L/interpol) / divider;
 	          }
 	          else
-			  log_scene[index].r = 
-			      (log (log_scene[index].r + 1)/interpol)/divider;
+			  scene[index].r = 
+			      (log (scene[index].r + 1)/interpol)/divider;
 		    }
 	    }
 	    else {
 		  for (i=0; i<3; i++)
 		    for (j=0; j<3; j++) {
 		      interpol =
-			      log(2+pow(log_scene[(x+i)*ncols+y+j].r/Lmax, biasP)*8);
-		      log_scene[(x+i)*ncols+y+j].r =
-			      (log(log_scene[(x+i)*ncols+y+j].r+1)/interpol)/divider;
+			      log(2+pow(scene[(x+i)*ncols+y+j].r/Lmax, biasP)*8);
+		      scene[(x+i)*ncols+y+j].r =
+			      (log(scene[(x+i)*ncols+y+j].r+1)/interpol)/divider;
 			}
 		}
 	  } //y
-  } // else  
+  } // else
+  
 }

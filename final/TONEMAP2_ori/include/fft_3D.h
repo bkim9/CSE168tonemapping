@@ -1,7 +1,7 @@
 /*! \file
   \verbatim
   
-    Copyright (c) 2006, Sylvain Paris and Frï¿½do Durand
+    Copyright (c) 2006, Sylvain Paris and Frédo Durand
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation
@@ -25,7 +25,6 @@
 
   \endverbatim
 */
-
 
 #ifndef __FFT_3D__
 #define __FFT_3D__

@@ -30,27 +30,34 @@
 
 using namespace std;
 
-typedef Array_2D<double> image_type;
+void Image1toimage_type (Image1& img, image_type& image) {
+    for( int i =0; i < img.width ; i++ ){
+    for( int j = 0; j< img.height; j++ ) {
+        image(i,j) = img(i,j);
+    }
+    }    
+}
+
+void image_typetoImage1 (image_type& image, Image1& img) {
+    for( int i =0; i < img.width ; i++ ){
+    for( int j = 0; j< img.height; j++ ) {
+        img(i,j) = image(i,j);
+    }
+    }    
+}
 
 
-void bilateralFilter( Image3& img,
+
+void bilateralFilter( Image1& img,
                       double sigma_s,
                       double sigma_r,
-                      double sampling_s,
-                      double sampling_r) {
+                      Image1& imgF) {
 
   unsigned width = img.width;
   unsigned height= img.height;
 
   image_type image(width,height);
-
-  // Image3 -> image_type
-  for(unsigned y=0;y<height;y++){
-    for(unsigned x=0;x<width;x++){
-      auto lum = dot(Vector3(.27,.67,.06), img(x,y));
-      image(x,y) = static_cast<double>(lum);
-    }
-  }
+  Image1toimage_type(img, image);
   
     cout<<"spatial parameters (measured in pixels)"<<endl;
     cout<<"---------------------------------------"<<endl;
@@ -67,8 +74,6 @@ void bilateralFilter( Image3& img,
 
   cout<<"sigma_s    = "<<sigma_s<<"\n";
   cout<<"sigma_r    = "<<sigma_r<<"\n";
-  cout<<"sampling_s = "<<sampling_s<<"\n";
-  cout<<"sampling_r = "<<sampling_r<<"\n"<<flush;
   
   // ##############################################################
   
@@ -80,17 +85,12 @@ void bilateralFilter( Image3& img,
  
   Image_filter::linear_BF(image,
                           sigma_s,sigma_r,
-                          sampling_s,sampling_r,
+                          sigma_s,sigma_r,
                           &filtered_image);
     
   cout<<"Filtering done"<<endl;
 
   // ##############################################################
-  // image_type -> Image3
-  for(int y=0;y<height;y++){    
-    for(int x=0;x<width;x++){
-      double lum = filtered_image(x,y)/ image(x,y);
-      img(x,y) *= std::clamp(lum,0.0,1.0) ;
-    }
-  }
+  // image_type -> Image1
+  image_typetoImage1(filtered_image,imgF);
 }

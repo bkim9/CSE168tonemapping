@@ -4,6 +4,11 @@ add_library(BilateralFilter STATIC bilateral_filter.cpp)
 target_include_directories(BilateralFilter PUBLIC include include/fft_3D)
 target_link_libraries(BilateralFilter PUBLIC fft3d)
 
+add_library(ToneMap2 STATIC tonemapping2.cpp)
+# target_include_directories(ToneMap2 PUBLIC include)
+target_link_libraries(ToneMap2 PUBLIC BilateralFilter)
+
+
 include(FetchContent)
 FetchContent_Declare(
     googletest
@@ -15,7 +20,7 @@ add_executable( testapp
 
 target_include_directories(testapp PUBLIC include)
 
-target_link_libraries(testapp PRIVATE BilateralFilter GTest::gtest_main)
+target_link_libraries(testapp PRIVATE ToneMap2 GTest::gtest_main)
 target_compile_options(testapp PRIVATE ${GTEST_CFLAGS})
 
 enable_testing()

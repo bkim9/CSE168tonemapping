@@ -1,4 +1,4 @@
-#     Copyright (c) 2006, Sylvain Paris and Frédo Durand
+#     Copyright (c) 2006, Sylvain Paris and Frï¿½do Durand
 
 #     Permission is hereby granted, free of charge, to any person
 #     obtaining a copy of this software and associated documentation
@@ -23,14 +23,9 @@
 
 
 
-# OpenEXR section. You may need to change EXR_INCDIR and EXR_LIBDIR.
-EXR_INCDIR = -I/usr/include/OpenEXR
-EXR_LIBDIR = 
-EXR_LIBS   = $(EXR_LIBDIR) -lIlmImf -lImath -lHalf -lIex -lz
-
 # FFTW section. You may need to change FFTW_INCDIR and FFTW_LIBDIR.
-FFTW_INCDIR = 
-FFTW_LIBDIR = 
+# FFTW_INCDIR = 
+# FFTW_LIBDIR = 
 FFTW_LIBS   = $(FFTW_LIBDIR) -lfftw3
 
 
@@ -43,12 +38,11 @@ FFTW_LIBS   = $(FFTW_LIBDIR) -lfftw3
 
 
 # General section
-INCDIR    = -I. -Ifft_3D -Iinclude $(EXR_INCDIR) $(FFTW_INCDIR)
-LIBDIR	  = 
-LIBS      = $(LIBDIR) $(EXR_LIBS) $(FFTW_LIBS) -lm
-OBJECTS   = tone_mapping.o fft_3D/fft_3D.o
-TARGET    = tone_mapping
-
+INCDIR	= -I. -Ifft_3D -Iinclude $(FFTW_INCDIR)
+LIBDIR	= -Lfft_3D
+LIBS	= $(LIBDIR) $(FFTW_LIBS) -lm
+OBJECTS	= bilateral_filter.o fft_3D/fft_3D.o
+TARGET	= bilateral_filter
 
 # Command section
 CC	= g++
@@ -64,10 +58,10 @@ clean:
 	$(RM) $(OBJECTS)
 	$(RM) $(TARGET)
 	cd fft_3D && $(MAKE) clean
-
+	
 # File rules
-tone_mapping.o: tone_mapping.cpp
-	$(CC) tone_mapping.cpp -c -o tone_mapping.o $(INCDIR)
+bilateral_filter.o: bilateral_filter.cpp
+	$(CC) bilateral_filter.cpp -c -o bilateral_filter.o $(INCDIR)
 
 fft_3D/fft_3D.o:
 	cd fft_3D && $(MAKE)

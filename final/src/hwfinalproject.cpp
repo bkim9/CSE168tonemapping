@@ -289,9 +289,6 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
     }, Vector2i(num_tiles_x, num_tiles_y));
 
 
-
-
-
     reporter.done();
     std::cout << "Rendering done. Took " << tick(timer) << " seconds." << std::endl;
 
@@ -310,12 +307,10 @@ Image3 hw_fin_1(const std::vector<std::string> &params) {
 // bilateral filter tone mapping
 Image3 hw_fin_2(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
-    double sigma_s = 16.0;
-    double sigma_r = 0.1;
-    double sampling_s = 16;
-    double sampling_r = .1;
-    // colorBilateralfilter(img, sigma_s, sigma_r);
-    bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r);
+    double space_sigma = 0.02 * min(img.width,img.height);
+    double range_sigma = 0.4;
+    double contrast = 50.;
+    tonemap2(img, space_sigma, range_sigma, contrast);
     return img;
 }
 

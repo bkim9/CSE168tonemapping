@@ -1,8 +1,7 @@
-#include "../TONEMAP1/include/tonemap1.h"
 #include "hwfinalproject.h"
 #include <gtest/gtest.h>
-const char* filename = "bath_r300_2000.exr";
-const std::filesystem::path filepath = "bath_r300_2000.exr";
+const char* filename = "bath_r3000_1000.exr";
+const std::filesystem::path filepath = "bath_r3000_1000.exr";
 
 
 
@@ -127,17 +126,7 @@ TEST(ToneMap1LocalTests, Tonemap1Test) {
 
   localtonemap1(img);
 
-  // // ---------------------- 2 -----------------------
-  // double sigma_s = 16.0;
-  // double sigma_r = 0.1;
-  // double sampling_s = 16;
-  // double sampling_r = .1;
-  // // colorBilateralfilter(img, sigma_s, sigma_r);
-  // // bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r);
-
-  // // log_tone(img);
   imwrite("givenimglocaltonemap1.exr",img);
-  // EXPECT_NEAR(2.56, img(0, 2).x, .0001f);
 }
 
 TEST(ToneMap1LocalTests, Tonemap2Test) {
@@ -145,11 +134,10 @@ TEST(ToneMap1LocalTests, Tonemap2Test) {
   // // ---------------------- 2 -----------------------
   double sigma_s = 16.0;
   double sigma_r = 0.1;
-  double sampling_s = 16;
-  double sampling_r = .1;
+  double contrast = 150.0;
   // colorBilateralfilter(img, sigma_s, sigma_r);
-  bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r);
-
+  // bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r);
+  tonemap2(img,sigma_s,sigma_r, contrast);
   imwrite("givenimglocaltonemap2.exr",img);
 }
 
