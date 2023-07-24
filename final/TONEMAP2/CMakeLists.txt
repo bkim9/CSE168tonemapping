@@ -1,12 +1,10 @@
+cmake_minimum_required(VERSION 3.11)
 add_subdirectory(include/fft_3D)
-
-add_library(BilateralFilter STATIC bilateral_filter.cpp)
-target_include_directories(BilateralFilter PUBLIC include include/fft_3D)
-target_link_libraries(BilateralFilter PUBLIC fft3d)
+find_package(OpenEXR REQUIRED)
 
 add_library(ToneMap2 STATIC tonemapping2.cpp)
-# target_include_directories(ToneMap2 PUBLIC include)
-target_link_libraries(ToneMap2 PUBLIC BilateralFilter)
+target_include_directories(ToneMap2 PUBLIC include include/fft_3D)
+target_link_libraries(ToneMap2 PUBLIC OpenEXR::OpenEXR fft3d)
 
 
 include(FetchContent)

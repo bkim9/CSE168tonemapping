@@ -87,6 +87,7 @@ float2rgbe(unsigned char rgbe[4], double red, double green, double blue)
     rgbe[1] = (unsigned char) (green * v);
     rgbe[2] = (unsigned char) (blue * v);
     rgbe[3] = (unsigned char) (e + 128);
+    // printf("rgbe[0]: %f rgbe[1]: %f rgbe[2]: %f rgbe[3]: %f\n",rgbe[0], rgbe[1], rgbe[2], rgbe[3]);
   }
 }
 
@@ -397,6 +398,7 @@ int RGBE_ReadPixels_RLE(FILE *fp, double *data, int scanline_width,
 	    }
 	    ptr += count;
 	  }
+    fprintf(stderr,"data[center]:%.3f\n",&data[scanline_width/2 * num_scanlines/2]);
 	}
       }
     }

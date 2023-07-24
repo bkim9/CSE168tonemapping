@@ -170,9 +170,10 @@ write_RGBE_image()
   FILE *outfp;
   
   for (x=0, y=0; x<width*height*3; x+=3, y++) {
-  scene_IO[x]   = scene[y].r;
-  scene_IO[x+1] = scene[y].g;
-  scene_IO[x+2] = scene[y].b;
+    scene_IO[x]   = scene[y].r;
+    scene_IO[x+1] = scene[y].g;
+    scene_IO[x+2] = scene[y].b;
+    fprintf(stderr, "scene[y].r:%.3f scene[y].g: %.3f scene[y].b: %.3f\n",scene[y].r,scene[y].g, scene[y].b);
   }
 
 
@@ -269,60 +270,58 @@ read_commandline (int argc, char **argv)
 
   if (argc < 5) 
     printhelp ();
-    for (i = 1; i < argc; i++) {
-    if (strcmp (argv[i], "--help") == false || strcmp (argv[i], "-h") == false)
-      printhelp ();
-    // Input file
-    if (strcmp (argv[i], "-i") == false)
-      strcpy (infilename, argv[++i]);
-    // Output file
-    else if (strcmp (argv[i], "-o") == false)
-      strcpy (outfilename, argv[++i]);
-    // Write output as ppm file (pic default)
-    else if (strcmp (argv[i], "-ppm") == false)
-      ppm = true;
-    // Write output as ppm file (pic default)
-    else if (strcmp (argv[i], "-fast") == false)
-      fast = true;
-    // Use Rec.709 formula for gamma correction
-    else if (strcmp (argv[i], "-recgamma") == false||
-			strcmp (argv[i], "-rg") == false)
-      recgamma = true;
-    // Gamma correction (1 default)
-    else if (strcmp (argv[i], "-gamma") == false|| 
-			strcmp (argv[i], "-g") == false)
-      gammaval = (float)atof (argv[++i]);
-    // Image exposure multiplier (logmap)
-    else if (strcmp (argv[i], "-exp") == false || 
-			strcmp (argv[i], "-e") == false)
-      expo = atof(argv[++i]);
-	// center weighting function
-    else if (strcmp (argv[i], "-center") == false)
-      center = true;
-
-	// specific coordinate for center weight
-	else if (strcmp (argv[i], "-x") == false)
-	  centerx = atoi (argv[++i]);
-	else if (strcmp (argv[i], "-y") == false)
-	  centery = atoi (argv[++i]);
-	else if (strcmp (argv[i], "-kernelmult") == false||
-			strcmp (argv[i], "-km") == false)
-	  km = atof (argv[++i]);
-	
-    // Bias function
-    else if (strcmp (argv[i], "-bias") == false || 
-			strcmp (argv[i], "-b") == false)
-      biasParam = (float)atof (argv[++i]);
-    // Contrast Improvement function (Not in paper)
-    else if (strcmp (argv[i], "-contrast") == false ||
-			strcmp (argv[i], "-c") == false)
-      contParam = (float)atof (argv[++i]);
-    // Black value of the screen
-    else if (strcmp (argv[i], "-black") == false)
-      black = (float)atof (argv[++i]);
-    // Min value to map to white
-    else if (strcmp (argv[i], "-white") == false)
-      white = (float)atof (argv[++i]);
+  for (i = 1; i < argc; i++) {
+  if (strcmp (argv[i], "--help") == false || strcmp (argv[i], "-h") == false)
+    printhelp ();
+  // Input file
+  if (strcmp (argv[i], "-i") == false)
+    strcpy (infilename, argv[++i]);
+  // Output file
+  else if (strcmp (argv[i], "-o") == false)
+    strcpy (outfilename, argv[++i]);
+  // Write output as ppm file (pic default)
+  else if (strcmp (argv[i], "-ppm") == false)
+    ppm = true;
+  // Write output as ppm file (pic default)
+  else if (strcmp (argv[i], "-fast") == false)
+    fast = true;
+  // Use Rec.709 formula for gamma correction
+  else if (strcmp (argv[i], "-recgamma") == false||
+    strcmp (argv[i], "-rg") == false)
+    recgamma = true;
+  // Gamma correction (1 default)
+  else if (strcmp (argv[i], "-gamma") == false|| 
+    strcmp (argv[i], "-g") == false)
+    gammaval = (float)atof (argv[++i]);
+  // Image exposure multiplier (logmap)
+  else if (strcmp (argv[i], "-exp") == false || 
+    strcmp (argv[i], "-e") == false)
+    expo = atof(argv[++i]);
+  // center weighting function
+  else if (strcmp (argv[i], "-center") == false)
+    center = true;
+  // specific coordinate for center weight
+  else if (strcmp (argv[i], "-x") == false)
+    centerx = atoi (argv[++i]);
+  else if (strcmp (argv[i], "-y") == false)
+    centery = atoi (argv[++i]);
+  else if (strcmp (argv[i], "-kernelmult") == false||
+    strcmp (argv[i], "-km") == false)
+    km = atof (argv[++i]);
+  // Bias function
+  else if (strcmp (argv[i], "-bias") == false || 
+    strcmp (argv[i], "-b") == false)
+    biasParam = (float)atof (argv[++i]);
+  // Contrast Improvement function (Not in paper)
+  else if (strcmp (argv[i], "-contrast") == false ||
+    strcmp (argv[i], "-c") == false)
+    contParam = (float)atof (argv[++i]);
+  // Black value of the screen
+  else if (strcmp (argv[i], "-black") == false)
+    black = (float)atof (argv[++i]);
+  // Min value to map to white
+  else if (strcmp (argv[i], "-white") == false)
+    white = (float)atof (argv[++i]);
   }
 }
 

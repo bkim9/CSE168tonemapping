@@ -1,7 +1,7 @@
 /*! \file
   \verbatim
   
-    Copyright (c) 2006, Sylvain Paris and Frédo Durand
+    Copyright (c) 2006, Sylvain Paris and Frï¿½do Durand
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation
@@ -80,17 +80,6 @@ namespace Image_filter{
 */
 
 
-  template <typename Array>
-  void linear_BF(const Array&    input,
-		 const real_type space_sigma,
-		 const real_type range_sigma,
-		 Array* const    result){
-
-    linear_BF(input,
-	      space_sigma,range_sigma,
-	      space_sigma,range_sigma,
-	      result);
-  }
 
 
 
@@ -224,6 +213,18 @@ namespace Image_filter{
     cout<<chrono_nonlinearities.report()<<endl;
 #endif
     
+  }
+
+  template <typename Array>
+  void linear_BF(const Array&    input,
+		 const real_type space_sigma,
+		 const real_type range_sigma,
+		 Array* const    result){
+
+    linear_BF(input,
+	      space_sigma,range_sigma,
+	      space_sigma,range_sigma,
+	      result);
   }
 
 } // END OF namespace Image_filter

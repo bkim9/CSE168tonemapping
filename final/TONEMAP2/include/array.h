@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
  *  This file contains code made by Sylvain Paris under supervision of
- * Franï¿½ois Sillion for his PhD work with <a
+ * François Sillion for his PhD work with <a
  * href="http://www-artis.imag.fr">ARTIS project</a>. ARTIS is a
  * research project in the GRAVIR/IMAG laboratory, a joint unit of
  * CNRS, INPG, INRIA and UJF.
@@ -64,16 +64,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
 #include <vector>
 
-#ifndef NO_XML
-#include <sstream>
-
-// #include <qdom.h>
-#endif
 
 /*
+
   ##################
   # class Array_2D #
   ##################
+
  */
 
 
@@ -119,26 +116,26 @@ public:
   //@{
   //! Classical constructor.
   
-  explicit inline Array_2D( const A& a = A());
+  explicit inline Array_2D(const A& a = A());
   
-  explicit inline Array_2D( const size_type nx,
-                            const size_type ny,
-                            const T& val = T(),const A& a = A());
+  explicit inline Array_2D(const size_type nx,
+			   const size_type ny,
+			   const T& val = T(),const A& a = A());
   
   template<typename Element_iterator>
   inline Array_2D(Element_iterator begin_elt,
-                  Element_iterator end_elt,
-                  const size_type nx,
-                  const size_type ny,
-                  const A& a = A());
+		  Element_iterator end_elt,
+		  const size_type nx,
+		  const size_type ny,
+		  const A& a = A());
     
   inline Array_2D(const Array_2D<T,A>& a);
   //@}
 
   //! Assignement of a default value.
   void assign(const size_type nx,
-              const size_type ny,
-              const T& val);
+	      const size_type ny,
+	      const T& val);
   
   //@{
   //! Handle the array dimension.
@@ -197,16 +194,6 @@ public:
   
   inline const_reference at(const size_type x,
 			    const size_type y) const;
-
-  inline void print() {
-    for ( int j = y_dim - 1; j >=0; j-- ) {
-        for ( int i = 0; i < x_dim; i++ ) {
-            std::cout << storage[offset(i,j)] << ' ';
-        }
-        std::cout << std::endl;
-    }
-    std::cout << "done printing 2d array...\n\n";
-  }
   //@}
 
   //@{
@@ -244,12 +231,7 @@ public:
   inline const_reverse_iterator rend() const;
   //@}
 
-#ifndef NO_XML
-  // inline QDomElement to_DOM_element(const QString& name,
-	// 			    QDomDocument& document) const;
-  // inline void from_DOM_element(const QDomElement& element);
-#endif
-  
+
 private:
   //@{
   //! Dimension of the array.
@@ -286,6 +268,14 @@ private:
   ##################
 
  */
+
+
+
+
+
+
+
+
 
 //! Class representing a 3D array.
 /*!
@@ -330,45 +320,33 @@ public:
   
   explicit inline Array_3D(const A& a = A());
   
-  explicit inline Array_3D( const size_type nx,
-                            const size_type ny,
-                            const size_type nz,
-                            const T& val = T(),
-                            const A& a = A());
+  explicit inline Array_3D(const size_type nx,
+			   const size_type ny,
+			   const size_type nz,
+			   const T& val = T(),
+			   const A& a = A());
 
   template<typename Element_iterator>
   inline Array_3D(Element_iterator begin_elt,
-                  Element_iterator end_elt,
-                  const size_type nx,
-                  const size_type ny,
-                  const size_type nz,
-                  const A& a = A());
+		  Element_iterator end_elt,
+		  const size_type nx,
+		  const size_type ny,
+		  const size_type nz,
+		  const A& a = A());
   
   inline Array_3D(const Array_3D<T,A>& a);
   //@}
 
   //! Assignement of a default value.
   void assign(const size_type nx,
-              const size_type ny,
-              const size_type nz,
-              const T& val);
+	      const size_type ny,
+	      const size_type nz,
+	      const T& val);
   
   //@{
   //! Handle the array dimension.
 
   inline bool empty() const;
-  inline void print() {
-    for ( size_type k = 0; k < z_dim; k++) {
-        std::cout << 'depth: ' <<  k  << std::end;
-        for ( size_type j  = y_dim-1; j >= 0; j--) {
-            for ( size_type i = 0; i < x_dim; i++) {
-               std::cout << storage[offset(i,j,k)] << ' ';
-            }
-            std::cout << std::endl;
-        }
-        std::cout << std::endl << std::endl;
-    }
-  }
   
   inline size_type x_size() const;
   inline size_type width() const;
@@ -466,12 +444,13 @@ public:
   inline const_reverse_iterator rend() const;
   //@}
 
-public:
+
+private:
   //@{
   //! Dimension of the array.
-  //@}
+
   int x_dim,y_dim,z_dim;
-private:
+  //@}
 
   //! Storage structure.
   Storage storage;
@@ -483,8 +462,8 @@ private:
   inline size_type offset(const Vector_position& v) const;
   
   inline size_type offset(const size_type& x,
-                          const size_type& y,
-                          const size_type& z) const;
+			  const size_type& y,
+			  const size_type& z) const;
   //@}
 };
 
@@ -535,9 +514,9 @@ Array_2D<T,A>::Array_2D(const A& a)
 
 template<typename T,typename A>
 Array_2D<T,A>::Array_2D(const size_type nx,
-                        const size_type ny,
-                        const T& val,
-                        const A& a)
+			const size_type ny,
+			const T& val,
+			const A& a)
   :x_dim(nx),y_dim(ny),storage(nx*ny,val,a){}
 
 
@@ -572,7 +551,6 @@ Array_2D<T,A>::Array_2D(Element_iterator begin_elt,
     throw std::length_error("Not enough elements to initialize the array");
 #else
     std::cerr<<"[Array_2D<T,A>::Array_2D] Not enough elements to initialize the array"<<std::endl;
-    exit(1);
 #endif
   }
 }
@@ -747,7 +725,6 @@ Array_2D<T,A>::at(const Vector_position& v){
     }
 #else
     std::cerr<<"[Array_2D<T,A>::at] Out of range"<<std::endl;
-    exit(1);
 #endif
   }
   
@@ -770,7 +747,6 @@ Array_2D<T,A>::at(const Vector_position& v) const{
     }
 #else
     std::cerr<<"[Array_2D<T,A>::at] Out of range"<<std::endl;
-    exit(1);
 #endif
   }
   
@@ -792,7 +768,6 @@ Array_2D<T,A>::at(const size_type x,const size_type y){
     }
 #else
     std::cerr<<"[Array_2D<T,A>::at] Out of range"<<std::endl;
-    exit(1);
 #endif
   }
 
@@ -814,7 +789,6 @@ Array_2D<T,A>::at(const size_type x,const size_type y) const{
     }
 #else
     std::cerr<<"[Array_2D<T,A>::at] Out of range"<<std::endl;
-    exit(1);
 #endif
   }
 
@@ -887,7 +861,6 @@ Array_2D<T,A>::offset(const Vector_position& v) const{
   if ((v[0] >= x_dim) || (v[1] >= y_dim)){
     std::cerr<<"Array_2D: Out of range ("<<v[0]<<","<<v[1]<<"), actual size is "<<x_dim<<"x"<<y_dim<<std::endl;
   }
-  exit(1);
 #endif
   
   return v[0]*y_dim + v[1];
@@ -902,52 +875,15 @@ Array_2D<T,A>::offset(const size_type& x,const size_type& y) const{
   if ((x >= x_dim) || (y >= y_dim)){
     std::cerr<<"Array_2D: Out of range ("<<x<<","<<y<<"), actual size is "<<x_dim<<"x"<<y_dim<<std::endl;
   }
-  exit(1);
 #endif
   
     return x*y_dim + y;
 }
 
 
-#ifndef NO_XML
-
-// template<typename T,typename A> 
-// QDomElement Array_2D<T,A>::to_DOM_element(const QString& name,
-// 					  QDomDocument& document) const{
-
-//   QDomElement main_element = document.createElement(name);
-//   main_element.setAttribute("width",QString::number(width()));
-//   main_element.setAttribute("height",QString::number(height()));
-
-//   std::ostringstream out;
-
-//   for(const_iterator i=begin(),i_end=end();i!=i_end;i++){
-//     out<<(*i)<<' ';
-//   }
-
-//   main_element.appendChild(document.createTextNode(out.str()));
-//   return main_element;
-// }
 
 
-// template<typename T,typename A> 
-// void Array_2D<T,A>::from_DOM_element(const QDomElement& element){
 
-//   QDomElement& elt = const_cast<QDomElement&>(element);
-
-//   const size_type width  = elt.attributeNode("width").value().toUInt();
-//   const size_type height = elt.attributeNode("height").value().toUInt();
-
-//   resize(width,height);
-
-//   std::istringstream in(elt.text());
-    
-//   for(iterator i=begin(),i_end=end();i!=i_end;i++){
-//     in>>(*i);
-//   }
-// }
-
-#endif
 
 
 
@@ -1017,7 +953,6 @@ Array_3D<T,A>::Array_3D(Element_iterator begin_elt,
     throw std::length_error("Not enough elements to initialize the array");
 #else
     std::cerr<<"[Array_3D<T,A>::Array_3D] Not enough elements to initialize the array"<<std::endl;
-    exit(1);
 #endif
   }
 }
@@ -1228,7 +1163,6 @@ Array_3D<T,A>::at(const Vector_position& v){
     }
 #else
     std::cerr<<"[Array_3D<T,A>::at] Out of range"<<std::endl;
-    exit(1);
 #endif
   }
   
@@ -1254,7 +1188,6 @@ Array_3D<T,A>::at(const Vector_position& v) const{
     }
 #else
     std::cerr<<"[Array_3D<T,A>::at] Out of range"<<std::endl;
-    exit(1);
 #endif
   }
   

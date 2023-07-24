@@ -53,11 +53,7 @@ The parameters are:
 is PPM. Software such as Photoshop, Gimp, and xv can read this format.
 
 - 50.0: It is the contrast of the result. Meaningful values are
-between 
-
-5.0 and 200.0. 
-
-By default, you can use 50.0, that performs
+between 5.0 and 200.0. By default, you can use 50.0, that performs
 well.
 
 
@@ -96,9 +92,7 @@ Comments
 gamma-corrected. First, we scale the RGB values by
 1/max[gamma*log(F)]. This ensures that the new intensity of the base
 layer F spans [0:1]. Second, we gamma-correct the RGB values using a
-standard gamma value 
-(2.2). 
-Finally, we quantize the RGB values down
+standard gamma value (2.2). Finally, we quantize the RGB values down
 to 8 bits.
 
 

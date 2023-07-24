@@ -26,12 +26,11 @@
   \endverbatim
 */
 
-
 #ifndef __FFT_3D__
 #define __FFT_3D__
 
-#include "fft_3D/convolution_3D.h"
-#include "fft_3D/fill_3D.h"
-#include "fft_3D/support_3D.h"
+#include "../fft_3D/convolution_3D.h"
+#include "../fft_3D/fill_3D.h"
+#include "../fft_3D/support_3D.h"
 
 #endif

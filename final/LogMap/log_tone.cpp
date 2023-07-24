@@ -22,17 +22,18 @@ static float  white = 1.0;      // Max lum value of display - White 0.98
 static float  black = 0.02;    	// Min lum value of display - Black
 int           fast = false;     // Use fast optimization
 int           recgamma = false; // Use Rec.709 gamma formula
-int           center = false;   // Use a center weighted world adaptation
+bool           center = false;   // Use a center weighted world adaptation
 
 // Scene parameters and RGBE IO
 rgbe_header_info info;
 int width, height;
 int centerx = false, centery = false;
 int pixels;
-static double *log_scene_IO;
-SCENE *log_scene;
+static double *scene_IO;
+SCENE *scene3;
 
-/*
+
+/*  
  * Main program
  */
 int log_tone( Image3& img ) {
@@ -42,8 +43,13 @@ int log_tone( Image3& img ) {
 
   start_time1 = current_time();
   // read_commandline (argc, argv);
-  SCENE* log_scene = (SCENE *) malloc(sizeof(SCENE)*(width)*(height));
-  img2log_scene(img, log_scene);
+  expo = pow(2.,expo);
+  width = img.width;
+  height = img.height;
+
+  open_RGBE_scene(img);
+
+  img2scene3(img, scene3);
 
   // Default position for Lwa kernel center, not use by default
   if (!centerx)	centerx = width / 2;
@@ -54,9 +60,9 @@ int log_tone( Image3& img ) {
   // Tone mapping with Logmapping function 
   fprintf(stderr, "Logmapping: \n");
   fprintf(stderr, "------------------------------ \n");
-  rgb_Yxy(log_scene, width, height, &max_lum, &min_lum, &world_lum);
+  rgb_Yxy(scene3, width, height, &max_lum, &min_lum, &world_lum);
   if (center == true) {
-    center_weight(log_scene, width, height, centerx, centery, km, &world_lum);
+    center_weight(scene3, width, height, centerx, centery, km, &world_lum);
   }
   fprintf(stderr, "Maximum Luminance: %f \n", max_lum);
   fprintf(stderr, "Minimum Luminance: %f \n", min_lum);
@@ -64,11 +70,11 @@ int log_tone( Image3& img ) {
   fprintf(stderr, "------------------------------ \n");
 
   start_time2 = current_time();
-  logmapping (log_scene, width, height, max_lum, min_lum, world_lum, 
+  logmapping (scene3, width, height, max_lum, min_lum, world_lum, 
 		  biasParam, contParam, expo, white);
   fprintf(stderr, "\nTone mapping execution time = %.3f sec\n",
   (current_time()-start_time2));
-  Yxy_rgb(log_scene, width, height);
+  Yxy_rgb(scene3, width, height);
   
   if (gammaval != 1.) {
     if (recgamma == true)
@@ -78,35 +84,83 @@ int log_tone( Image3& img ) {
   }
   
   clamp_image ();
-  log_scene2img(img,log_scene);
+  scene32img(img,scene3);
   fprintf(stderr, "Total execution time = %.3f sec\n", 
       (current_time()-start_time1));
   return 1;
 }
 
-void img2log_scene(Image3& img, SCENE* log_scene) {
+void
+open_RGBE_scene(Image3& img)
+{
   int x,y;
   double exp_mult;
-  for (x=0; x<width*height; x+=1) {
-    int i = x / width;
-    int j = x % width;
-    log_scene[x].r = img(i,j).x;
-    log_scene[x].g = img(i,j).y;
-    log_scene[x].b = img(i,j).z;
-  }
 
+  RGBE_ReadHeader(img, &info);
   
-  if (log_scene == NULL){
-    fprintf(stderr, "Could not allocate memory for log_scene \n");
+  // scene_IO = (double *) malloc(sizeof(double)*width*height*3);
+
+
+  scene3 = (SCENE *) malloc(sizeof(SCENE)*(width)*(height));
+  // if (scene3 == NULL){
+  // fprintf(stderr, "Could not allocate memory for scene \n");
+  // exit(1);
+  // }
+  
+  // RGBE_ReadPixels_RLE(img, scene_IO, width, height);
+  
+  // // To do, Should be read directly in correct format
+  // for (x=0, y=0; x<width*height*3; x+=3, y++) {
+  // scene3[y].r = scene_IO[x];
+  // scene3[y].g = scene_IO[x+1];
+  // scene3[y].b = scene_IO[x+2];
+  // }
+  
+  // if (info.gamma != 1.) {
+  //   printf("Gamma in RGBE image = %f \n", info.gamma);
+  //   for (x=0; x<width*height; x+=1) {
+  //     scene3[x].r = (double)pow (scene3[x].r, info.gamma);
+  //     scene3[x].g = (double)pow (scene3[x].g, info.gamma);
+  //     scene3[x].b = (double)pow (scene3[x].b, info.gamma);
+  //   }
+  // }
+  // if (info.exposure != 1.) {
+  // printf("Exposure in RGBE image = %f \n", info.exposure);
+  // exp_mult = pow(info.exposure, 2);
+  // printf("expmult %f \n", exp_mult);
+  //   for (x=0; x<width*height; x+=1) {
+  //     scene3[x].r = (double) (scene3[x].r*exp_mult);
+  //     scene3[x].g = (double) (scene3[x].g*exp_mult);
+  //     scene3[x].b = (double) (scene3[x].b*exp_mult);
+  //   }
+  // }
+  // // fclose(infp);
+}
+
+void img2scene3(Image3& img, SCENE* scene3) {
+  int x,y;
+  double exp_mult;
+  int w = img.width;
+  int h = img.height;
+  for (x=0; x<w*h; x++) {
+    int i = x / w;
+    int j = x % w;
+    scene3[x].r = img(i,j).x;
+    scene3[x].g = img(i,j).y;
+    scene3[x].b = img(i,j).z;
+  }
+  
+  if (scene3 == NULL){
+    fprintf(stderr, "Could not allocate memory for scene3 \n");
     exit(1);
   }
   
   if (info.gamma != 1.) {
     printf("Gamma in RGBE image = %f \n", info.gamma);
-    for (x=0; x<width*height; x+=1) {
-      log_scene[x].r = (double)pow (log_scene[x].r, info.gamma);
-      log_scene[x].g = (double)pow (log_scene[x].g, info.gamma);
-      log_scene[x].b = (double)pow (log_scene[x].b, info.gamma);
+    for (x=0; x<w*h; x++) {
+      scene3[x].r = (double)pow (scene3[x].r, info.gamma);
+      scene3[x].g = (double)pow (scene3[x].g, info.gamma);
+      scene3[x].b = (double)pow (scene3[x].b, info.gamma);
     }
   }
 
@@ -114,22 +168,22 @@ void img2log_scene(Image3& img, SCENE* log_scene) {
   printf("Exposure in RGBE image = %f \n", info.exposure);
   exp_mult = pow(info.exposure, 2);
   printf("expmult %f \n", exp_mult);
-    for (x=0; x<width*height; x+=1) {
-      log_scene[x].r = (double) (log_scene[x].r*exp_mult);
-      log_scene[x].g = (double) (log_scene[x].g*exp_mult);
-      log_scene[x].b = (double) (log_scene[x].b*exp_mult);
+    for (x=0; x<w*h; x++) {
+      scene3[x].r = (double) (scene3[x].r*exp_mult);
+      scene3[x].g = (double) (scene3[x].g*exp_mult);
+      scene3[x].b = (double) (scene3[x].b*exp_mult);
     }
   }
 }
 
-void log_scene2img(Image3& img, SCENE* log_scene) {
+void scene32img(Image3& img, SCENE* scene3) {
   int x;
   for (x=0; x<width*height; x+=1) {
     int i = x / width;
     int j = x % width;
-    img(i,j).x = log_scene[x].r;
-    img(i,j).y = log_scene[x].g;
-    img(i,j).z = log_scene[x].b;
+    img(i,j).x = scene3[x].r;
+    img(i,j).y = scene3[x].g;
+    img(i,j).z = scene3[x].b;
   }
 }
 
@@ -141,9 +195,9 @@ void gamma_calc () {
   fgamma = 1/gammaval;
   
   for (x=0; x<width*height; x++) {
-    log_scene[x].r = (double)pow (log_scene[x].r, fgamma);
-    log_scene[x].g = (double)pow (log_scene[x].g, fgamma);
-    log_scene[x].b = (double)pow (log_scene[x].b, fgamma);
+    scene3[x].r = (double)pow (scene3[x].r, fgamma);
+    scene3[x].g = (double)pow (scene3[x].g, fgamma);
+    scene3[x].b = (double)pow (scene3[x].b, fgamma);
   }
 }
 
@@ -166,12 +220,12 @@ void rec_gamma_calc () {
   }
 
   for (x=0; x<width*height; x++) {
-	log_scene[x].r = log_scene[x].r<=start?
-		log_scene[x].r*slope:1.099*pow(log_scene[x].r,fgamma)-0.099;
-	log_scene[x].g = log_scene[x].g<=start?
-		log_scene[x].g*slope:1.099*pow(log_scene[x].g,fgamma)-0.099;
-	log_scene[x].b = log_scene[x].b<=start?
-		log_scene[x].b*slope:1.099*pow(log_scene[x].b,fgamma)-0.099;
+	scene3[x].r = scene3[x].r<=start?
+		scene3[x].r*slope:1.099*pow(scene3[x].r,fgamma)-0.099;
+	scene3[x].g = scene3[x].g<=start?
+		scene3[x].g*slope:1.099*pow(scene3[x].g,fgamma)-0.099;
+	scene3[x].b = scene3[x].b<=start?
+		scene3[x].b*slope:1.099*pow(scene3[x].b,fgamma)-0.099;
   }
 }
 
@@ -264,10 +318,11 @@ void printhelp () {   // print help commands to the console
 void
 clamp_image () {
   int x;
+
   for (x=0; x<width*height; x++) {
-    log_scene[x].r = (log_scene[x].r > 1) ? 1 : log_scene[x].r;
-    log_scene[x].g = (log_scene[x].g > 1) ? 1 : log_scene[x].g;
-    log_scene[x].b = (log_scene[x].b > 1) ? 1 : log_scene[x].b;
+    scene3[x].r = (scene3[x].r > 1) ? 1 : scene3[x].r;
+    scene3[x].g = (scene3[x].g > 1) ? 1 : scene3[x].g;
+    scene3[x].b = (scene3[x].b > 1) ? 1 : scene3[x].b;
   }
 }
 // Operation timing routine

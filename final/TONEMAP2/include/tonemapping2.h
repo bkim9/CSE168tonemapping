@@ -1,15 +1,19 @@
-#include "bilateral_filter.h"
-#ifndef __TONE2__
-#define __TONE2__
-Real Luminance2(Vector3 v);
+#include <cmath>
 
-void LuminanceLayer(Image3& img, Image1& img1);
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
-void logImg(Image3& img, Image1& logI);
+#include "load_EXR.h"
+#include "linear_bf.h"
+#include "image.h"
 
-Real maxI(Image1& img);
+typedef Image_file::EXR::image_type image_type;
+typedef image_type::channel_type    channel_type;
 
-Real minI(Image1& img);
+double log_function(const double x);
+
+double exp_function(const double x);
 
 void tonemap2(Image3& img, double sigma_s, double sigma_r, double contrast) ;
-#endif

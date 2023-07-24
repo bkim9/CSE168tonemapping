@@ -54,6 +54,7 @@ inline double log_function(const double x){
 
 
 inline double exp_function(const double x){
+
   return pow(10.0,x);
 }
 
@@ -111,14 +112,14 @@ int main(int argc,char** argv){
     *i = ((20.0*(*r) + 40.0*(*g) + 1.0*(*b)) / 61.0);
     *l = log_function(*i);
   }
- 
+
   cout<<"Done"<<endl;
 
 
   // ##############################################################
   
   
-  cout<<"(d) Filter the log-intensity channel... "<<flush;
+  cout<<"Filter the log-intensity channel... "<<flush;
 
   channel_type filtered_log_intensity_channel(width,height);
 
@@ -134,11 +135,19 @@ int main(int argc,char** argv){
   
   cout<<"Done"<<endl;
 
+  const double max_i = *max_element(filtered_log_intensity_channel.begin(),
+					filtered_log_intensity_channel.end());
+  
+  const double min_i = *min_element(filtered_log_intensity_channel.begin(),
+					filtered_log_intensity_channel.end());
+
+  cout << "max_f: " << max_i << endl;
+  cout << "min_f: " << min_i << endl;  
 
   // ##############################################################
   
   
-  cout<<"(e) Compute the detail channel... "<<flush;
+  cout<<"Compute the detail channel... "<<flush;
 
   channel_type detail_channel(width,height);
 
@@ -169,6 +178,9 @@ int main(int argc,char** argv){
 
   const double gamma = log_function(contrast) /  (max_value - min_value);
 
+  // cout << "orimaxF: " << max_value << endl;
+  // cout << "oriminF: " << min_value << endl;
+  // cout << "oridelta: " << (max_value - min_value) << endl;
   channel_type new_intensity_channel(width,height);
 
   for(channel_type::iterator
@@ -207,6 +219,7 @@ int main(int argc,char** argv){
     *r *= ratio;
     *g *= ratio;
     *b *= ratio;
+    // cout<< "r: " << *r << endl << endl;
 
   }
 
@@ -247,7 +260,7 @@ int main(int argc,char** argv){
       const char r = static_cast<char>(Math_tools::clamp(0.0,255.0,255.0*pow(scale_factor*output_RGBA[image_type::RED](x,ry),1.0/2.2)));
       const char g = static_cast<char>(Math_tools::clamp(0.0,255.0,255.0*pow(scale_factor*output_RGBA[image_type::GREEN](x,ry),1.0/2.2)));
       const char b = static_cast<char>(Math_tools::clamp(0.0,255.0,255.0*pow(scale_factor*output_RGBA[image_type::BLUE](x,ry),1.0/2.2)));
-      
+      // cout<< "r: after" << scale_factor << endl << endl;
       ppm_out<<r<<g<<b;
     }
   }
