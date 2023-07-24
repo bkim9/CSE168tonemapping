@@ -1,0 +1,23 @@
+
+#Use tpp7 for Pentium 4
+#icc intel compiler -tpp7 for Pentium 4
+#CC      = icc 
+#CFLAGS  = -O3 -tpp7 -static 
+CC     = gcc
+CFLAGS = -O3 -funroll-loops 
+INCLUDE = 
+# do not forget to comment LIBS to use intel compiler
+LIBS    = -lm
+
+.c.o:
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+
+all:	logmap
+
+logmap:	tone_main.o logmapping.o color_convert.o rgbe.o
+	$(CC) $(CFLAGS) $^ $(INCLUDE) -o $@ $(LIBS)
+
+clean:
+	\rm *.o logmap core
+
+

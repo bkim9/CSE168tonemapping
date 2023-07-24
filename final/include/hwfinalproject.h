@@ -15,15 +15,17 @@
 #include <optional>
 #include "image.h"
 #include "../TONEMAP1/include/tonemap1.h"
-#include "color_bilateral_filter.h"
-#include "bilateral_filter.h"
+// #include "color_bilateral_filter.h"
+#include "../TONEMAP2/include/tonemapping2.h"
 #include "log_tone.h"
 #include <fstream>
 #include <iostream>
 void exportimg(Image3& img, std::string filename);
+Image3 importimg(const char* filename);
 Vector3 averageV(Image3& img, int i, int j);
 void smooth(Image3& img);
 Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth);
 Image3 hw_fin_1(const std::vector<std::string> &params);
 Image3 hw_fin_2(const std::vector<std::string> &params);
 Image3 hw_fin_3(const std::vector<std::string> &params);
+Image3 hw_fin_4(const std::vector<std::string> &params);

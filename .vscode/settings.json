@@ -82,7 +82,12 @@
         "memory_resource": "cpp",
         "any": "cpp",
         "filesystem": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "cassert": "cpp",
+        "rgbe.h": "c",
+        "tone_main.h": "c",
+        "color_convert.h": "c",
+        "logmapping.h": "c"
     },
     "cmake.sourceDirectory": "/Users/naryungkim/Documents/GitHub/CSE168/CSE168tonemapping/final"
 }

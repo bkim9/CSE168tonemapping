@@ -121,6 +121,5 @@ void logmapping (SCENE * log_scene,
 			}
 		}
 	  } //y
-  } // else
-  
+  } // else  
 }

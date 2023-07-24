@@ -14,6 +14,29 @@ void exportimg(Image3& img, std::string filename) {
     return;
 }
 
+Image3 importimg(const char* filename) {
+  FILE *infp;
+  infp = fopen(filename, "r");
+
+  int width = 0;
+  int height= 0;
+
+  fscanf(infp,"%d",&width);
+  fscanf(infp,"%d",&height);
+
+  Image3 img(width,height);
+
+  for( int i = 0; i < img.width; i++ ) {
+  for (int j = 0; j < img.height;j++ ) {
+    fscanf(infp,"%lf",&img(i,j).x);
+    fscanf(infp,"%lf",&img(i,j).y);
+    fscanf(infp,"%lf",&img(i,j).z);
+  }    
+  }
+  std::cout<< img(10, 10) << std::endl;
+  return img;
+}
+
 Vector3 averageV(Image3& img, int i, int j) {
     int start_x = i-1;
     int end_x   = i+1;
@@ -139,14 +162,14 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
             L += std::get<AreaLight>(scene.lights[hit_isect->area_light_id]).radiance;
         }
         int dice = floor(scene.lights.size() * next_pcg32_real<Real>(rng));
-        mix_pdf.pdfs.push_back(sample_pdf(&mate, mat, wi, wo, srec, rng));
+        mix_pdf.mat_pdf = sample_pdf(&mate, mat, wi, wo, srec, rng);
         if (std::get_if<AreaLight>(&scene.lights[dice])) {
-            std::vector<pdf*> light_ps;
+            std::vector<light_pdf*> light_ps;
             for( auto l : scene.lights ) {
                 if(auto al = std::get_if<AreaLight>(&l)) {
-                    auto p1 = new light_pdf;
-                    p1->setup(scene.shapes[al->shape_id], p, rng);
-                    light_ps.push_back(p1);
+                    auto lp = new light_pdf;
+                    lp->setup(scene.shapes[al->shape_id], p, rng);
+                    light_ps.push_back(lp);
                 } 
             }
             mix_pdf.setup(light_ps);
@@ -165,6 +188,7 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
             } else {
                 // bool nexthitlight = sample_intersect && sample_intersect->area_light_id != -1;
                 Real pdf_value = mix_pdf.value(wo); // 8.6580953675294765 -> 0.014474071966940219
+            // std::cout << pdf_value << std::endl;
                 Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf); 
                 if ( brdf_value.x >= 0 && brdf_value.y >= 0 && brdf_value.z >= 0 && pdf_value > 0 ) {
                     L += (brdf_value / pdf_value) * radiance(scene, next_ray, rng, depth - 1); 
@@ -172,8 +196,9 @@ Vector3 radiance(const Scene &scene, Ray ray, pcg32_state rng, int depth) {
             }
         } else if (auto pl = std::get_if<PointLight>(&scene.lights[dice])) {
             wo = normalize(pl->position - p);
-            Ray next_ray{p,wo,Real(.001),infinity<Real>()};
+            // Ray next_ray{p,wo,Real(.001),infinity<Real>()};
             Real pdf_value = mix_pdf.value(wo);
+
             Vector3 brdf_value = eval_brdf(&mate, mat, wi, wo, mix_pdf); 
             if (mat.ismirror) {
                 auto m = std::get_if<Mirror>(&mate);
@@ -200,7 +225,7 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
         return Image3(0, 0);
     }
 
-    int max_depth = 20;
+    int max_depth = 7;
     std::string filename;
     for (int i = 0; i < (int)params.size(); i++) {
         if (params[i] == "-max_depth") {
@@ -233,10 +258,10 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
 
     ProgressReporter reporter(num_tiles_x * num_tiles_y);
     tick(timer);
-
+    int seed_ground = time(NULL);
     parallel_for([&](const Vector2i &tile) {
         // Use a different rng stream for each thread.
-        pcg32_state rng = init_pcg32(tile[1] * num_tiles_x + tile[0]);
+        // pcg32_state rng = init_pcg32(tile[1] * num_tiles_x + tile[0]);
         int x0 = tile[0] * tile_size;
         int x1 = std::min(x0 + tile_size, w);
         int y0 = tile[1] * tile_size;
@@ -245,12 +270,12 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
             for (int x = x0; x < x1; x++) {
                 for (int s = 0; s < spp; s++) {
                     Real u, v;
-                    auto seed = tile[0] + 
-                                num_tiles_x * tile[1] + 
-                                num_tiles_x * num_tiles_y * s + 
-                                num_tiles_x * num_tiles_y * spp * x + 
-                                num_tiles_x * num_tiles_y * spp * x1 * y; 
-                    rng = init_pcg32(seed);
+                    int seed = seed_ground + tile[0] + 
+                                    num_tiles_x * tile[1] + 
+                                    num_tiles_x * num_tiles_y * s + 
+                                    num_tiles_x * num_tiles_y * spp * x + 
+                                    num_tiles_x * num_tiles_y * spp * x1 * y; 
+                    pcg32_state rng = init_pcg32(seed);
                     u = (x + next_pcg32_real<Real>(rng)) / w;
                     v = (y + next_pcg32_real<Real>(rng)) / h;
                     Ray ray = generate_primary_ray(cam_ray_data, u, v);
@@ -264,7 +289,6 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
     }, Vector2i(num_tiles_x, num_tiles_y));
 
 
-
     reporter.done();
     std::cout << "Rendering done. Took " << tick(timer) << " seconds." << std::endl;
 
@@ -274,7 +298,8 @@ Image3 hw_fin_img(const std::vector<std::string> &params) {
 
 Image3 hw_fin_1(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
-    smooth( img );
+    auto logAve = logAverageL(img);
+    if ( logAve != Real(0) && logAve != infinity<Real>() ) globaltonemap1(img);
     localtonemap1(img);
     return img;
 }
@@ -282,12 +307,10 @@ Image3 hw_fin_1(const std::vector<std::string> &params) {
 // bilateral filter tone mapping
 Image3 hw_fin_2(const std::vector<std::string> &params) {
     Image3 img = hw_fin_img(params);
-    double sigma_s = 16.0;
-    double sigma_r = 0.1;
-    double sampling_s = 16;
-    double sampling_r = .1;
-    // colorBilateralfilter(img, sigma_s, sigma_r);
-    bilateralFilter(img, sigma_s, sigma_r, sampling_s, sampling_r);
+    double space_sigma = 0.02 * min(img.width,img.height);
+    double range_sigma = 0.4;
+    double contrast = 50.;
+    tonemap2(img, space_sigma, range_sigma, contrast);
     return img;
 }
 
@@ -297,5 +320,19 @@ Image3 hw_fin_3(const std::vector<std::string> &params) {
     // log_tone( img );
     std::string filename = "ori/sponza.txt";
     exportimg(img, filename);
+    return img;
+}
+
+Image3 hw_fin_4(const std::vector<std::string> &params) {
+    int N = 8;
+    Image3 imgtemp = importimg(("./ori/dining_" + std::to_string(0) + ".txt").c_str());
+    Image3 img(imgtemp.width, imgtemp.height);
+    for( int t = 0; t < N; t++) { 
+        imgtemp = importimg(("./ori/dining_" + std::to_string(t) + ".txt").c_str());
+        for (int i=0; i < img.width ; i++){
+        for (int j=0; j < img.height; j++){
+            img(i,j) += imgtemp(i,j) / Real(N);
+        }}    
+    }
     return img;
 }

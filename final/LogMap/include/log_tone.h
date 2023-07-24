@@ -19,10 +19,10 @@
 #include "color_convert.h"
 
 void clamp_image ();
+void open_RGBE_scene(Image3& img);
 int log_tone( Image3& img );
-void img2log_scene(Image3& img, SCENE* log_scene);
-void log_scene2img(Image3& img, SCENE* log_scene);
-void open_RGBE_scene();
+void img2scene3(Image3& img, SCENE* scene3);
+void scene32img(Image3& img, SCENE* log_scene);
 void write_RGBE_image();
 void write_ppm_image ();
 void gamma_calc ();

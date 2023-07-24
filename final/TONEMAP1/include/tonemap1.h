@@ -15,5 +15,10 @@ Real V(Image3& img, Real s, int i, int j);
 Real right_s(Image3& img, int i, int j);
 
 void localtonemap1(Image3& img);
+
+Real logAverageL(Image3& img);
+
+void scaleImg(Image3& img);
+
 void globaltonemap1(Image3& img);
 #endif

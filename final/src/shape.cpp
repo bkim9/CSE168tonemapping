@@ -148,9 +148,9 @@ bool occluded(const Shape &shape, const Ray &ray) {
 
 // o - v > /_\.
 Real Triangle::pdf_value( const Vector3& o, const Vector3& v) const {
-    auto hit = intersect(*this, Ray{o, v, 0.00001, infinity<Real>()});
-    if (!hit) return 0;
     // ----------------------------old version----------------------------
+    // auto hit = intersect(*this, Ray{o, v, 0.00001, infinity<Real>()});
+    // if (!hit) return 0;
     // Real distance_squared = hit->distance * hit->distance;
     // Real cosine = fabs(dot(v, hit->normal)) / length(v);
     // Real area = length(crossproduct)/2.;

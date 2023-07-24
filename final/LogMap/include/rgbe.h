@@ -37,19 +37,19 @@ typedef struct {
 
 /* read or write headers */
 /* you may set rgbe_header_info to null if you want to */
-int RGBE_WriteHeader(FILE *fp, int width, int height, rgbe_header_info *info);
-int RGBE_ReadHeader(Image3 img, rgbe_header_info *info);
+int RGBE_WriteHeader(int width, int height, rgbe_header_info *info);
+int RGBE_ReadHeader(Image3& img, rgbe_header_info *info);
 
 /* read or write pixels */
 /* can read or write pixels in chunks of any size including single pixels*/
-int RGBE_WritePixels(FILE *fp, double *data, int numpixels);
-int RGBE_ReadPixels(FILE *fp, double *data, int numpixels);
+int RGBE_WritePixels(double *data, int numpixels);
+int RGBE_ReadPixels(double *data, int numpixels);
 
 /* read or write run length encoded files */
 /* must be called to read or write whole scanlines */
-int RGBE_WritePixels_RLE(FILE *fp, double *data, int scanline_width,
+int RGBE_WritePixels_RLE(int scanline_width,
 			 int num_scanlines);
-int RGBE_ReadPixels_RLE(FILE *fp, double *data, int scanline_width,
+int RGBE_ReadPixels_RLE(Image3& img, double* scene_IO, int scanline_width,
 			int num_scanlines);
 
 #endif /* _H_RGBE */
