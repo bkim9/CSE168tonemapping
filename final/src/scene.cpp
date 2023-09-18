@@ -129,12 +129,12 @@ Scene::Scene(const ParsedScene &scene) :
     }
 
     // Build BVH
-    std::vector<BBoxWithID> bboxes(shapes.size());
+    std::vector<BBox> bboxes(shapes.size());
     for (int i = 0; i < (int)bboxes.size(); i++) {
         if (auto *sph = std::get_if<Sphere>(&shapes[i])) {
             Vector3 p_min = sph->center - sph->radius;
             Vector3 p_max = sph->center + sph->radius;
-            bboxes[i] = {BBox{p_min, p_max}, i};
+            bboxes[i] = BBox{i, p_min, p_max};
         } else if (auto *tri = std::get_if<Triangle>(&shapes[i])) {
             const TriangleMesh *mesh = tri->mesh;
             Vector3i index = mesh->indices[tri->face_index];
@@ -143,7 +143,7 @@ Scene::Scene(const ParsedScene &scene) :
             Vector3 p2 = mesh->positions[index[2]];
             Vector3 p_min = min(min(p0, p1), p2);
             Vector3 p_max = max(max(p0, p1), p2);
-            bboxes[i] = {BBox{p_min, p_max}, i};
+            bboxes[i] = BBox{i, p_min, p_max};
         }
     }
     bvh_root_id = construct_bvh(bboxes, bvh_nodes);

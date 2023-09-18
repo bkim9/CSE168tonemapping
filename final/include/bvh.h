@@ -9,10 +9,5 @@ struct BVHNode {
     int primitive_id;
 };
 
-struct BBoxWithID {
-    BBox box;
-    int id;
-};
-
-int construct_bvh(const std::vector<BBoxWithID> &boxes,
+int construct_bvh(const std::vector<BBox> &boxes,
                   std::vector<BVHNode> &node_pool);

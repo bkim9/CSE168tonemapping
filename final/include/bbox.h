@@ -5,6 +5,7 @@
 #include "ray.h"
 
 struct BBox {
+    int id;
     Vector3 p_min = Vector3{infinity<Real>(),
                             infinity<Real>(),
                             infinity<Real>()};
@@ -12,6 +13,11 @@ struct BBox {
                             -infinity<Real>(),
                             -infinity<Real>()};
 };
+
+
+// +------+   \
+// | bbox |    \ ray
+// +------+     \
 
 inline bool intersect(const BBox &bbox, Ray ray) {
 	// https://raytracing.github.io/books/RayTracingTheNextWeek.html#boundingvolumehierarchies/anoptimizedaabbhitmethod
@@ -42,6 +48,11 @@ inline int largest_axis(const BBox &box) {
     }
 }
 
+//   +-------------+
+//   +----+   +----+
+//   |box1|   |box2|
+//   +----+   +----+
+//   +-------------+
 inline BBox merge(const BBox &box1, const BBox &box2) {
     Vector3 p_min = Vector3{
         std::min(box1.p_min.x, box2.p_min.x),
@@ -51,6 +62,6 @@ inline BBox merge(const BBox &box1, const BBox &box2) {
         std::max(box1.p_max.x, box2.p_max.x),
         std::max(box1.p_max.y, box2.p_max.y),
         std::max(box1.p_max.z, box2.p_max.z)};
-    return BBox{p_min, p_max};
+    return BBox{0,p_min, p_max};
 }
 
